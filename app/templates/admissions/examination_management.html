@@ -1,0 +1,264 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examination Management | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/examination_management.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+    
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">
+                    EduMate / Academic Management / Examinations
+                </div>
+                <h1>Examination Management</h1>
+                <p>Create examinations and manage their schedules and status.</p>
+            </div>
+
+            <a href="{% url 'examination_create' %}"
+               class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i>
+                Create Examination
+            </a>
+        </header>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+                <div>
+                    <span>Total Examinations</span>
+                    <h2>{{ total_count }}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="fa-solid fa-file-pen"></i>
+                </div>
+                <div>
+                    <span>Draft</span>
+                    <h2>{{ draft_count }}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div>
+                    <span>Scheduled</span>
+                    <h2>{{ scheduled_count }}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                    <span>Completed</span>
+                    <h2>{{ completed_count }}</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-card">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Examination Register</h2>
+                    <p>Search, edit and manage examination schedules.</p>
+                </div>
+
+                <form method="get" class="filter-form">
+                    <input type="search"
+                           name="q"
+                           value="{{ search_query }}"
+                           placeholder="Search examinations..."
+                           aria-label="Search examinations">
+
+                    <select name="status" aria-label="Filter by status">
+                        <option value="">All statuses</option>
+                        {% for value, label in status_choices %}
+                            <option value="{{ value }}"
+                                {% if selected_status == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                        <option value="Draft"
+                            {% if selected_status == "Draft" %}selected{% endif %}>
+                            Draft
+                        </option>
+                        <option value="Scheduled"
+                            {% if selected_status == "Scheduled" %}selected{% endif %}>
+                            Scheduled
+                        </option>
+                        <option value="Ongoing"
+                            {% if selected_status == "Ongoing" %}selected{% endif %}>
+                            Ongoing
+                        </option>
+                        <option value="Completed"
+                            {% if selected_status == "Completed" %}selected{% endif %}>
+                            Completed
+                        </option>
+                        <option value="Cancelled"
+                            {% if selected_status == "Cancelled" %}selected{% endif %}>
+                            Cancelled
+                        </option>
+                    </select>
+
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="fa-solid fa-filter"></i>
+                        Filter
+                    </button>
+                </form>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Exam Code</th>
+                            <th>Examination</th>
+                            <th>Course / Subject</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Centre</th>
+                            <th>Marks</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for exam in examinations %}
+                            <tr>
+                                <td><strong>{{ exam.exam_code }}</strong></td>
+
+                                <td>
+                                    <strong>{{ exam.exam_name }}</strong>
+                                    <small class="subtext">
+                                        {{ exam.get_exam_type_display }}
+                                    </small>
+                                </td>
+
+                                <td>
+                                    {{ exam.course_name }}
+                                    <small class="subtext">
+                                        {{ exam.subject_name }}
+                                    </small>
+                                </td>
+
+                                <td>{{ exam.exam_date|date:"d M Y" }}</td>
+
+                                <td>
+                                    {{ exam.start_time|time:"H:i" }} -
+                                    {{ exam.end_time|time:"H:i" }}
+                                </td>
+
+                                <td>
+                                    {{ exam.exam_centre }}
+                                    {% if exam.room_number %}
+                                        <small class="subtext">
+                                            Room {{ exam.room_number }}
+                                        </small>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {{ exam.passing_marks|floatformat:2 }} /
+                                    {{ exam.max_marks|floatformat:2 }}
+                                    <small class="subtext">Pass / Maximum</small>
+                                </td>
+
+                                <td>
+                                    <span class="status status-{{ exam.status|lower }}">
+                                        {{ exam.get_status_display }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="actions">
+                                        <a href="{% url 'examination_edit' exam.id %}"
+                                           class="action-link"
+                                           title="Edit examination">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </a>
+
+                                        <form method="post"
+                                              action="{% url 'examination_change_status' exam.id %}"
+                                              class="status-form">
+                                            {% csrf_token %}
+                                            <select name="status"
+                                                    aria-label="Change examination status">
+                                                {% for value, label in exam.STATUS_CHOICES %}
+                                                    <option value="{{ value }}"
+                                                        {% if exam.status == value %}selected{% endif %}>
+                                                        {{ label }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                            <button type="submit"
+                                                    class="action-button"
+                                                    title="Update status">
+                                                <i class="fa-solid fa-check"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="9" class="empty-state">
+                                    <i class="fa-solid fa-calendar-xmark"></i>
+                                    <h3>No examinations found</h3>
+                                    <p>Create an examination to populate this register.</p>
+                                    <a href="{% url 'examination_create' %}"
+                                       class="btn btn-primary">
+                                        Create Examination
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            © 2026 SciPy Technologies Pvt. Ltd. | EduMate
+        </footer>
+
+    </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #2457d6;
+    --danger: #dc3545;
+    --danger-dark: #b42318;
+    --text: #1d2939;
+    --muted: #667085;
+    --border: #e4e7ec;
+}
+
+.delete-page {
+    width: 100%;
+    min-height: 75vh;
+    padding: 35px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+/* MAIN CARD */
+
+.delete-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 35px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 10px 35px rgba(16, 24, 40, 0.07);
+    text-align: center;
+}
+
+/* DELETE ICON */
+
+.delete-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff0ee;
+    color: var(--danger);
+    font-size: 28px;
+}
+
+/* HEADING */
+
+.delete-eyebrow {
+    color: var(--danger);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.delete-card h1 {
+    color: var(--text);
+    font-size: 26px;
+    font-weight: 800;
+    margin: 10px 0;
+}
+
+.delete-description {
+    max-width: 430px;
+    margin: 0 auto 25px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* STUDENT INFORMATION */
+
+.student-information {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px;
+    margin-bottom: 22px;
+    text-align: left;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.student-photo {
+    width: 65px;
+    height: 65px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background: #eef2ff;
+    color: var(--primary);
+    font-size: 25px;
+}
+
+.student-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.student-details h3 {
+    margin: 0 0 10px;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.student-details p {
+    margin: 5px 0;
+    color: #475467;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.student-details p span {
+    color: var(--muted);
+    font-weight: 700;
+}
+
+/* WARNING */
+
+.delete-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    margin-bottom: 25px;
+    text-align: left;
+    background: #fffaeb;
+    border: 1px solid #fedf89;
+    border-radius: 9px;
+}
+
+.delete-warning i {
+    color: #dc6803;
+    font-size: 17px;
+    margin-top: 2px;
+}
+
+.delete-warning p {
+    margin: 0;
+    color: #93370d;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* ACTION BUTTONS */
+
+.delete-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.delete-actions form {
+    margin: 0;
+}
+
+.cancel-button,
+.confirm-delete-button {
+    min-height: 43px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.cancel-button {
+    color: #344054;
+    background: #ffffff;
+    border: 1px solid var(--border);
+}
+
+.cancel-button:hover {
+    background: #f2f4f7;
+}
+
+.confirm-delete-button {
+    color: #ffffff;
+    background: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+.confirm-delete-button:hover {
+    background: var(--danger-dark);
+    border-color: var(--danger-dark);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+
+    .delete-page {
+        padding: 20px 12px;
+    }
+
+    .delete-card {
+        padding: 24px 17px;
+    }
+
+    .delete-card h1 {
+        font-size: 22px;
+    }
+
+    .student-information {
+        align-items: flex-start;
+        padding: 15px;
+        gap: 12px;
+    }
+
+    .student-photo {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .delete-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .delete-actions form {
+        width: 100%;
+    }
+
+    .cancel-button,
+    .confirm-delete-button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

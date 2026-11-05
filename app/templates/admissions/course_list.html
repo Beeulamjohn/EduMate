@@ -1,0 +1,137 @@
+
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Course List | EduMate{% endblock %}
+{% block breadcrumb %}Course Management / Course List{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/course_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="course-list-page">
+
+    <section class="course-list-header">
+        <div>
+            <span class="course-list-eyebrow">
+                <i class="fa-solid fa-book-open"></i>
+                ACADEMIC PROGRAMS
+            </span>
+
+            <h1>Explore Courses</h1>
+
+            <p>
+                View available technical and non-technical courses,
+                their duration and delivery modes.
+            </p>
+        </div>
+
+        <a href="{% url 'scheduling_dashboard' %}"
+           class="course-back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Scheduling
+        </a>
+    </section>
+
+    <section class="course-summary">
+        <div class="course-summary-icon">
+            <i class="fa-solid fa-book"></i>
+        </div>
+
+        <div>
+            <span>Available Courses</span>
+            <h2>{{ total_courses }}</h2>
+        </div>
+    </section>
+
+    <section class="course-list-section">
+        <div class="course-list-section-heading">
+            <div>
+                <h2>Course Directory</h2>
+                <p>Browse the courses currently available in EduMate.</p>
+            </div>
+        </div>
+
+        {% if courses %}
+        <div class="course-list-grid">
+
+            {% for course in courses %}
+            <article class="course-card">
+
+                <div class="course-card-top">
+                    <div class="course-card-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+
+                    <span class="course-category-badge">
+                        {{ course.category }}
+                    </span>
+                </div>
+
+                <h3>{{ course.name }}</h3>
+
+                {% if course.description %}
+                <p class="course-description">
+                    {{ course.description }}
+                </p>
+                {% else %}
+                <p class="course-description">
+                    Explore course details and learning opportunities.
+                </p>
+                {% endif %}
+
+                <div class="course-card-details">
+                    <div>
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Duration</span>
+                        <strong>{{ course.duration }}</strong>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>Course Type</span>
+                        <strong>{{ course.duration_type }}</strong>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-display"></i>
+                        <span>Delivery</span>
+                        <strong>{{ course.delivery_mode }}</strong>
+                    </div>
+                </div>
+
+                <div class="course-card-footer">
+                    <span class="course-active-status">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Active
+                    </span>
+                </div>
+
+            </article>
+            {% endfor %}
+
+        </div>
+        {% else %}
+        <div class="course-empty-state">
+            <div class="course-empty-icon">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+
+            <h3>No courses available yet</h3>
+
+            <p>
+                Active courses will appear here once course records
+                have been added to the database.
+            </p>
+
+            <a href="{% url 'scheduling_dashboard' %}"
+               class="course-empty-btn">
+                Return to Scheduling
+            </a>
+        </div>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

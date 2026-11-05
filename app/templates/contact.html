@@ -1,0 +1,594 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact Us | SciPy Technologies - EduMate</title>
+
+    <meta name="description"
+          content="Contact SciPy Technologies Pvt. Ltd. in Kesavadasapuram, Pattom, Thiruvananthapuram, Kerala for education, software, training and EduMate enquiries.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+</head>
+
+<body>
+
+<main class="contact-page">
+
+    <!-- Hero -->
+    <section class="contact-hero">
+        <div class="hero-decoration decoration-one"></div>
+        <div class="hero-decoration decoration-two"></div>
+
+        <div class="container hero-content">
+            <span class="eyebrow">
+                <i class="fa-solid fa-headset"></i>
+                CONTACT SCIPY TECHNOLOGIES
+            </span>
+
+            <h1>Let's Start a <span>Conversation</span></h1>
+
+            <p>
+                Have questions about our software services, educational
+                training, academic projects or EduMate ERP? Contact our team
+                using the details below or send us a message.
+            </p>
+
+            <a href="#contactFormSection" class="hero-button">
+                <i class="fa-solid fa-paper-plane"></i>
+                Send an Enquiry
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="contact-cards-section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="section-label">GET IN TOUCH</span>
+                <h2>We're Here to Help</h2>
+                <p>Choose the contact method that works best for you.</p>
+            </div>
+
+            <div class="contact-cards">
+
+                <article class="contact-card">
+                    <div class="card-icon blue-icon">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <h3>Call Us</h3>
+                    <p>Contact SciPy Technologies directly.</p>
+                    <a href="tel:+917356238071">+91 73562 38071</a>
+                    <span class="card-note">Phone support</span>
+                </article>
+
+                <article class="contact-card">
+                    <div class="card-icon purple-icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <h3>Email Us</h3>
+                    <p>Send your questions and enquiries by email.</p>
+                    <a href="mailto:hello@scipytechnologies.com">
+                        hello@scipytechnologies.com
+                    </a>
+                    <span class="card-note">Email support</span>
+                </article>
+
+                <article class="contact-card">
+                    <div class="card-icon green-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <h3>Visit Our Office</h3>
+                    <p>Find us at our Thiruvananthapuram office.</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=First+Floor+Crown+Plaza+Kesavadasapuram+Pattom+Thiruvananthapuram+695004"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        View Office Location
+                    </a>
+                    <span class="card-note">Pattom, Kerala</span>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form and Office Details -->
+    <section class="contact-content" id="contactFormSection">
+        <div class="container">
+            <div class="contact-layout">
+
+                <!-- Contact Form -->
+                <div class="form-card">
+                    <div class="form-heading">
+                        <span class="section-label">SEND AN ENQUIRY</span>
+                        <h2>How Can We Help You?</h2>
+                        <p>
+                            Complete the form below and submit your enquiry
+                            to SciPy Technologies.
+                        </p>
+                    </div>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert-message {{ message.tags }}"
+                                 role="status">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>{{ message }}</span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post"
+                          action="{% url 'contact' %}"
+                          class="contact-form"
+                          id="contactForm">
+
+                        {% csrf_token %}
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">
+                                    Full Name <span>*</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <i class="fa-regular fa-user"></i>
+                                    <input type="text"
+                                           id="fullName"
+                                           name="full_name"
+                                           placeholder="Enter your full name"
+                                           autocomplete="name"
+                                           maxlength="150"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">
+                                    Email Address <span>*</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <i class="fa-regular fa-envelope"></i>
+                                    <input type="email"
+                                           id="email"
+                                           name="email"
+                                           placeholder="you@example.com"
+                                           autocomplete="email"
+                                           maxlength="254"
+                                           required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">
+                                    Phone Number <span>*</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-phone"></i>
+                                    <input type="tel"
+                                           id="phone"
+                                           name="phone"
+                                           placeholder="+91 98765 43210"
+                                           autocomplete="tel"
+                                           maxlength="20"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="department">
+                                    Enquiry Category <span>*</span>
+                                </label>
+                                <div class="input-wrapper select-wrapper">
+                                    <i class="fa-solid fa-list"></i>
+                                    <select id="department"
+                                            name="department"
+                                            required>
+                                        <option value="" disabled selected>
+                                            Select a category
+                                        </option>
+                                        <option value="admissions">
+                                            Admissions and Training
+                                        </option>
+                                        <option value="projects">
+                                            Academic Projects and Internships
+                                        </option>
+                                        <option value="erp_demo">
+                                            EduMate ERP Enquiry
+                                        </option>
+                                        <option value="fees">
+                                            Fees and Payments
+                                        </option>
+                                        <option value="software">
+                                            Software Development Services
+                                        </option>
+                                        <option value="technical_support">
+                                            Technical Support
+                                        </option>
+                                        <option value="other">
+                                            Other Enquiry
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">
+                                Subject <span>*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-pen"></i>
+                                <input type="text"
+                                       id="subject"
+                                       name="subject"
+                                       placeholder="Enter your enquiry subject"
+                                       maxlength="200"
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">
+                                Your Message <span>*</span>
+                            </label>
+                            <textarea id="message"
+                                      name="message"
+                                      rows="6"
+                                      placeholder="Please describe your enquiry..."
+                                      maxlength="5000"
+                                      required></textarea>
+                        </div>
+
+                        <label class="consent-label">
+                            <input type="checkbox"
+                                   name="consent"
+                                   value="yes"
+                                   required>
+                            <span>
+                                I agree to be contacted regarding this enquiry.
+                            </span>
+                        </label>
+
+                        <button type="submit"
+                                class="submit-button"
+                                id="submitContactBtn">
+                            <span>Send Message</span>
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+
+                        <p class="security-note">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Your information will be submitted securely
+                            through this website.
+                        </p>
+                    </form>
+                </div>
+
+                <!-- Office Details -->
+                <aside class="office-sidebar">
+
+                    <div class="office-card office-highlight">
+                        <div class="office-icon">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                        <span class="section-label">OUR OFFICE</span>
+                        <h2>SciPy Technologies Pvt. Ltd.</h2>
+
+                        <p class="office-address">
+                            First Floor, Crown Plaza, Kesavadasapuram,
+                            47, National Highway, near St. Mary's School,
+                            Pattom, Thiruvananthapuram, Kerala 695004, India.
+                        </p>
+
+                        <a class="directions-button"
+                           href="https://www.google.com/maps/dir/?api=1&destination=First+Floor+Crown+Plaza+Kesavadasapuram+Pattom+Thiruvananthapuram+Kerala+695004"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            <i class="fa-solid fa-diamond-turn-right"></i>
+                            Get Directions
+                        </a>
+                    </div>
+
+                    <div class="office-card">
+                        <h3>Contact Information</h3>
+
+                        <div class="detail-row">
+                            <div class="detail-icon">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <span>Phone</span>
+                                <a href="tel:+917356238071">
+                                    +91 73562 38071
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <span>Email</span>
+                                <a href="mailto:hello@scipytechnologies.com">
+                                    hello@scipytechnologies.com
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <span>Location</span>
+                                <p>Kesavadasapuram, Pattom, Thiruvananthapuram</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="office-card help-card">
+                        <div class="help-icon">
+                            <i class="fa-solid fa-circle-question"></i>
+                        </div>
+                        <h3>Need More Information?</h3>
+                        <p>
+                            Send us your question through the contact form
+                            or email our team.
+                        </p>
+                        <a href="mailto:hello@scipytechnologies.com">
+                            Email Our Team
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="section-label">HELP AND SUPPORT</span>
+                <h2>Frequently Asked Questions</h2>
+                <p>Some useful information before you contact us.</p>
+            </div>
+
+            <div class="faq-list">
+                <article class="faq-item">
+                    <button class="faq-question"
+                            type="button"
+                            aria-expanded="false">
+                        <span>Where is SciPy Technologies located?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Our listed office address is First Floor,
+                            Crown Plaza, Kesavadasapuram, 47, National
+                            Highway, near St. Mary's School, Pattom,
+                            Thiruvananthapuram, Kerala 695004.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="faq-item">
+                    <button class="faq-question"
+                            type="button"
+                            aria-expanded="false">
+                        <span>How can I contact your team?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Call +91 73562 38071 or email
+                            hello@scipytechnologies.com. You can also
+                            submit the enquiry form on this page.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="faq-item">
+                    <button class="faq-question"
+                            type="button"
+                            aria-expanded="false">
+                        <span>Can I enquire about EduMate ERP?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Yes. Choose "EduMate ERP Enquiry" in the
+                            enquiry category and describe what you would
+                            like to know in the message field.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="faq-item">
+                    <button class="faq-question"
+                            type="button"
+                            aria-expanded="false">
+                        <span>How do I find the office?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Use the Get Directions link on this page to
+                            open Google Maps with the Thiruvananthapuram
+                            office address as the destination.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map -->
+    <section class="map-section" id="mapSection">
+        <div class="container">
+            <div class="section-heading">
+                <span class="section-label">FIND OUR OFFICE</span>
+                <h2>Visit SciPy Technologies</h2>
+                <p>
+                    First Floor, Crown Plaza, Kesavadasapuram, Pattom,
+                    Thiruvananthapuram, Kerala 695004.
+                </p>
+            </div>
+
+            <div class="map-card">
+                <iframe
+                    title="SciPy Technologies office in Kesavadasapuram, Thiruvananthapuram"
+                    src="https://maps.google.com/maps?q=First%20Floor%2C%20Crown%20Plaza%2C%20Kesavadasapuram%2C%20Pattom%2C%20Thiruvananthapuram%2C%20Kerala%20695004&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="map-address">
+                <i class="fa-solid fa-location-dot"></i>
+                <p>
+                    <strong>SciPy Technologies Pvt. Ltd.</strong>
+                    <span>
+                        First Floor, Crown Plaza, Kesavadasapuram,
+                        47, National Highway, near St. Mary's School,
+                        Pattom, Thiruvananthapuram, Kerala 695004.
+                    </span>
+                </p>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=First+Floor+Crown+Plaza+Kesavadasapuram+Pattom+Thiruvananthapuram+Kerala+695004"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Open Maps <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="contact-cta">
+        <div class="container cta-inner">
+            <div>
+                <span class="section-label">LET'S CONNECT</span>
+                <h2>Have a Question for Our Team?</h2>
+                <p>
+                    Send us an enquiry or contact us directly by email.
+                </p>
+            </div>
+
+            <a href="#contactFormSection" class="cta-button">
+                Contact Us <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-grid">
+
+            <div class="footer-brand-column">
+                <a href="{% url 'home' %}" class="footer-brand">
+                    <img src="{% static 'images/company logo.png' %}"
+                         alt="SciPy Technologies logo">
+                </a>
+                <p>
+                    SciPy Technologies Pvt. Ltd. provides technology
+                    services and educational solutions, including
+                    the EduMate education management platform.
+                </p>
+            </div>
+
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About Us</a>
+                <a href="{% url 'features' %}">Features</a>
+                <a href="{% url 'faq' %}">FAQ</a>
+                <a href="{% url 'contact' %}">Contact Us</a>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contact Details</h3>
+                <a href="tel:+917356238071">
+                    <i class="fa-solid fa-phone"></i>
+                    +91 73562 38071
+                </a>
+                <a href="mailto:hello@scipytechnologies.com">
+                    <i class="fa-solid fa-envelope"></i>
+                    hello@scipytechnologies.com
+                </a>
+                <p>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Crown Plaza, Kesavadasapuram, Pattom,
+                    Thiruvananthapuram, Kerala 695004
+                </p>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>
+                &copy; 2026 SciPy Technologies Pvt. Ltd.
+                All rights reserved.
+            </p>
+            <a href="{% url 'home' %}">EduMate Education Management System</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // FAQ accordion
+    document.querySelectorAll(".faq-question").forEach(function (button) {
+        button.addEventListener("click", function () {
+            const item = this.closest(".faq-item");
+            const isOpen = this.getAttribute("aria-expanded") === "true";
+
+            document.querySelectorAll(".faq-item").forEach(function (otherItem) {
+                otherItem.classList.remove("open");
+                otherItem.querySelector(".faq-question")
+                    .setAttribute("aria-expanded", "false");
+            });
+
+            if (!isOpen) {
+                item.classList.add("open");
+                this.setAttribute("aria-expanded", "true");
+            }
+        });
+    });
+
+    // Prevent accidental repeated clicks while submitting.
+    // The form still submits normally to Django.
+    const contactForm = document.getElementById("contactForm");
+    const submitButton = document.getElementById("submitContactBtn");
+
+    if (contactForm && submitButton) {
+        contactForm.addEventListener("submit", function () {
+            if (contactForm.checkValidity()) {
+                submitButton.disabled = true;
+                submitButton.querySelector("span").textContent = "Sending...";
+                submitButton.querySelector("i").className =
+                    "fa-solid fa-spinner fa-spin";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

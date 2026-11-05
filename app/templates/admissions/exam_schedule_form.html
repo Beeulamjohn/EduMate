@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ page_title }} | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/exam_schedule.css' %}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+<div class="form-page">
+
+    <header class="form-topbar">
+        <a href="{% url 'exam_schedule_list' %}" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Exam Schedules
+        </a>
+
+        <div class="form-brand">
+            <i class="fa-solid fa-graduation-cap"></i>
+            EduMate
+        </div>
+    </header>
+
+    <main class="form-container">
+        <div class="form-heading">
+            <div class="form-heading-icon">
+                <i class="fa-solid fa-calendar-plus"></i>
+            </div>
+
+            <div>
+                <h1>{{ page_title }}</h1>
+                <p>
+                    Enter the examination timetable details below.
+                </p>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" class="schedule-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+                {% for field in form %}
+                    <div class="form-group
+                        {% if field.name == 'instructions' %}full-width{% endif %}">
+
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            {% if field.field.required %}
+                                <span class="required">*</span>
+                            {% endif %}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small class="help-text">
+                                {{ field.help_text }}
+                            </small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <small class="error-text">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'exam_schedule_list' %}"
+                   class="btn btn-light">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    {{ button_text }}
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <footer class="page-footer">
+        © {% now "Y" %} SciPy Technologies Pvt. Ltd. — EduMate
+    </footer>
+
+</div>
+</body>
+</html>

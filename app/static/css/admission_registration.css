@@ -1,0 +1,564 @@
+
+/* =========================================================
+   EduMate - Admission Registration
+   File: static/css/admission.css
+   ========================================================= */
+
+.admission-page {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px;
+    color: #172033;
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.admission-page *,
+.admission-page *::before,
+.admission-page *::after {
+    box-sizing: border-box;
+}
+
+/* Page heading */
+
+.admission-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+
+.heading-content {
+    min-width: 0;
+}
+
+.admission-heading .eyebrow {
+    display: inline-block;
+    margin-bottom: 9px;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+}
+
+.admission-heading h1 {
+    margin: 0 0 10px;
+    color: #172033;
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 800;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.admission-heading p {
+    margin: 0;
+    color: #667085;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* Buttons */
+
+.admission-page .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 11px 18px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.admission-page .btn:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.25);
+    outline-offset: 3px;
+}
+
+.admission-page .btn-primary {
+    color: #ffffff;
+    background: linear-gradient(135deg, #0891b2, #2563eb);
+    border-color: #2563eb;
+    box-shadow: 0 5px 12px rgba(37, 99, 235, 0.15);
+}
+
+.admission-page .btn-primary:hover {
+    color: #ffffff;
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    box-shadow: 0 7px 16px rgba(37, 99, 235, 0.22);
+    transform: translateY(-1px);
+}
+
+.admission-page .btn-outline {
+    color: #344054;
+    background: #ffffff;
+    border-color: #d0d5dd;
+}
+
+.admission-page .btn-outline:hover {
+    color: #1d4ed8;
+    background: #eff6ff;
+    border-color: #93c5fd;
+}
+
+/* Messages and alerts */
+
+.messages-container {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.admission-page .alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 0 18px;
+    padding: 14px 16px;
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    color: #1e40af;
+    background: #eff6ff;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.admission-page .alert.success {
+    color: #166534;
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.admission-page .alert.error,
+.admission-page .alert.danger {
+    color: #991b1b;
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+.admission-page .alert.warning {
+    color: #92400e;
+    background: #fffbeb;
+    border-color: #fde68a;
+}
+
+.admission-page .alert.info {
+    color: #1e40af;
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.admission-page .alert ul,
+.admission-page .errorlist {
+    margin: 6px 0 0;
+    padding-left: 20px;
+}
+
+.admission-page .errorlist {
+    color: #b42318;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.admission-page .errorlist li {
+    margin-top: 3px;
+}
+
+/* Main form */
+
+.admission-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    min-width: 0;
+}
+
+.form-section {
+    min-width: 0;
+    padding: 26px;
+    background: #ffffff;
+    border: 1px solid #e4e7ec;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px rgba(16, 24, 40, 0.035);
+}
+
+/* Section heading */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 20px;
+    margin-bottom: 23px;
+    border-bottom: 1px solid #eaecf0;
+}
+
+.section-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    color: #2563eb;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 12px;
+    font-size: 19px;
+}
+
+.section-heading h2 {
+    margin: 0 0 5px;
+    color: #172033;
+    font-size: 18px;
+    font-weight: 750;
+    line-height: 1.4;
+}
+
+.section-heading p {
+    margin: 0;
+    color: #667085;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* Form grid */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 24px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 0;
+    gap: 8px;
+}
+
+.field-full {
+    grid-column: 1 / -1;
+}
+
+.field > label {
+    display: block;
+    color: #344054;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.required {
+    margin-left: 3px;
+    color: #dc2626;
+    font-weight: 800;
+}
+
+/* Text inputs, selects, textareas */
+
+.admission-page .field input:not([type="checkbox"]):not([type="radio"]),
+.admission-page .field select,
+.admission-page .field textarea {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 45px;
+    padding: 11px 13px;
+    color: #172033;
+    background: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.5;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.admission-page .field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.admission-page .field input::placeholder,
+.admission-page .field textarea::placeholder {
+    color: #98a2b3;
+}
+
+.admission-page .field input:focus,
+.admission-page .field select:focus,
+.admission-page .field textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.admission-page .field input:disabled,
+.admission-page .field select:disabled,
+.admission-page .field textarea:disabled {
+    color: #667085;
+    background: #f2f4f7;
+    cursor: not-allowed;
+}
+
+/* Date and number fields */
+
+.admission-page .field input[type="date"],
+.admission-page .field input[type="number"] {
+    appearance: auto;
+}
+
+.admission-page .field input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.admission-page .field input[type="number"]::-webkit-inner-spin-button,
+.admission-page .field input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+/* File uploads */
+
+.admission-page .field input[type="file"] {
+    width: 100%;
+    min-width: 0;
+    padding: 9px;
+    color: #475467;
+    background: #f9fafb;
+    border: 1px dashed #b8c5d6;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.admission-page .field input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    padding: 8px 12px;
+    color: #1d4ed8;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admission-page .field input[type="file"]::file-selector-button:hover {
+    background: #dbeafe;
+}
+
+/* Checkbox and radio fields */
+
+.admission-page .field input[type="checkbox"],
+.admission-page .field input[type="radio"] {
+    accent-color: #2563eb;
+}
+
+.help-text {
+    color: #667085;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.field-error {
+    display: block;
+    color: #b42318;
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* Calculated fee fields */
+
+.calculated-field input[readonly] {
+    color: #1d4ed8 !important;
+    background: #eff6ff !important;
+    border-color: #bfdbfe !important;
+    font-weight: 750;
+    cursor: default;
+}
+
+.info-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    margin-top: 22px;
+    padding: 13px 15px;
+    color: #475467;
+    background: #f8fafc;
+    border: 1px solid #e4e7ec;
+    border-radius: 9px;
+}
+
+.info-note > i {
+    margin-top: 3px;
+    color: #2563eb;
+    font-size: 15px;
+}
+
+.info-note p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* Form actions */
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 0 8px;
+    flex-wrap: wrap;
+}
+
+.form-actions .btn {
+    min-width: 135px;
+}
+
+.form-actions .btn-primary {
+    min-width: 180px;
+}
+
+/* Accessibility */
+
+.admission-page a:focus-visible,
+.admission-page button:focus-visible,
+.admission-page input:focus-visible,
+.admission-page select:focus-visible,
+.admission-page textarea:focus-visible {
+    outline-offset: 3px;
+}
+
+/* Tablet layout */
+
+@media (max-width: 900px) {
+    .admission-page {
+        padding: 20px;
+    }
+
+    .form-section {
+        padding: 22px;
+    }
+
+    .form-grid {
+        gap: 20px;
+    }
+}
+
+/* Mobile layout */
+
+@media (max-width: 600px) {
+    .admission-page {
+        padding: 14px;
+    }
+
+    .admission-heading {
+        align-items: stretch;
+        gap: 18px;
+        margin-bottom: 22px;
+    }
+
+    .admission-heading h1 {
+        font-size: 25px;
+    }
+
+    .admission-heading p {
+        font-size: 13px;
+    }
+
+    .admission-heading > .btn {
+        align-self: flex-start;
+    }
+
+    .form-section {
+        padding: 18px 15px;
+        border-radius: 12px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        gap: 12px;
+        padding-bottom: 16px;
+        margin-bottom: 19px;
+    }
+
+    .section-icon {
+        flex-basis: 40px;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+
+    .section-heading h2 {
+        font-size: 16px;
+    }
+
+    .section-heading p {
+        font-size: 11px;
+    }
+
+    .form-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .field-full {
+        grid-column: auto;
+    }
+
+    .form-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+    }
+
+    .form-actions .btn,
+    .form-actions .btn-primary {
+        width: 100%;
+    }
+
+    .info-note {
+        padding: 12px;
+    }
+}
+
+/* Reduced motion preference */
+
+@media (prefers-reduced-motion: reduce) {
+    .admission-page *,
+    .admission-page *::before,
+    .admission-page *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}

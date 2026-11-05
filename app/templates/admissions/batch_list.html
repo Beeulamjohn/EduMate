@@ -1,0 +1,199 @@
+
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Explore Courses | EduMate{% endblock %}
+
+{% block breadcrumb %}
+Course Management / Explore Courses
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/course_list.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<main class="course-list-page">
+
+    <section class="course-list-header">
+        <div>
+            <span class="course-list-eyebrow">
+                <i class="fa-solid fa-book-open"></i>
+                ACADEMIC PROGRAMS
+            </span>
+
+            <h1>Explore Courses</h1>
+
+            <p>
+                Explore available technical and non-technical courses,
+                course durations, fees and delivery modes.
+            </p>
+        </div>
+
+        <a href="{% url 'scheduling_dashboard' %}"
+           class="course-back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Scheduling
+        </a>
+    </section>
+
+
+    <section class="course-summary">
+        <div class="course-summary-icon">
+            <i class="fa-solid fa-book"></i>
+        </div>
+
+        <div>
+            <span>Available Courses</span>
+            <h2>{{ total_courses|default:0 }}</h2>
+        </div>
+    </section>
+
+
+    <section class="course-list-section">
+
+        <div class="course-list-section-heading">
+            <div>
+                <h2>Course Directory</h2>
+                <p>
+                    Browse active courses registered in EduMate.
+                </p>
+            </div>
+        </div>
+
+
+        {% if courses %}
+
+        <div class="course-list-grid">
+
+            {% for course in courses %}
+
+            <article class="course-card">
+
+                <div class="course-card-top">
+
+                    <div class="course-card-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+
+                    <span class="course-category-badge">
+                        {{ course.category.name }}
+                    </span>
+
+                </div>
+
+
+                <div class="course-card-heading">
+                    <h3>{{ course.name }}</h3>
+
+                    <span class="course-code">
+                        {{ course.code }}
+                    </span>
+                </div>
+
+
+                {% if course.description %}
+                <p class="course-description">
+                    {{ course.description }}
+                </p>
+                {% else %}
+                <p class="course-description">
+                    Explore the course details and learning opportunities
+                    available through EduMate.
+                </p>
+                {% endif %}
+
+
+                <div class="course-card-details">
+
+                    <div>
+                        <i class="fa-regular fa-clock"></i>
+                        <span>Duration</span>
+                        <strong>
+                            {{ course.formatted_duration }}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>Course Type</span>
+                        <strong>
+                            {{ course.get_course_type_display }}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                        <span>Course Fee</span>
+                        <strong>
+                            ₹{{ course.fee|floatformat:2 }}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-display"></i>
+                        <span>Delivery Modes</span>
+                        <strong>
+                            {{ course.available_delivery_modes }}
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="course-card-footer">
+
+                    <span class="course-active-status">
+                        <i class="fa-solid fa-circle-check"></i>
+                        {{ course.get_status_display }}
+                    </span>
+
+                    <span class="course-trainer">
+                        {% if course.assigned_trainer %}
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                            {{ course.assigned_trainer.get_full_name|default:course.assigned_trainer.username }}
+                        {% else %}
+                            Trainer not assigned
+                        {% endif %}
+                    </span>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="course-empty-state">
+
+            <div class="course-empty-icon">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+
+            <h3>No active courses available</h3>
+
+            <p>
+                Add a course in Django Admin and set its status to
+                Active to display it in this directory.
+            </p>
+
+            <a href="{% url 'scheduling_dashboard' %}"
+               class="course-empty-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Return to Scheduling
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+{% endblock %}

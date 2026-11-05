@@ -1,0 +1,334 @@
+
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Admission Details | EduMate{% endblock %}
+{% block breadcrumb %}Admission Details{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admission_details.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="admission-details-page">
+
+    <!-- Page heading -->
+    <div class="details-heading">
+        <div class="heading-info">
+            <span class="details-eyebrow">ADMISSION PROFILE</span>
+            <h1>{{ admission.student.full_name }}</h1>
+            <p>Admission Number: {{ admission.admission_number }}</p>
+        </div>
+
+        <a href="{% url 'admission_register' %}" class="details-btn btn-outline">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Register
+        </a>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="details-messages">
+            {% for message in messages %}
+                <div class="details-alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Student and admission information -->
+    <div class="details-grid">
+
+        <!-- Student details -->
+        <section class="details-card">
+            <div class="details-card-heading">
+                <span class="details-icon">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </span>
+                <div>
+                    <h2>Student Details</h2>
+                    <p>Personal and academic information</p>
+                </div>
+            </div>
+
+            {% if admission.student.photo %}
+                <div class="student-photo-wrapper">
+                    <img
+                        src="{{ admission.student.photo.url }}"
+                        alt="Photo of {{ admission.student.full_name }}"
+                        class="details-student-photo"
+                    >
+                </div>
+            {% endif %}
+
+            <dl class="details-list">
+                <div class="details-row">
+                    <dt>Student ID</dt>
+                    <dd>{{ admission.student.student_id|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Full Name</dt>
+                    <dd>{{ admission.student.full_name|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Email</dt>
+                    <dd>{{ admission.student.email|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Mobile</dt>
+                    <dd>{{ admission.student.mobile|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Date of Birth</dt>
+                    <dd>{{ admission.student.dob|date:"d M Y"|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Gender</dt>
+                    <dd>{{ admission.student.get_gender_display|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Address</dt>
+                    <dd>{{ admission.student.address|default:"Not provided"|linebreaksbr }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Location</dt>
+                    <dd>{{ admission.student.location|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Qualification</dt>
+                    <dd>{{ admission.student.highest_qualification|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>University</dt>
+                    <dd>{{ admission.student.university|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>College</dt>
+                    <dd>{{ admission.student.college|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Passing Year</dt>
+                    <dd>{{ admission.student.passing_year|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Percentage / CGPA</dt>
+                    <dd>{{ admission.student.percentage_cgpa|default:"Not provided" }}</dd>
+                </div>
+            </dl>
+        </section>
+
+        <!-- Admission details -->
+        <section class="details-card">
+            <div class="details-card-heading">
+                <span class="details-icon">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </span>
+                <div>
+                    <h2>Admission Details</h2>
+                    <p>Course, status, and fee information</p>
+                </div>
+            </div>
+
+            <dl class="details-list">
+                <div class="details-row">
+                    <dt>Admission Number</dt>
+                    <dd>{{ admission.admission_number }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Course</dt>
+                    <dd>{{ admission.course.name|default:"Not assigned" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Batch</dt>
+                    <dd>{{ admission.batch|default:"Not assigned" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Delivery Mode</dt>
+                    <dd>{{ admission.get_delivery_mode_display|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Admission Date</dt>
+                    <dd>{{ admission.admission_date|date:"d M Y"|default:"Not provided" }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Admission Status</dt>
+                    <dd>
+                        <span class="details-status">
+                            {{ admission.get_admission_status_display }}
+                        </span>
+                    </dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Payment Status</dt>
+                    <dd>{{ admission.get_payment_status_display }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Course Fee</dt>
+                    <dd>₹{{ admission.course_fee|floatformat:2 }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Scholarship Discount</dt>
+                    <dd>₹{{ admission.scholarship_discount|floatformat:2 }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Final Payable</dt>
+                    <dd class="details-amount">
+                        ₹{{ admission.final_payable_amount|floatformat:2 }}
+                    </dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Amount Paid</dt>
+                    <dd>₹{{ admission.amount_paid|floatformat:2 }}</dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Outstanding Balance</dt>
+                    <dd class="details-balance">
+                        ₹{{ admission.outstanding_balance|floatformat:2 }}
+                    </dd>
+                </div>
+
+                <div class="details-row">
+                    <dt>Remarks</dt>
+                    <dd>{{ admission.remarks|default:"No remarks" }}</dd>
+                </div>
+            </dl>
+        </section>
+
+    </div>
+
+    <!-- Documents -->
+    <section class="details-card details-documents">
+        <div class="details-card-heading">
+            <span class="details-icon">
+                <i class="fa-solid fa-folder-open"></i>
+            </span>
+            <div>
+                <h2>Admission Documents</h2>
+                <p>Uploaded documents and verification status</p>
+            </div>
+        </div>
+
+        <div class="document-list">
+            {% for document in admission.documents.all %}
+                <div class="document-item">
+                    <div class="document-info">
+                        <span class="document-icon">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </span>
+                        <div>
+                            <strong>{{ document.get_document_name_display }}</strong>
+                            <small>
+                                {{ document.get_verification_status_display }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="document-action">
+                        {% if document.document_file %}
+                            <a href="{{ document.document_file.url }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="document-link">
+                                <i class="fa-solid fa-eye"></i>
+                                View File
+                            </a>
+                        {% elif document.document_name == "Student Photo" and admission.student.photo %}
+                            <a href="{{ admission.student.photo.url }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="document-link">
+                                <i class="fa-solid fa-eye"></i>
+                                View Photo
+                            </a>
+                        {% else %}
+                            <span class="document-missing">Not uploaded</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p class="details-empty">No document records found.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Action buttons -->
+    <div class="details-actions">
+        <a href="{% url 'document_verification' admission.pk %}"
+           class="details-btn btn-outline">
+            <i class="fa-solid fa-file-circle-check"></i>
+            Verify Documents
+        </a>
+
+        {% if admission.admission_status != "Confirmed" and admission.admission_status != "Cancelled" %}
+            <a href="{% url 'admission_confirmation' admission.pk %}"
+               class="details-btn btn-primary">
+                <i class="fa-solid fa-check-circle"></i>
+                Confirm Admission
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Status history -->
+    <section class="details-card details-history">
+        <div class="details-card-heading">
+            <span class="details-icon">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </span>
+            <div>
+                <h2>Admission Status History</h2>
+                <p>Track changes made to this admission</p>
+            </div>
+        </div>
+
+        <div class="history-list">
+            {% for history in admission.status_history.all %}
+                <div class="history-item">
+                    <span class="history-dot"></span>
+                    <div class="history-content">
+                        <strong>
+                            {{ history.previous_status|default:"Initial" }}
+                            <i class="fa-solid fa-arrow-right"></i>
+                            {{ history.new_status }}
+                        </strong>
+
+                        <small>
+                            {{ history.created_at|date:"d M Y, h:i A" }}
+                        </small>
+
+                        {% if history.remarks %}
+                            <p>{{ history.remarks }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p class="details-empty">No status history available.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
+{% endblock %}

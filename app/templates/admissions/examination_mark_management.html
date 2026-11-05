@@ -1,0 +1,230 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Mark Management | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/examination_mark_management.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+    
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">EduMate / Examinations / Marks</div>
+                <h1>Exam Mark Management</h1>
+                <p>Enter, review, submit and approve examination marks.</p>
+            </div>
+
+            <a href="{% url 'examination_mark_create' %}"
+               class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i>
+                Enter Marks
+            </a>
+        </header>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+                <div>
+                    <span>Total Records</span>
+                    <h2>{{ total_marks }}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">
+                    <i class="fa-solid fa-pen"></i>
+                </div>
+                <div>
+                    <span>Draft</span>
+                    <h2>{{ draft_count }}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                <div>
+                    <span>Submitted</span>
+                    <h2>{{ submitted_count }}</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                    <span>Approved</span>
+                    <h2>{{ approved_count }}</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-card">
+            <div class="section-heading">
+                <div>
+                    <h2>Examination Marks</h2>
+                    <p>Review student marks and evaluation status.</p>
+                </div>
+
+                <form method="get" class="filter-form">
+                    <select name="status" aria-label="Filter by status">
+                        <option value="">All statuses</option>
+                        <option value="Draft"
+                            {% if selected_status == "Draft" %}selected{% endif %}>
+                            Draft
+                        </option>
+                        <option value="Submitted"
+                            {% if selected_status == "Submitted" %}selected{% endif %}>
+                            Submitted
+                        </option>
+                        <option value="Approved"
+                            {% if selected_status == "Approved" %}selected{% endif %}>
+                            Approved
+                        </option>
+                    </select>
+                    <button type="submit" class="btn btn-secondary">
+                        Filter
+                    </button>
+                </form>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Registration Number</th>
+                            <th>Subject</th>
+                            <th>Exam Marks</th>
+                            <th>Internal</th>
+                            <th>Practical</th>
+                            <th>Status</th>
+                            <th>Entered By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for mark in marks %}
+                            <tr>
+                                <td>
+                                    <strong>
+                                        {{ mark.application.registration_number }}
+                                    </strong>
+                                    {% if mark.is_absent %}
+                                        <small class="absent-label">Absent</small>
+                                    {% endif %}
+                                </td>
+
+                                <td>{{ mark.subject.subject_name }}</td>
+                                <td>{{ mark.marks_obtained }}</td>
+                                <td>{{ mark.internal_marks }}</td>
+                                <td>{{ mark.practical_marks }}</td>
+
+                                <td>
+                                    <span class="status status-{{ mark.eval_status|lower }}">
+                                        {{ mark.get_eval_status_display }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% if mark.entered_by %}
+                                        {{ mark.entered_by.get_full_name|default:mark.entered_by.username }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <div class="actions">
+                                        {% if mark.eval_status != "Approved" %}
+                                            <a class="action-link"
+                                               href="{% url 'examination_mark_edit' mark.id %}"
+                                               title="Edit marks">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                        {% endif %}
+
+                                        {% if mark.eval_status == "Draft" %}
+                                            <form method="post"
+                                                  action="{% url 'examination_mark_submit' mark.id %}">
+                                                {% csrf_token %}
+                                                <button class="action-button submit-action"
+                                                        type="submit"
+                                                        title="Submit marks">
+                                                    <i class="fa-solid fa-paper-plane"></i>
+                                                </button>
+                                            </form>
+                                        {% endif %}
+
+                                        {% if mark.eval_status == "Submitted" and user.is_staff or mark.eval_status == "Submitted" and user.is_superuser %}
+                                            <form method="post"
+                                                  action="{% url 'examination_mark_approve' mark.id %}">
+                                                {% csrf_token %}
+                                                <button class="action-button approve-action"
+                                                        type="submit"
+                                                        title="Approve marks">
+                                                    <i class="fa-solid fa-check"></i>
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    <i class="fa-solid fa-folder-open"></i>
+                                    <h3>No examination marks found</h3>
+                                    <p>Add marks to start managing evaluations.</p>
+                                    <a href="{% url 'examination_mark_create' %}"
+                                       class="btn btn-primary">
+                                        Enter First Marks
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            © 2026 SciPy Technologies Pvt. Ltd. · EduMate
+        </footer>
+
+    </main>
+</div>
+
+</body>
+</html>

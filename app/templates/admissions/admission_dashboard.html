@@ -1,0 +1,515 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admission Dashboard | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/admission_dashboard.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="admission-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <a href="{% url 'home' %}" class="brand">
+            <img src="{% static 'images/company logo.png' %}"
+                 alt="SciPy Technologies"
+                 class="brand-logo">
+
+            <div class="brand-text">
+                <h2>EduMate</h2>
+                <span>Education Management</span>
+            </div>
+        </a>
+
+        <div class="sidebar-label">ADMISSION MODULE</div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'admission_dashboard' %}"
+               class="nav-link active">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+
+           <a href="{% url 'enquiry_management' %}" class="nav-link">
+    <i class="fa-solid fa-user-group"></i>
+    <span>Enquiry Management</span>
+</a>
+
+            <a href="{% url 'counselling_management' %}" class="nav-link">
+    <i class="fa-solid fa-comments"></i>
+    <span>Counselling Management</span>
+</a>
+
+         <a href="{% url 'admission_registration' %}" class="nav-link">
+    <i class="fa-solid fa-user-plus"></i>
+    <span>Admission Registration</span>
+</a>
+            <a href="{% url 'student_list' %}" class="nav-link">
+    <i class="fa-solid fa-graduation-cap"></i>
+    <span>Student Directory</span>
+</a>
+
+           <a href="{% url 'admission_reports' %}" class="nav-link">
+    <i class="fa-solid fa-chart-column"></i>
+    <span>Admission Reports</span>
+</a>
+
+            <a href="{% url 'admission_settings' %}" class="nav-link">
+    <i class="fa-solid fa-gear"></i>
+    <span>Settings</span>
+</a>
+
+
+        </nav>
+
+      
+
+    </aside>
+
+    <!-- MAIN AREA -->
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <button type="button"
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle sidebar"
+                    aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="breadcrumb">
+               
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="today-date">
+                    <i class="fa-regular fa-calendar"></i>
+                    {{ today|date:"d M Y" }}
+                </div>
+
+                
+<div class="profile">
+    <div class="avatar">
+        {{ request.user.username|first|upper }}
+    </div>
+
+    <div class="profile-details">
+        <strong>{{ request.user.username }}</strong>
+        <span>Admission Dashboard</span>
+    </div>
+</div>
+
+<form method="post"
+      action="{% url 'logout' %}"
+      class="logout-form">
+    {% csrf_token %}
+
+    <button type="submit" class="logout-button">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+    </button>
+</form>
+
+
+            </div>
+
+        </header>
+
+        <section class="dashboard-content">
+
+            <!-- PAGE HEADER -->
+            <div class="page-heading">
+
+                <div>
+                    <span class="eyebrow">
+                        EDUCATION MANAGEMENT SYSTEM
+                    </span>
+
+                    <h1>Admission Dashboard</h1>
+
+                    <p>
+                        Manage student enquiries, counselling,
+                        registrations and admissions in one place.
+                    </p>
+                </div>
+
+                <a href="{% url 'features' %}" class="back-to-features">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Features</span>
+    </a>
+
+              
+
+            </div>
+
+            <!-- NOTIFICATIONS -->
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">
+                            <i class="fa-solid fa-circle-info"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- STATISTICS -->
+            <section class="stats-grid">
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon purple">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <span>Total Enquiries</span>
+                    </div>
+
+                    <h2>{{ total_enquiries|default:0 }}</h2>
+                    <p>Prospective students</p>
+
+                   
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon orange">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <span>Pending Follow-ups</span>
+                    </div>
+
+                    <h2>{{ pending_followups|default:0 }}</h2>
+                    <p>Follow-ups due or overdue</p>
+
+                    
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon blue">
+                            <i class="fa-solid fa-comments"></i>
+                        </div>
+                        <span>In Counselling</span>
+                    </div>
+
+                    <h2>{{ ongoing_counselling|default:0 }}</h2>
+                    <p>Active counselling records</p>
+
+                    
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon green">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <span>Confirmed Admissions</span>
+                    </div>
+
+                    <h2>{{ confirmed_admissions|default:0 }}</h2>
+                    <p>Confirmed student registrations</p>
+
+                   
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon teal">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <span>Today's Admissions</span>
+                    </div>
+
+                    <h2>{{ today_admissions|default:0 }}</h2>
+                    <p>Admissions recorded today</p>
+
+                   
+                </article>
+
+            </section>
+
+           
+            <section class="content-grid">
+
+                <article class="panel workflow-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Admission Process</h2>
+                            <p>Student journey from enquiry to confirmation</p>
+                        </div>
+
+                        <i class="fa-solid fa-diagram-project heading-icon"></i>
+                    </div>
+
+                    <div class="workflow-list">
+
+                        <a href="{% url 'enquiry_management' %}"
+                           class="workflow-item">
+
+                            <div class="step-number purple">01</div>
+
+                            <div class="workflow-text">
+                                <strong>Enquiry Management</strong>
+                                <span>Capture student details and course interests</span>
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+
+                        <a href="{% url 'counselling_management' %}"
+                           class="workflow-item">
+
+                            <div class="step-number blue">02</div>
+
+                            <div class="workflow-text">
+                                <strong>Counselling</strong>
+                                <span>Discuss requirements, career goals and fees</span>
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+
+                        <a href="{% url 'admission_registration' %}"
+                           class="workflow-item">
+
+                            <div class="step-number orange">03</div>
+
+                            <div class="workflow-text">
+                                <strong>Admission Form</strong>
+                                <span>Enter personal, academic and course details</span>
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+
+                        <a href="{% url 'admission_registration' %}"
+   class="workflow-item">
+
+    <div class="step-number teal">04</div>
+
+    <div class="workflow-text">
+        <strong>Document Verification</strong>
+        <span>Check identity and educational certificates</span>
+    </div>
+
+    <i class="fa-solid fa-chevron-right"></i>
+</a>
+
+                    </div>
+
+                </article>
+
+                <!-- QUICK ACTIONS -->
+                <article class="panel quick-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Quick Actions</h2>
+                            <p>Frequently used admission tasks</p>
+                        </div>
+
+                        <i class="fa-solid fa-bolt heading-icon"></i>
+                    </div>
+
+                    <div class="quick-actions">
+
+                        <a href="{% url 'enquiry_create' %}"
+                           class="quick-action">
+                            <div class="quick-icon purple">
+                                <i class="fa-solid fa-user-plus"></i>
+                            </div>
+
+                            <div>
+                                <strong>Create Enquiry</strong>
+                                <span>Add a prospective student</span>
+                            </div>
+
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                        <a href="{% url 'counselling_create' %}"
+                           class="quick-action">
+                            <div class="quick-icon blue">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+
+                            <div>
+                                <strong>Manage Counselling</strong>
+                                <span>Review student follow-ups</span>
+                            </div>
+
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                       <a href="{% url 'admission_registration' %}" class="quick-action register-admission-action">
+    <div class="quick-icon orange">
+        <i class="fa-solid fa-file-circle-plus"></i>
+    </div>
+
+    <div class="quick-action-text">
+        <strong>Register Admission</strong>
+        <span>Start a new student registration</span>
+    </div>
+
+    <i class="fa-solid fa-arrow-right quick-action-arrow"></i>
+</a>
+
+                        <a href="{% url 'student_list' %}"
+                           class="quick-action">
+                            <div class="quick-icon green">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+
+                            <div>
+                                <strong>Student Directory</strong>
+                                <span>View registered students</span>
+                            </div>
+
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+            <!-- RECENT ENQUIRIES -->
+            <section class="panel recent-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Recent Student Enquiries</h2>
+                        <p>Recently recorded prospective students</p>
+                    </div>
+
+                   
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ENQUIRY ID</th>
+                                <th>STUDENT NAME</th>
+                                <th>MOBILE</th>
+                                <th>COURSE INTERESTED</th>
+                                <th>LEAD SOURCE</th>
+                                <th>FOLLOW-UP</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for enquiry in recent_enquiries %}
+                            <tr>
+                                <td>{{ enquiry.enquiry_id }}</td>
+                                <td class="student-name">{{ enquiry.name }}</td>
+                                <td>{{ enquiry.mobile }}</td>
+                                <td>{{ enquiry.course_interested|default:"—" }}</td>
+                                <td>{{ enquiry.lead_source|default:"—" }}</td>
+                                <td>
+                                    {{ enquiry.follow_up_date|date:"d M Y"|default:"—" }}
+                                </td>
+                                <td>
+                                    <span class="status-badge">
+                                        {{ enquiry.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="empty-state">
+                                    <i class="fa-solid fa-inbox"></i>
+                                    <strong>No enquiries found</strong>
+                                    <p>Add your first enquiry to begin admission tracking.</p>
+
+                                  
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+            <!-- LEAD SOURCE SUMMARY -->
+            <section class="panel lead-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Enquiry Sources</h2>
+                        <p>Track where prospective students discover your courses</p>
+                    </div>
+                </div>
+
+                <div class="lead-grid">
+                    {% for source in lead_sources %}
+                    <div class="lead-item">
+                        <span>{{ source.name }}</span>
+                        <strong>{{ source.count }}</strong>
+                    </div>
+                    {% empty %}
+                    <p>No lead source information is available yet.</p>
+                    {% endfor %}
+                </div>
+
+            </section>
+
+            <footer class="dashboard-footer">
+                <span>
+                    &copy; {% now "Y" %} SciPy Technologies
+                </span>
+
+                <span>EduMate Education Management System</span>
+            </footer>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+
+    menuToggle.addEventListener("click", function () {
+        const isOpen = sidebar.classList.toggle("sidebar-open");
+
+        menuToggle.setAttribute("aria-expanded", isOpen);
+        menuToggle.innerHTML = isOpen
+            ? '<i class="fa-solid fa-xmark"></i>'
+            : '<i class="fa-solid fa-bars"></i>';
+    });
+</script>
+
+</body>
+</html>

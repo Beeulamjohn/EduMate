@@ -1,0 +1,280 @@
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Student Directory | EduMate{% endblock %}
+{% block breadcrumb %}Student Directory{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/student_directory.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="student-directory">
+
+    <!-- PAGE HEADING -->
+    <div class="directory-heading">
+
+        <div class="directory-title">
+            <span class="eyebrow">STUDENT MANAGEMENT</span>
+            <h1>Student Directory</h1>
+            <p>Search and manage registered student profiles.</p>
+        </div>
+
+        <div class="directory-heading-actions">
+
+            <a href="{% url 'admission_registration' %}" class="btn btn-primary">
+                <i class="fa-solid fa-user-plus"></i>
+                New Admission
+            </a>
+
+            <a href="{% url 'admission_dashboard' %}" class="btn btn-back">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- SUCCESS / ERROR MESSAGES -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- DIRECTORY PANEL -->
+    <section class="directory-panel">
+
+        <!-- SEARCH FORM -->
+        <form method="get" class="directory-search">
+
+            <div class="search-input">
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search by name, student ID, email or mobile..."
+                    aria-label="Search students"
+                >
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-search"></i>
+                Search
+            </button>
+
+            {% if search_query %}
+                <a href="{% url 'student_list' %}" class="btn btn-outline">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Reset
+                </a>
+            {% endif %}
+
+        </form>
+
+        <!-- SUMMARY -->
+        <div class="directory-summary">
+
+            <div>
+                <h2>Registered Students</h2>
+
+                <p>
+                    {% if search_query %}
+                        Search results for "{{ search_query }}"
+                    {% else %}
+                        Browse student profiles and contact details.
+                    {% endif %}
+                </p>
+            </div>
+
+            <span class="result-count">
+                {{ page_obj.paginator.count }}
+                student{{ page_obj.paginator.count|pluralize }}
+            </span>
+
+        </div>
+
+        <!-- STUDENT TABLE -->
+        <div class="table-wrapper">
+
+            <table class="student-table">
+
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Student ID</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for item in page_obj %}
+
+                        <tr>
+
+                            <!-- STUDENT DETAILS -->
+                            <td>
+                                <div class="student-name-cell">
+
+                                    {% if item.photo %}
+                                        <img
+                                            src="{{ item.photo.url }}"
+                                            alt="{{ item.full_name }}"
+                                            class="student-avatar"
+                                        >
+                                    {% else %}
+                                        <div class="student-avatar avatar-placeholder">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+                                    {% endif %}
+
+                                    <div>
+                                        <strong>{{ item.full_name }}</strong>
+                                        <small>Student profile</small>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <!-- STUDENT ID -->
+                            <td>
+                                <span class="student-id">
+                                    {{ item.student_id }}
+                                </span>
+                            </td>
+
+                            <!-- EMAIL -->
+                            <td>{{ item.email|default:"—" }}</td>
+
+                            <!-- MOBILE -->
+                            <td>{{ item.mobile|default:"—" }}</td>
+
+                            <!-- STATUS -->
+                            <td>
+                                {% if item.is_active %}
+                                    <span class="status-active">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Active
+                                    </span>
+                                {% else %}
+                                    <span class="status-inactive">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                        Inactive
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <!-- ACTION BUTTONS -->
+                            <!-- ACTION BUTTONS -->
+<td>
+    <div class="student-actions">
+
+        <!-- VIEW PROFILE -->
+        <a
+            href="{% url 'student_detail' pk=item.pk %}"
+            class="view-button"
+            title="View Student Profile"
+        >
+            <i class="fa-solid fa-eye"></i>
+            View
+        </a>
+
+        <!-- DELETE / DEACTIVATE CONFIRMATION -->
+        <a
+            href="{% url 'student_delete_confirm' pk=item.pk %}"
+            class="delete-button"
+            title="Deactivate Student"
+        >
+            <i class="fa-solid fa-trash"></i>
+            Delete
+        </a>
+
+    </div>
+</td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+                            <td colspan="6">
+
+                                <div class="empty-state">
+
+                                    <i class="fa-solid fa-users"></i>
+
+                                    <h3>No students found</h3>
+
+                                    <p>
+                                        {% if search_query %}
+                                            Try another name, student ID, email or mobile number.
+                                        {% else %}
+                                            Students will appear here after they are registered.
+                                        {% endif %}
+                                    </p>
+
+                                    {% if search_query %}
+                                        <a
+                                            href="{% url 'student_list' %}"
+                                            class="btn btn-outline"
+                                        >
+                                            Clear Search
+                                        </a>
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+        {% if page_obj.has_other_pages %}
+
+            <nav class="pagination" aria-label="Student directory pages">
+
+                {% if page_obj.has_previous %}
+                    <a href="?q={{ search_query|urlencode }}&page={{ page_obj.previous_page_number }}">
+                        <i class="fa-solid fa-chevron-left"></i>
+                        Previous
+                    </a>
+                {% endif %}
+
+                <span>
+                    Page {{ page_obj.number }}
+                    of {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?q={{ search_query|urlencode }}&page={{ page_obj.next_page_number }}">
+                        Next
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                {% endif %}
+
+            </nav>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% endblock %}

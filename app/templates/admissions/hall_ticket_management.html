@@ -1,0 +1,162 @@
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Hall Tickets | EduMate</title>
+    <link rel="stylesheet" href="{% static 'css/hall_ticket.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+<main class="main-content">
+    <header class="page-header">
+        <div>
+            <div class="breadcrumb">
+                <a href="/">EduMate</a><span>/</span>
+                <span>Examination Management</span><span>/</span>
+                <span>Download Hall Tickets</span>
+            </div>
+            <h1><i class="fa-solid fa-file-pdf"></i> Download Hall Tickets</h1>
+            <p>Search, generate and download examination hall tickets.</p>
+        </div>
+        <a href="{% url 'hall_ticket_create' %}" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> Generate Hall Ticket
+        </a>
+    </header>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message {{ message.tags }}">
+            <span>{{ message }}</span>
+            <button type="button" onclick="this.parentElement.remove()" aria-label="Dismiss">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <section class="stats-grid">
+        <article class="stat-card">
+            <div class="stat-icon blue"><i class="fa-solid fa-ticket"></i></div>
+            <div><p>Total Hall Tickets</p><h2>{{ total_tickets }}</h2></div>
+        </article>
+        <article class="stat-card">
+            <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+            <div><p>Generated</p><h2>{{ active_tickets }}</h2></div>
+        </article>
+        <article class="stat-card">
+            <div class="stat-icon red"><i class="fa-solid fa-ban"></i></div>
+            <div><p>Revoked</p><h2>{{ revoked_tickets }}</h2></div>
+        </article>
+    </section>
+
+    <section class="content-card">
+        <div class="section-heading">
+            <div>
+                <h2>Hall Ticket Records</h2>
+                <p>Download generated tickets or revoke tickets when authorized.</p>
+            </div>
+            <span class="result-count">{{ tickets|length }} record{{ tickets|length|pluralize }}</span>
+        </div>
+
+        <form method="get" class="filter-form">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" name="q" value="{{ search }}" placeholder="Search ticket, student or exam...">
+            </div>
+            <select name="status" aria-label="Filter by status">
+                <option value="">All statuses</option>
+                <option value="GENERATED" {% if selected_status == "GENERATED" %}selected{% endif %}>Generated</option>
+                <option value="REVOKED" {% if selected_status == "REVOKED" %}selected{% endif %}>Revoked</option>
+            </select>
+            <button type="submit" class="btn btn-dark"><i class="fa-solid fa-filter"></i> Filter</button>
+            <a href="{% url 'hall_ticket_management' %}" class="btn btn-light">Reset</a>
+        </form>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hall Ticket</th><th>Student</th><th>Examination</th>
+                        <th>Exam Date</th><th>Centre</th><th>Status</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ticket in tickets %}
+                    <tr>
+                        <td>
+                            <div class="ticket-cell">
+                                <div class="ticket-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                                <div>
+                                    <strong>{{ ticket.hall_ticket_number|default:"Pending number" }}</strong>
+                                    <span class="muted">Created {{ ticket.created_at|date:"d M Y" }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>{{ ticket.student_name|default:"—" }}</strong>
+                            <span class="muted">{{ ticket.student_id|default:"—" }}</span>
+                        </td>
+                        <td>{{ ticket.exam_name|default:"—" }}</td>
+                        <td>{{ ticket.exam_date|date:"d M Y"|default:"—" }}</td>
+                        <td>{{ ticket.centre_name|default:"—" }}</td>
+                        <td>
+                            <span class="status-badge status-{{ ticket.status|lower }}">
+                                {{ ticket.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                {% if ticket.status == "GENERATED" %}
+                                <a href="{% url 'hall_ticket_download' ticket.id %}"
+                                   class="action-btn download-btn" title="Download PDF"
+                                   aria-label="Download hall ticket">
+                                    <i class="fa-solid fa-download"></i>
+                                </a>
+                                <form method="post" action="{% url 'hall_ticket_revoke' ticket.id %}"
+                                      onsubmit="return confirm('Revoke this hall ticket?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="action-btn revoke-btn" title="Revoke ticket">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </button>
+                                </form>
+                                {% else %}
+                                <span class="muted">Unavailable</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-file-circle-question"></i>
+                                <h3>No hall tickets found</h3>
+                                <p>Generate your first hall ticket or change the search filters.</p>
+                                <a href="{% url 'hall_ticket_create' %}" class="btn btn-primary">
+                                    <i class="fa-solid fa-plus"></i> Generate First Ticket
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-footer">
+            <span>Showing {{ tickets|length }} record{{ tickets|length|pluralize }}</span>
+            <span>EduMate Examination Management</span>
+        </div>
+    </section>
+
+    <footer class="page-footer">
+        <span>&copy; {% now "Y" %} SciPy Technologies Pvt. Ltd.</span>
+        <span>EduMate | Education Management System</span>
+    </footer>
+</main>
+</body>
+</html>

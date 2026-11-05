@@ -1,0 +1,363 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | SciPy Technologies - EduMate</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{% static 'css/admission_settings.css' %}">
+</head>
+
+<body>
+
+<div class="settings-layout">
+
+    <!-- Main Content -->
+    <main class="settings-main">
+
+        <!-- Page Header -->
+        <header class="settings-heading">
+            <div>
+                <span class="settings-eyebrow">
+                    <i class="fa-solid fa-sliders"></i>
+                    SYSTEM CONFIGURATION
+                </span>
+
+                <h1>Settings</h1>
+
+                <p>
+                    Manage your institution details, admission preferences,
+                    document requirements, and interface appearance.
+                </p>
+            </div>
+
+            <a href="{% url 'admission_dashboard' %}"
+               class="settings-back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </header>
+
+        <!-- Django Messages -->
+        {% if messages %}
+        <div class="settings-messages" aria-live="polite">
+            {% for message in messages %}
+            <div class="settings-alert {{ message.tags }}">
+                {% if 'success' in message.tags %}
+                    <i class="fa-solid fa-circle-check"></i>
+                {% elif 'error' in message.tags %}
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                {% else %}
+                    <i class="fa-solid fa-circle-info"></i>
+                {% endif %}
+
+                <span>{{ message }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Settings Navigation -->
+        <nav class="settings-nav" aria-label="Settings sections">
+            <a href="#general-settings" class="settings-nav-item">
+                <i class="fa-solid fa-building"></i>
+                <span>General</span>
+            </a>
+
+            <a href="#admission-settings" class="settings-nav-item">
+                <i class="fa-solid fa-user-graduate"></i>
+                <span>Admissions</span>
+            </a>
+
+            <a href="#document-settings" class="settings-nav-item">
+                <i class="fa-solid fa-file-circle-check"></i>
+                <span>Documents</span>
+            </a>
+
+            <a href="#appearance-settings" class="settings-nav-item">
+                <i class="fa-solid fa-palette"></i>
+                <span>Appearance</span>
+            </a>
+        </nav>
+
+        <!-- Settings Form -->
+        <form method="post"
+              action="{% url 'admission_settings' %}"
+              class="settings-form">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="settings-alert error">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <!-- 1. General Settings -->
+            <section class="settings-card" id="general-settings">
+
+                <div class="settings-card-heading">
+                    <div class="settings-icon blue">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+
+                    <div>
+                        <h2>General Settings</h2>
+                        <p>
+                            Manage your institution's basic information
+                            and contact details.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="settings-fields">
+
+                    <div class="settings-field">
+                        <label for="{{ form.institution_name.id_for_label }}">
+                            Institution Name <span class="required">*</span>
+                        </label>
+
+                        {{ form.institution_name }}
+
+                        {% for error in form.institution_name.errors %}
+                        <small class="field-error">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="settings-field">
+                        <label for="{{ form.contact_email.id_for_label }}">
+                            Contact Email
+                        </label>
+
+                        {{ form.contact_email }}
+
+                        {% for error in form.contact_email.errors %}
+                        <small class="field-error">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="settings-field">
+                        <label for="{{ form.contact_phone.id_for_label }}">
+                            Contact Phone
+                        </label>
+
+                        {{ form.contact_phone }}
+
+                        {% for error in form.contact_phone.errors %}
+                        <small class="field-error">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 2. Admission Settings -->
+            <section class="settings-card" id="admission-settings">
+
+                <div class="settings-card-heading">
+                    <div class="settings-icon purple">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+
+                    <div>
+                        <h2>Admission Settings</h2>
+                        <p>
+                            Configure admission numbering and default
+                            admission status.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="settings-fields">
+
+                    <div class="settings-field">
+                        <label for="{{ form.admission_number_prefix.id_for_label }}">
+                            Admission Number Prefix
+                            <span class="required">*</span>
+                        </label>
+
+                        {{ form.admission_number_prefix }}
+
+                        <small class="field-help">
+                            Example: SC-ADM. Existing admission numbers
+                            will not change automatically.
+                        </small>
+
+                        {% for error in form.admission_number_prefix.errors %}
+                        <small class="field-error">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="settings-field">
+                        <label for="{{ form.default_admission_status.id_for_label }}">
+                            Default Admission Status
+                        </label>
+
+                        {{ form.default_admission_status }}
+
+                        {% for error in form.default_admission_status.errors %}
+                        <small class="field-error">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 3. Document Settings -->
+            <section class="settings-card" id="document-settings">
+
+                <div class="settings-card-heading">
+                    <div class="settings-icon green">
+                        <i class="fa-solid fa-file-circle-check"></i>
+                    </div>
+
+                    <div>
+                        <h2>Document Settings</h2>
+                        <p>
+                            Define the document verification requirement
+                            for student admissions.
+                        </p>
+                    </div>
+                </div>
+
+                <label class="settings-toggle-row"
+                       for="{{ form.require_document_verification.id_for_label }}">
+
+                    <span class="settings-toggle-content">
+                        <strong>Require Document Verification</strong>
+
+                        <small>
+                            Require identity and educational documents
+                            to be checked during the admission process.
+                        </small>
+                    </span>
+
+                    <span class="settings-switch">
+                        {{ form.require_document_verification }}
+                        <span class="settings-switch-track"></span>
+                    </span>
+
+                </label>
+
+                {% for error in form.require_document_verification.errors %}
+                <small class="field-error">{{ error }}</small>
+                {% endfor %}
+
+            </section>
+
+            <!-- 4. Appearance Settings -->
+            <section class="settings-card" id="appearance-settings">
+
+                <div class="settings-card-heading">
+                    <div class="settings-icon orange">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+
+                    <div>
+                        <h2>Appearance Settings</h2>
+                        <p>
+                            Customize the interface theme and brand colors
+                            for your EduMate settings page.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="settings-fields">
+
+                    <div class="settings-field">
+                        <label for="{{ form.theme.id_for_label }}">
+                            Interface Theme
+                        </label>
+
+                        {{ form.theme }}
+
+                        {% for error in form.theme.errors %}
+                        <small class="field-error">{{ error }}</small>
+                        {% endfor %}
+
+                        <small class="field-help">
+                            Choose the preferred interface theme.
+                        </small>
+                    </div>
+
+                    <div class="settings-field">
+                        <label for="{{ form.primary_color.id_for_label }}">
+                            Primary Color
+                        </label>
+
+                        <div class="color-input-row">
+                            {{ form.primary_color }}
+                        </div>
+
+                        {% for error in form.primary_color.errors %}
+                        <small class="field-error">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="settings-field">
+                        <label for="{{ form.accent_color.id_for_label }}">
+                            Accent Color
+                        </label>
+
+                        <div class="color-input-row">
+                            {{ form.accent_color }}
+                        </div>
+
+                        {% for error in form.accent_color.errors %}
+                        <small class="field-error">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <div class="appearance-note">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>
+                        Appearance preferences are saved only when the
+                        corresponding fields exist in your Django model
+                        and form.
+                    </span>
+                </div>
+
+            </section>
+
+            <!-- Action Buttons -->
+            <div class="settings-actions">
+
+                <button type="reset" class="settings-reset-btn">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Reset Changes
+                </button>
+
+                <button type="submit" class="settings-save-btn">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Settings
+                </button>
+
+            </div>
+
+        </form>
+
+        <!-- Footer -->
+        <footer class="settings-footer">
+            <span>
+                &copy; {% now "Y" %} SciPy Technologies
+            </span>
+
+            <span>
+                EduMate Education Management System
+            </span>
+        </footer>
+
+    </main>
+</div>
+
+</body>
+</html>

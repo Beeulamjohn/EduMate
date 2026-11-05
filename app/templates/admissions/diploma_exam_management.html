@@ -1,0 +1,642 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Diploma Examination Management | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/diploma_exam_management.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <!-- Page Header -->
+    <header class="page-header">
+
+        <div class="header-top">
+            <a href="{% url 'exam_application_dashboard' %}"
+               class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                Examination Dashboard
+            </a>
+
+            <span class="module-label">
+                <i class="fa-solid fa-graduation-cap"></i>
+                EduMate Academic Management
+            </span>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-icon">
+                <i class="fa-solid fa-file-circle-check"></i>
+            </div>
+
+            <div>
+                <h1>Diploma Examination Management</h1>
+                <p>
+                    Check your eligibility, register for diploma
+                    examinations, and track examination fee payments.
+                </p>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Django Messages -->
+    {% if messages %}
+        <div class="messages-container" aria-live="polite">
+            {% for message in messages %}
+                <div class="message
+                    {% if message.tags %}message-{{ message.tags }}{% endif %}">
+
+                    {% if message.tags == "success" %}
+                        <i class="fa-solid fa-circle-check"></i>
+                    {% elif message.tags == "error" %}
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                    {% else %}
+                        <i class="fa-solid fa-circle-info"></i>
+                    {% endif %}
+
+                    <span>{{ message }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Registration Information -->
+    <section class="info-banner">
+        <div class="info-icon">
+            <i class="fa-solid fa-circle-info"></i>
+        </div>
+
+        <div>
+            <h2>Before You Register</h2>
+            <p>
+                Review the examination details and confirm your eligibility.
+                Registration is available only when eligibility is verified
+                and the examination registration period is open.
+            </p>
+        </div>
+    </section>
+
+    <main>
+
+        <!-- Available Examinations -->
+        <section class="content-card" id="exam-registration">
+
+            <div class="section-header">
+                <div class="section-heading">
+                    <div class="section-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+
+                    <div>
+                        <h2>Available Diploma Examinations</h2>
+                        <p>
+                            Review examination schedules and register
+                            for eligible examinations.
+                        </p>
+                    </div>
+                </div>
+
+                <span class="section-label">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Examination Schedule
+                </span>
+            </div>
+
+            <div class="exam-grid">
+
+                {% for item in exam_details %}
+
+                    <article class="exam-card">
+
+                        <div class="exam-card-header">
+                            <div class="exam-card-icon">
+                                <i class="fa-solid fa-file-lines"></i>
+                            </div>
+
+                            <span class="exam-tag">
+                                Diploma Exam
+                            </span>
+                        </div>
+
+                        <h3>{{ item.exam.exam_name }}</h3>
+
+                        <p class="course-name">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            {{ item.exam.course_name }}
+                        </p>
+
+                        <div class="exam-divider"></div>
+
+                        <dl class="exam-details">
+
+                            <div class="detail-row">
+                                <dt>
+                                    <i class="fa-regular fa-calendar"></i>
+                                    Exam Date
+                                </dt>
+                                <dd>
+                                    {% if item.exam.exam_date %}
+                                        {{ item.exam.exam_date|date:"d M Y, h:i A" }}
+                                    {% else %}
+                                        Not announced
+                                    {% endif %}
+                                </dd>
+                            </div>
+
+                            <div class="detail-row">
+                                <dt>
+                                    <i class="fa-regular fa-clock"></i>
+                                    Registration Deadline
+                                </dt>
+                                <dd>
+                                    {% if item.exam.registration_deadline %}
+                                        {{ item.exam.registration_deadline|date:"d M Y, h:i A" }}
+                                    {% else %}
+                                        Not announced
+                                    {% endif %}
+                                </dd>
+                            </div>
+
+                            <div class="detail-row">
+                                <dt>
+                                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                                    Examination Fee
+                                </dt>
+                                <dd class="exam-fee">
+                                    ₹{{ item.exam.exam_fee }}
+                                </dd>
+                            </div>
+
+                            <div class="detail-row">
+                                <dt>
+                                    <i class="fa-solid fa-user-check"></i>
+                                    Eligibility
+                                </dt>
+                                <dd>
+                                    {% if item.is_eligible %}
+                                        <span class="status-badge status-eligible">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                            Eligible
+                                        </span>
+                                    {% elif item.eligibility %}
+                                        <span class="status-badge status-ineligible">
+                                            <i class="fa-solid fa-circle-xmark"></i>
+                                            Not Eligible
+                                        </span>
+                                    {% else %}
+                                        <span class="status-badge status-pending">
+                                            <i class="fa-solid fa-hourglass-half"></i>
+                                            Awaiting Verification
+                                        </span>
+                                    {% endif %}
+                                </dd>
+                            </div>
+
+                            <div class="detail-row">
+                                <dt>
+                                    <i class="fa-solid fa-clipboard-check"></i>
+                                    Registration
+                                </dt>
+                                <dd>
+                                    {% if item.registration %}
+                                        <span class="registration-number">
+                                            {{ item.registration.registration_number }}
+                                        </span>
+
+                                        <span class="registration-status">
+                                            {{ item.registration.get_registration_status_display }}
+                                        </span>
+                                    {% else %}
+                                        <span class="not-registered">
+                                            Not registered
+                                        </span>
+                                    {% endif %}
+                                </dd>
+                            </div>
+
+                        </dl>
+
+                        <!-- Registration Action -->
+                        <div class="exam-card-footer">
+
+                            {% if item.registration %}
+
+                                <div class="action-notice notice-complete">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    Registration already recorded.
+                                </div>
+
+                            {% elif item.is_eligible and item.exam.registration_open %}
+
+                                <form method="post"
+                                      action="{% url 'diploma_exam_register' %}"
+                                      class="registration-form">
+
+                                    {% csrf_token %}
+
+                                    <input type="hidden"
+                                           name="exam"
+                                           value="{{ item.exam.pk }}">
+
+                                    <button type="submit"
+                                            class="btn btn-primary">
+                                        <i class="fa-solid fa-file-circle-plus"></i>
+                                        Register for Exam
+                                    </button>
+
+                                </form>
+
+                            {% else %}
+
+                                <div class="action-notice">
+                                    <i class="fa-solid fa-lock"></i>
+                                    Registration requires verified eligibility
+                                    and an open registration period.
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </article>
+
+                {% empty %}
+
+                    <div class="empty-state full-width">
+                        <div class="empty-icon">
+                            <i class="fa-solid fa-calendar-xmark"></i>
+                        </div>
+
+                        <h3>No Active Diploma Examinations</h3>
+
+                        <p>
+                            There are currently no diploma examinations
+                            available for registration. Please check again
+                            later.
+                        </p>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        <!-- Examination Payments -->
+        <section class="content-card" id="exam-fee-payment">
+
+            <div class="section-header">
+                <div class="section-heading">
+                    <div class="section-icon payment-icon">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+
+                    <div>
+                        <h2>My Examination Payments</h2>
+                        <p>
+                            Track examination fee payment records
+                            and transaction references.
+                        </p>
+                    </div>
+                </div>
+
+                <span class="section-label">
+                    <i class="fa-solid fa-receipt"></i>
+                    Payment History
+                </span>
+            </div>
+
+            <div class="table-container">
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Registration Number</th>
+                            <th>Examination</th>
+                            <th>Amount</th>
+                            <th>Payment Status</th>
+                            <th>Transaction Reference</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for payment in my_payments %}
+
+                            <tr>
+                                <td>
+                                    <span class="table-reference">
+                                        {{ payment.registration.registration_number }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {{ payment.registration.exam.exam_name }}
+                                </td>
+
+                                <td>
+                                    <span class="amount-text">
+                                        ₹{{ payment.amount }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% with status=payment.get_status_display %}
+                                        {% if status == "Verified" or status == "Paid" or status == "Completed" or status == "Success" %}
+                                            <span class="status-badge status-eligible">
+                                                {{ status }}
+                                            </span>
+                                        {% elif status == "Pending" or status == "Processing" %}
+                                            <span class="status-badge status-pending">
+                                                {{ status }}
+                                            </span>
+                                        {% elif status == "Failed" or status == "Rejected" %}
+                                            <span class="status-badge status-ineligible">
+                                                {{ status }}
+                                            </span>
+                                        {% else %}
+                                            <span class="status-badge status-neutral">
+                                                {{ status }}
+                                            </span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+
+                                <td>
+                                    <span class="transaction-reference">
+                                        {{ payment.transaction_reference|default:"—" }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+                                <td colspan="5">
+                                    <div class="table-empty-state">
+                                        <i class="fa-solid fa-wallet"></i>
+                                        <p>No examination payment records found.</p>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="table-note">
+                <i class="fa-solid fa-shield-halved"></i>
+                Payment verification is performed by authorized
+                examination staff. Displayed payment records do not
+                initiate or charge a payment.
+            </div>
+
+            <!-- Staff Payment Verification List -->
+            {% if user.is_staff or user.is_superuser %}
+                <div class="verification-list">
+                    <div class="section-header">
+                        <div class="section-heading">
+                            <div class="section-icon payment-icon">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h2>Payment Verification</h2>
+                                <p>Open an individual payment record to review and verify it.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Payment ID</th>
+                                    <th>Registration Number</th>
+                                    <th>Examination</th>
+                                    <th>Amount</th>
+                                    <th>Payment Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payment in payments %}
+                                    <tr>
+                                        <td>
+                                            <span class="table-reference">
+                                                #{{ payment.pk }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{ payment.registration.registration_number|default:"—" }}
+                                        </td>
+                                        <td>
+                                            {{ payment.registration.exam.exam_name|default:payment.registration.exam }}
+                                        </td>
+                                        <td>
+                                            <span class="amount-text">
+                                                ₹{{ payment.amount|floatformat:2 }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {% if payment.status == "paid" %}
+                                                <span class="status-badge status-eligible">
+                                                    {{ payment.get_status_display }}
+                                                </span>
+                                            {% elif payment.status == "pending" %}
+                                                <span class="status-badge status-pending">
+                                                    {{ payment.get_status_display }}
+                                                </span>
+                                            {% elif payment.status == "failed" or payment.status == "refunded" %}
+                                                <span class="status-badge status-ineligible">
+                                                    {{ payment.get_status_display }}
+                                                </span>
+                                            {% else %}
+                                                <span class="status-badge status-neutral">
+                                                    {{ payment.get_status_display }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'exam_payment_verification' payment.pk %}"
+                                               class="btn btn-primary">
+                                                <i class="fa-solid fa-shield-halved"></i>
+                                                Verify Payment
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="table-empty-state">
+                                                <i class="fa-solid fa-wallet"></i>
+                                                <p>No examination payments are available for verification.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+
+        </section>
+
+        <!-- Student Registrations -->
+        <section class="content-card" id="my-registrations">
+
+            <div class="section-header">
+                <div class="section-heading">
+                    <div class="section-icon registration-icon">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                    </div>
+
+                    <div>
+                        <h2>My Examination Registrations</h2>
+                        <p>
+                            Review your registration numbers, payment
+                            statuses and registration dates.
+                        </p>
+                    </div>
+                </div>
+
+                <span class="section-label">
+                    <i class="fa-solid fa-folder-open"></i>
+                    Registration History
+                </span>
+            </div>
+
+            <div class="table-container">
+
+                <table class="data-table">
+
+                    <thead>
+                        <tr>
+                            <th>Registration Number</th>
+                            <th>Examination</th>
+                            <th>Exam Fee</th>
+                            <th>Payment Status</th>
+                            <th>Registration Status</th>
+                            <th>Registered Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for reg in my_registrations %}
+
+                            <tr>
+                                <td>
+                                    <span class="table-reference">
+                                        {{ reg.registration_number }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {{ reg.exam.exam_name }}
+                                </td>
+
+                                <td>
+                                    <span class="amount-text">
+                                        ₹{{ reg.fee_amount }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% with status=reg.get_payment_status_display %}
+                                        {% if status == "Paid" or status == "Verified" or status == "Completed" %}
+                                            <span class="status-badge status-eligible">
+                                                {{ status }}
+                                            </span>
+                                        {% elif status == "Pending" %}
+                                            <span class="status-badge status-pending">
+                                                {{ status }}
+                                            </span>
+                                        {% elif status == "Failed" or status == "Rejected" %}
+                                            <span class="status-badge status-ineligible">
+                                                {{ status }}
+                                            </span>
+                                        {% else %}
+                                            <span class="status-badge status-neutral">
+                                                {{ status }}
+                                            </span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </td>
+
+                                <td>
+                                    <span class="status-badge status-neutral">
+                                        {{ reg.get_registration_status_display }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% if reg.registered_at %}
+                                        {{ reg.registered_at|date:"d M Y" }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+                                <td colspan="6">
+                                    <div class="table-empty-state">
+                                        <i class="fa-solid fa-clipboard-list"></i>
+                                        <p>
+                                            You have not registered for
+                                            any diploma examinations.
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p>
+            &copy; {% now "Y" %} SciPy Technologies Pvt. Ltd.
+            <span>|</span>
+            EduMate Education Management System
+        </p>
+    </footer>
+
+</div>
+
+</body>
+</html>

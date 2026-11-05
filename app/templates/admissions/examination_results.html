@@ -1,0 +1,225 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Examination Results | EduMate</title>
+
+    <link rel="stylesheet" href="{% static 'css/examination_results.css' %}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+<div class="page-container">
+
+    <header class="topbar">
+        <div>
+            <h1><i class="fa-solid fa-square-poll-vertical"></i> Examination Results</h1>
+            <p>EduMate / Academic Management / Examination Results</p>
+        </div>
+
+        <a href="{% url 'exam_application_dashboard' %}" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Back to Examinations
+        </a>
+    </header>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="fa-solid fa-file-lines"></i>
+            </div>
+            <div>
+                <p>Total Results</p>
+                <h2>{{ total_results }}</h2>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+                <p>Passed Results</p>
+                <h2>{{ passed_results }}</h2>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="fa-solid fa-bullhorn"></i>
+            </div>
+            <div>
+                <p>Published Results</p>
+                <h2>{{ published_results }}</h2>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon orange">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+            <div>
+                <p>Awaiting Publication</p>
+                <h2>{{ pending_results }}</h2>
+            </div>
+        </div>
+    </section>
+
+    <section class="filter-card">
+        <div class="section-heading">
+            <h2><i class="fa-solid fa-filter"></i> Filter Results</h2>
+        </div>
+
+        <form method="get" class="filter-form">
+            <div class="form-field">
+                <label for="{{ form.registration_number.id_for_label }}">
+                    Registration Number
+                </label>
+                {{ form.registration_number }}
+            </div>
+
+            <div class="form-field">
+                <label for="{{ form.result_status.id_for_label }}">
+                    Result Status
+                </label>
+                {{ form.result_status }}
+            </div>
+
+            <div class="form-field">
+                <label for="{{ form.publication_status.id_for_label }}">
+                    Publication Status
+                </label>
+                {{ form.publication_status }}
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+                <a href="{% url 'examination_results' %}" class="btn btn-light">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                </a>
+            </div>
+        </form>
+    </section>
+
+    <section class="table-card">
+        <div class="section-heading">
+            <div>
+                <h2>Examination Result Records</h2>
+                <p>Calculate results after mark approval and publish verified results.</p>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Registration Number</th>
+                        <th>Marks Obtained</th>
+                        <th>Maximum Marks</th>
+                        <th>Percentage</th>
+                        <th>Grade</th>
+                        <th>Result</th>
+                        <th>Publication</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+
+                        <td class="registration">
+                            {{ result.application.registration_number }}
+                        </td>
+
+                        <td>{{ result.total_marks_obtained }}</td>
+                        <td>{{ result.total_max_marks }}</td>
+                        <td>{{ result.percentage }}%</td>
+                        <td>
+                            <span class="grade-badge">{{ result.grade|default:"—" }}</span>
+                        </td>
+
+                        <td>
+                            <span class="status-badge
+                                {% if result.result_status == 'Pass' %}status-pass
+                                {% elif result.result_status == 'Fail' %}status-fail
+                                {% elif result.result_status == 'Absent' %}status-absent
+                                {% else %}status-pending{% endif %}">
+                                {{ result.result_status }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status-badge
+                                {% if result.publication_status == 'Published' %}status-pass
+                                {% elif result.publication_status == 'Withheld' %}status-fail
+                                {% else %}status-pending{% endif %}">
+                                {{ result.publication_status }}
+                            </span>
+                        </td>
+
+                        <td class="actions">
+                            {% if result.publication_status != "Published" %}
+                                <form method="post"
+                                      action="{% url 'examination_result_calculate' result.application.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-small btn-primary">
+                                        <i class="fa-solid fa-calculator"></i> Calculate
+                                    </button>
+                                </form>
+
+                                {% if result.total_max_marks > 0 %}
+                                <form method="post"
+                                      action="{% url 'examination_result_publish' result.pk %}"
+                                      onsubmit="return confirm('Are you sure you want to publish this result?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-small btn-success">
+                                        <i class="fa-solid fa-bullhorn"></i> Publish
+                                    </button>
+                                </form>
+                                {% endif %}
+                            {% else %}
+                                <span class="published-label">
+                                    <i class="fa-solid fa-lock"></i> Published
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9" class="empty-state">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <h3>No examination results found</h3>
+                            <p>Try changing your filters or create a result record for an examination application first.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© {% now "Y" %} SciPy Technologies | EduMate Education Management System</p>
+    </footer>
+
+</div>
+</body>
+</html>

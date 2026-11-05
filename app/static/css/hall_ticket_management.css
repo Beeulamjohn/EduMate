@@ -1,0 +1,746 @@
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
+
+    --background: #f4f7fb;
+    --surface: #ffffff;
+
+    --text-primary: #172033;
+    --text-secondary: #64748b;
+
+    --border: #e2e8f0;
+
+    --success: #15803d;
+    --success-bg: #dcfce7;
+
+    --danger: #b91c1c;
+    --danger-bg: #fee2e2;
+
+    --warning: #a16207;
+    --warning-bg: #fef3c7;
+
+    --shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Inter", sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+}
+
+button,
+select {
+    font: inherit;
+}
+
+button:focus-visible,
+select:focus-visible,
+a:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+.page-container {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 32px 40px;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 26px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--primary);
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.back-link:hover {
+    color: var(--primary-dark);
+}
+
+.module-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 66px;
+    height: 66px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    color: #ffffff;
+    font-size: 27px;
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.2);
+}
+
+.header-content h1 {
+    margin-bottom: 6px;
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    line-height: 1.3;
+}
+
+.header-content p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* ==========================================
+   DJANGO MESSAGES
+========================================== */
+
+.messages-container {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.message {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: #ffffff;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.message i {
+    margin-top: 3px;
+    font-size: 16px;
+}
+
+.message-success {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+    color: var(--success);
+}
+
+.message-error {
+    border-color: #fecaca;
+    background: #fef2f2;
+    color: var(--danger);
+}
+
+.message-warning {
+    border-color: #fde68a;
+    background: #fffbeb;
+    color: var(--warning);
+}
+
+.message-info {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+/* ==========================================
+   ELIGIBILITY NOTICE
+========================================== */
+
+.eligibility-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 24px;
+    padding: 20px;
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    background: #eff6ff;
+}
+
+.notice-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 19px;
+}
+
+.eligibility-notice h2 {
+    margin-bottom: 5px;
+    color: #1e40af;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.eligibility-notice p {
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+/* ==========================================
+   CONTENT CARDS
+========================================== */
+
+.content-card {
+    margin-bottom: 26px;
+    padding: 27px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 20px;
+}
+
+.section-title h2 {
+    margin-bottom: 5px;
+    color: var(--text-primary);
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.section-title p {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.required-label {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.required-star {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+/* ==========================================
+   FORM
+========================================== */
+
+.hall-ticket-form {
+    max-width: 850px;
+}
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    z-index: 1;
+    color: #94a3b8;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.select-wrapper select {
+    width: 100%;
+    min-height: 50px;
+    padding: 13px 42px 13px 43px;
+    appearance: none;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    background: #ffffff;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.select-wrapper select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.select-wrapper select:invalid {
+    color: #64748b;
+}
+
+.select-arrow {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    color: #64748b;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 9px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 5px;
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 11px 18px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    border-color: #cbd5e1;
+    background: #ffffff;
+    color: #475569;
+}
+
+.btn-secondary:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   TABLE HEADER
+========================================== */
+
+.record-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 13px;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* ==========================================
+   HALL TICKET TABLE
+========================================== */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.hall-ticket-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.hall-ticket-table thead {
+    background: #f8fafc;
+}
+
+.hall-ticket-table th {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+    color: #475569;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.45px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.hall-ticket-table td {
+    padding: 16px 18px;
+    border-bottom: 1px solid #edf0f5;
+    color: #334155;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.hall-ticket-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.hall-ticket-table tbody tr:hover {
+    background: #f8fbff;
+}
+
+.hall-ticket-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ticket-number {
+    color: var(--primary);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.registration-number {
+    color: #475569;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.student-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 150px;
+}
+
+.student-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #eff6ff;
+    color: var(--primary);
+}
+
+.student-name {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.exam-name {
+    font-weight: 500;
+}
+
+/* ==========================================
+   STATUS BADGES
+========================================== */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-active {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.status-cancelled {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.status-expired {
+    background: var(--warning-bg);
+    color: var(--warning);
+}
+
+.status-other {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
+
+.empty-state {
+    padding: 45px 20px;
+    text-align: center;
+    white-space: normal;
+}
+
+.empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 17px;
+    border-radius: 50%;
+    background: #eff6ff;
+    color: var(--primary);
+    font-size: 26px;
+}
+
+.empty-state h3 {
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.empty-state p {
+    max-width: 440px;
+    margin: 0 auto;
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+/* ==========================================
+   TABLE FOOTER
+========================================== */
+
+.table-footer {
+    margin-top: 18px;
+}
+
+.table-footer p {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.table-footer i {
+    margin-top: 4px;
+    color: var(--primary);
+}
+
+/* ==========================================
+   PAGE FOOTER
+========================================== */
+
+.page-footer {
+    padding: 10px 10px 20px;
+    text-align: center;
+}
+
+.page-footer p {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.page-footer span {
+    padding: 0 6px;
+    color: #cbd5e1;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media (max-width: 992px) {
+    .page-container {
+        padding: 26px 22px;
+    }
+
+    .content-card {
+        padding: 22px;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-container {
+        padding: 18px 12px;
+    }
+
+    .header-top {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+
+    .header-content {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .header-icon {
+        width: 49px;
+        height: 49px;
+        border-radius: 12px;
+        font-size: 21px;
+    }
+
+    .header-content h1 {
+        font-size: 23px;
+        letter-spacing: -0.4px;
+    }
+
+    .header-content p {
+        font-size: 12px;
+    }
+
+    .eligibility-notice {
+        gap: 11px;
+        padding: 14px;
+    }
+
+    .notice-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .content-card {
+        padding: 15px;
+        border-radius: 12px;
+    }
+
+    .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .section-title {
+        align-items: flex-start;
+        gap: 11px;
+    }
+
+    .section-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 17px;
+    }
+
+    .section-title h2 {
+        font-size: 17px;
+    }
+
+    .form-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+    .empty-state {
+        padding: 35px 12px;
+    }
+}

@@ -1,0 +1,247 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Certificate Management | EduMate</title>
+
+    <!-- Certificate Management CSS -->
+    <link rel="stylesheet"
+          href="{% static 'css/certificate_management.css' %}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <!-- Page Header -->
+    <header class="page-header">
+
+        <div class="header-top">
+            <a href="{% url 'exam_application_dashboard' %}"
+               class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+
+            <span class="module-label">
+                <i class="fa-solid fa-graduation-cap"></i>
+                EduMate Examination Module
+            </span>
+        </div>
+
+        <div class="header-content">
+            <div class="header-icon">
+                <i class="fa-solid fa-certificate"></i>
+            </div>
+
+            <div>
+                <h1>Certificate Management</h1>
+                <p>
+                    Manage issued certificates and review their
+                    verification details.
+                </p>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <section class="content-card">
+
+            <div class="section-header">
+                <div>
+                    <h2>
+                        <i class="fa-solid fa-award"></i>
+                        Issued Certificates
+                    </h2>
+                    <p>
+                        View certificate numbers, student details,
+                        issue dates, status and QR codes.
+                    </p>
+                </div>
+
+                <span class="record-label">
+                    <i class="fa-solid fa-file-lines"></i>
+                    Certificate Records
+                </span>
+            </div>
+
+            <!-- Certificate Table -->
+            <div class="table-container">
+
+                <table class="certificate-table">
+
+                    <thead>
+                        <tr>
+                            <th>Certificate Number</th>
+                            <th>Student</th>
+                            <th>Certificate Type</th>
+                            <th>Course</th>
+                            <th>Issue Date</th>
+                            <th>Status</th>
+                            <th>QR Code</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for certificate in certificates %}
+
+                        <tr>
+                            <td>
+                                <span class="certificate-number">
+                                    {{ certificate.certificate_number|default:"Not assigned" }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="student-cell">
+                                    <span class="student-icon">
+                                        <i class="fa-solid fa-user-graduate"></i>
+                                    </span>
+
+                                    <span class="student-name">
+                                        {{ certificate.student.full_name|default:"—" }}
+                                    </span>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="type-text">
+                                    {{ certificate.get_certificate_type_display }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {{ certificate.course|default:"—" }}
+                            </td>
+
+                            <td>
+                                {% if certificate.issue_date %}
+                                    {{ certificate.issue_date|date:"d M Y" }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% with status=certificate.get_status_display %}
+                                    {% if status == "Active" %}
+                                        <span class="status-badge status-active">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                            Active
+                                        </span>
+                                    {% elif status == "Revoked" %}
+                                        <span class="status-badge status-revoked">
+                                            <i class="fa-solid fa-circle-xmark"></i>
+                                            Revoked
+                                        </span>
+                                    {% elif status == "Expired" %}
+                                        <span class="status-badge status-expired">
+                                            <i class="fa-solid fa-clock"></i>
+                                            Expired
+                                        </span>
+                                    {% else %}
+                                        <span class="status-badge status-other">
+                                            {{ status }}
+                                        </span>
+                                    {% endif %}
+                                {% endwith %}
+                            </td>
+
+                            <td>
+                                {% if certificate.qr_code %}
+                                    <a href="{{ certificate.qr_code.url }}"
+                                       class="qr-button"
+                                       target="_blank"
+                                       rel="noopener noreferrer">
+                                        <i class="fa-solid fa-qrcode"></i>
+                                        View QR
+                                    </a>
+                                {% else %}
+                                    <span class="qr-unavailable">
+                                        <i class="fa-solid fa-minus-circle"></i>
+                                        Not generated
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <div class="empty-icon">
+                                        <i class="fa-solid fa-certificate"></i>
+                                    </div>
+
+                                    <h3>No Certificates Found</h3>
+
+                                    <p>
+                                        No certificates have been issued yet.
+                                        Issued certificates will appear here.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Information Notice -->
+            <div class="information-notice">
+                <div class="notice-icon">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+
+                <div>
+                    <h3>Certificate Verification</h3>
+                    <p>
+                        Use the QR code to access the associated QR image.
+                        For public certificate verification, configure a
+                        verification URL and validate the certificate's
+                        authenticity and current status on the server.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p>
+            &copy; {% now "Y" %} SciPy Technologies Pvt. Ltd.
+            <span>|</span>
+            EduMate Education Management System
+        </p>
+    </footer>
+
+</div>
+
+</body>
+</html>

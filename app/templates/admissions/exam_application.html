@@ -1,0 +1,974 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Examination Management | EduMate</title>
+
+    <link rel="stylesheet" href="{% static 'css/exam_application.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+<div class="admission-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <a href="{% url 'home' %}" class="brand">
+            <img src="{% static 'images/company logo.png' %}"
+                 alt="SciPy Technologies"
+                 class="brand-logo">
+
+            <div class="brand-text">
+                <h2>EduMate</h2>
+                <span>Education Management</span>
+            </div>
+        </a>
+
+        <div class="sidebar-label">MAIN MENU</div>
+
+        <nav class="sidebar-nav">
+
+            <!-- Dashboard -->
+            <a href="{% url 'exam_application_dashboard' %}"
+               class="nav-link active">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Examination Dashboard</span>
+            </a>
+
+            <!-- Diploma Examination -->
+            <div class="sidebar-label">EXAMINATION REGISTRATION</div>
+
+            <a href="{% url 'diploma_exam_management' %}#exam-registration"
+   class="nav-link">
+    <i class="fa-solid fa-file-circle-plus"></i>
+    <span>Diploma Exam Registration</span>
+</a>
+
+ <a href="{% url 'eligibility_verification' %}#eligibility-check"
+   class="nav-link">
+    <i class="fa-solid fa-user-check"></i>
+    <span>Eligibility Verification</span>
+</a>
+
+<a href="{% url 'exam_fee_payment_list' %}" class="nav-link">
+    <i class="fa-solid fa-money-bill-wave"></i>
+    <span>Exam Fee &amp; Payment</span>
+</a>
+
+            <!-- Examination Setup -->
+            <div class="sidebar-label">EXAMINATION SETUP</div>
+    
+<a href="{% url 'examination_management' %}" class="nav-link">
+    <i class="fa-solid fa-clipboard-list"></i>
+    <span>Examination Management</span>
+</a>
+
+           <a href="{% url 'subject_management' %}" class="nav-link">
+    <i class="fa-solid fa-book-open"></i>
+    <span>Subject Management</span>
+</a>
+
+           <a href="{% url 'exam_schedule_list' %}" class="nav-link">
+    <i class="fa-solid fa-calendar-days"></i>
+    <span>Exam Schedule</span>
+</a>
+
+           <a href="{% url 'exam_centres_list' %}" class="nav-link">
+    <i class="fa-solid fa-location-dot"></i>
+    <span>Exam Centres &amp; Modes</span>
+</a>
+
+            <!-- Hall Tickets -->
+            <div class="sidebar-label">HALL TICKET MANAGEMENT</div>
+
+            
+            <a href="{% url 'hall_ticket_management' %}" class="nav-link">
+    <i class="fa-solid fa-file-pdf"></i>
+    <span>Download Hall Tickets</span>
+</a>
+            <!-- Marks and Results -->
+            <div class="sidebar-label">MARKS &amp; RESULTS</div>
+
+<a href="{% url 'examination_mark_management' %}" class="nav-link">
+    <i class="fa-solid fa-pen-to-square"></i>
+    <span>Exam Mark Management</span>
+</a>
+           <a href="{% url 'examination_results' %}" class="nav-link">
+    <i class="fa-solid fa-square-poll-vertical"></i>
+    <span>Examination Results</span>
+</a>
+            <a href="{% url 'result_verification' %}" class="nav-link">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Public Result Verification</span>
+            </a>
+
+            <!-- Certificates -->
+            <div class="sidebar-label">CERTIFICATE MANAGEMENT</div>
+
+            <a href="{% url 'certificate_management' %}" class="nav-link">
+                <i class="fa-solid fa-certificate"></i>
+                <span>Certificate Management</span>
+            </a>
+
+            
+
+        </nav>
+
+        
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <button type="button"
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle sidebar"
+                    aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="breadcrumb">
+                
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="today-date">
+                    <i class="fa-regular fa-calendar"></i>
+                    {% now "d M Y" %}
+                </div>
+
+                <div class="profile">
+                    <div class="avatar">
+                        {{ request.user.username|first|upper }}
+                    </div>
+
+                    <div class="profile-details">
+                        <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+                        <span>Examination Dashboard</span>
+                    </div>
+                </div>
+
+                <form method="post"
+                      action="{% url 'logout' %}"
+                      class="logout-form">
+                    {% csrf_token %}
+
+                    <button type="submit" class="logout-button">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+
+            </div>
+        </header>
+
+        <section class="dashboard-content">
+
+            <!-- PAGE HEADING -->
+            <section class="page-heading" id="examination-overview">
+
+                <div class="heading-content">
+                    <span class="eyebrow">EDUCATION MANAGEMENT SYSTEM</span>
+
+                    <h1>Examination Management</h1>
+
+                    <p>
+                        Manage diploma exam registration, eligibility,
+                        examination schedules, hall tickets, marks,
+                        results and certificates from one dashboard.
+                    </p>
+
+                    <div class="heading-actions">
+                        <a href="#exam-registration" class="btn btn-primary">
+                            <i class="fa-solid fa-file-circle-plus"></i>
+                            Exam Registration
+                        </a>
+
+                        <a href="#exam-schedule" class="btn btn-outline">
+                            <i class="fa-regular fa-calendar-days"></i>
+                            View Exam Schedule
+                        </a>
+                    </div>
+                </div>
+
+                <div class="heading-art" aria-hidden="true">
+                    <div class="heading-art-icon">
+                        <i class="fa-solid fa-file-circle-check"></i>
+                    </div>
+
+                    <span class="art-badge art-badge-one">
+                        <i class="fa-solid fa-user-check"></i>
+                        Eligibility
+                    </span>
+
+                    <span class="art-badge art-badge-two">
+                        <i class="fa-solid fa-ticket"></i>
+                        Hall Tickets
+                    </span>
+                </div>
+
+            </section>
+
+            <!-- DJANGO MESSAGES -->
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">
+                            <i class="fa-solid fa-circle-info"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- DASHBOARD STATISTICS -->
+            <section class="stats-grid">
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon stat-blue">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </div>
+                        <span>Total Applications</span>
+                    </div>
+
+                    <h2>{{ total_applications|default:0 }}</h2>
+                    <p>Recorded examination applications</p>
+
+                    <a href="#exam-registration">
+                        View applications
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon stat-orange">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <span>Pending Applications</span>
+                    </div>
+
+                    <h2>{{ pending_applications|default:0 }}</h2>
+                    <p>Applications awaiting review</p>
+
+                    <a href="#exam-registration">
+                        Review applications
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon stat-green">
+                            <i class="fa-solid fa-ticket"></i>
+                        </div>
+                        <span>Hall Tickets Generated</span>
+                    </div>
+
+                    <h2>{{ hall_tickets_generated|default:0 }}</h2>
+                    <p>Generated examination hall tickets</p>
+
+                    <a href="#hall-tickets">
+                        View hall tickets
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon stat-purple">
+                            <i class="fa-solid fa-square-poll-vertical"></i>
+                        </div>
+                        <span>Published Results</span>
+                    </div>
+
+                    <h2>{{ published_results|default:0 }}</h2>
+                    <p>Published examination results</p>
+
+                    <a href="#exam-results">
+                        View results
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </article>
+
+            </section>
+
+            <!-- EXAMINATION WORKFLOW -->
+            <section class="panel workflow-panel" id="eligibility-check">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Diploma Examination Workflow</h2>
+                        <p>From student eligibility to examination results</p>
+                    </div>
+
+                    <i class="fa-solid fa-diagram-project heading-icon"></i>
+                </div>
+
+                <div class="workflow-list">
+
+                    <a href="#eligibility-check" class="workflow-item">
+                        <div class="step-number step-purple">01</div>
+                        <div class="workflow-text">
+                            <strong>Check Eligibility</strong>
+                            <span>Verify whether the student can register</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a href="#exam-registration" class="workflow-item">
+                        <div class="step-number step-blue">02</div>
+                        <div class="workflow-text">
+                            <strong>Exam Registration</strong>
+                            <span>Register eligible students for examinations</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a href="#exam-fee-payment" class="workflow-item">
+                        <div class="step-number step-orange">03</div>
+                        <div class="workflow-text">
+                            <strong>Exam Fee &amp; Payment</strong>
+                            <span>Track examination fee payment status</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a href="#hall-tickets" class="workflow-item">
+                        <div class="step-number step-green">04</div>
+                        <div class="workflow-text">
+                            <strong>Hall Ticket</strong>
+                            <span>Prepare hall tickets for eligible students</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a href="#exam-schedule" class="workflow-item">
+                        <div class="step-number step-blue">05</div>
+                        <div class="workflow-text">
+                            <strong>Examination</strong>
+                            <span>Conduct exams according to the schedule</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                    <a href="#exam-results" class="workflow-item">
+                        <div class="step-number step-purple">06</div>
+                        <div class="workflow-text">
+                            <strong>Results &amp; Certificates</strong>
+                            <span>Publish results and manage certificates</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+
+                </div>
+            </section>
+
+            <!-- EXAMINATION MANAGEMENT -->
+            <section class="panel data-panel" id="examination-management">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Examination Management</h2>
+                        <p>Examination setup and configuration</p>
+                    </div>
+
+                    <span class="section-label">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                        Exam Setup
+                    </span>
+                </div>
+
+                <div class="management-grid">
+
+                    <a href="#exam-schedule" class="management-card">
+                        <div class="management-icon stat-blue">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                        <strong>Examination</strong>
+                        <span>Create and manage examinations</span>
+                    </a>
+
+                    <a href="#subject-management" class="management-card">
+                        <div class="management-icon stat-purple">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <strong>Subjects</strong>
+                        <span>Configure subjects and maximum marks</span>
+                    </a>
+
+                    <a href="#exam-centres" class="management-card">
+                        <div class="management-icon stat-orange">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <strong>Exam Centres</strong>
+                        <span>Manage exam venue information</span>
+                    </a>
+
+                    <a href="#exam-schedule" class="management-card">
+                        <div class="management-icon stat-green">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <strong>Exam Time &amp; Mode</strong>
+                        <span>Configure times and exam modes</span>
+                    </a>
+
+                </div>
+
+                <div class="configuration-details" id="exam-centres">
+                    <h3>Examination Configuration</h3>
+
+                    <div class="configuration-grid">
+                        <div>
+                            <span>Examination Date</span>
+                            <strong>Scheduled date</strong>
+                        </div>
+
+                        <div>
+                            <span>Examination Time</span>
+                            <strong>Configured time</strong>
+                        </div>
+
+                        <div>
+                            <span>Examination Mode</span>
+                            <strong>Online / Offline / Hybrid</strong>
+                        </div>
+
+                        <div>
+                            <span>Marks Configuration</span>
+                            <strong>Maximum &amp; passing marks</strong>
+                        </div>
+                    </div>
+
+                    <p class="section-note">
+                        These cards describe the configuration areas.
+                        Connect them to your examination forms and database
+                        records to create and edit actual examinations.
+                    </p>
+                </div>
+            </section>
+
+            <!-- SUBJECT MANAGEMENT -->
+            <section class="panel data-panel" id="subject-management">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Subject Management</h2>
+                        <p>Subjects, maximum marks and passing marks</p>
+                    </div>
+
+                    <i class="fa-solid fa-book-open heading-icon"></i>
+                </div>
+
+                <div class="subject-info-grid">
+                    <div class="subject-info">
+                        <i class="fa-solid fa-book"></i>
+                        <div>
+                            <strong>Subject Name</strong>
+                            <span>Python, Data Science, Machine Learning, Project</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-info">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <div>
+                            <strong>Maximum Marks</strong>
+                            <span>Configure the maximum marks for each subject</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-info">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>
+                            <strong>Passing Marks</strong>
+                            <span>Set the minimum marks required to pass</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EXAM REGISTRATION -->
+            <section class="panel data-panel" id="exam-registration">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Diploma Exam Registration</h2>
+                        <p>Student registration and application status</p>
+                    </div>
+
+                    <span class="section-label">
+                        <i class="fa-solid fa-file-lines"></i>
+                        Application Register
+                    </span>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>STUDENT</th>
+                                <th>REGISTRATION NO.</th>
+                                <th>DIPLOMA / COURSE</th>
+                                <th>ELIGIBILITY</th>
+                                <th>PAYMENT</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for application in recent_applications %}
+                            <tr>
+                                <td>
+                                    <div class="student-cell">
+                                        <div class="student-avatar">
+                                            {{ application.student_name|default:"S"|slice:":1"|upper }}
+                                        </div>
+
+                                        <div>
+                                            <strong>{{ application.student_name|default:"Student" }}</strong>
+                                            <span>{{ application.student_id|default:"—" }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    {{ application.registration_number|default:"Pending" }}
+                                </td>
+
+                                <td>
+                                    {{ application.diploma_name|default:"—" }}
+                                </td>
+
+                                <td>
+                                    <span class="status-badge">
+                                        {{ application.eligibility_status|default:"Pending" }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="status-badge">
+                                        {{ application.payment_status|default:"Pending" }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="status-badge">
+                                        {{ application.status|default:"Pending" }}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            {% empty %}
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <i class="fa-regular fa-folder-open"></i>
+                                        <strong>No exam applications available</strong>
+                                        <p>Student applications will appear here when records exist.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-note" id="exam-fee-payment">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Students should be eligible for the selected examination.
+                    Registration and hall-ticket generation should follow your
+                    configured fee-payment and approval rules.
+                </div>
+            </section>
+
+            <!-- EXAM SCHEDULE -->
+            <section class="panel data-panel" id="exam-schedule">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Upcoming Examinations</h2>
+                        <p>Examination dates, times and venue information</p>
+                    </div>
+
+                    <span class="section-label">
+                        {{ upcoming_exams|length }} scheduled
+                    </span>
+                </div>
+
+                <div class="schedule-list">
+                    {% for exam in upcoming_exams %}
+                    <article class="schedule-item">
+
+                        <div class="schedule-date">
+                            <span>{{ exam.exam_date|date:"M" }}</span>
+                            <strong>{{ exam.exam_date|date:"d" }}</strong>
+                            <small>{{ exam.exam_date|date:"Y" }}</small>
+                        </div>
+
+                        <div class="schedule-details">
+                            <h3>{{ exam.exam_name }}</h3>
+
+                            <p>
+                                {{ exam.diploma_name|default:"Diploma Examination" }}
+                            </p>
+
+                            <div class="schedule-meta">
+                                <span>
+                                    <i class="fa-regular fa-clock"></i>
+                                    {{ exam.exam_time|default:"Time to be announced" }}
+                                </span>
+
+                                <span>
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    {{ exam.exam_centre|default:"Centre to be announced" }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <span class="mode-badge">
+                            {{ exam.exam_mode|default:"Offline" }}
+                        </span>
+                    </article>
+
+                    {% empty %}
+                    <div class="empty-state">
+                        <i class="fa-regular fa-calendar-xmark"></i>
+                        <strong>No upcoming examinations</strong>
+                        <p>Scheduled examinations will appear here when available.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- HALL TICKETS -->
+            <section class="panel feature-panel" id="hall-tickets">
+
+                <div class="feature-heading">
+                    <div class="feature-icon stat-blue">
+                        <i class="fa-solid fa-ticket"></i>
+                    </div>
+
+                    <div>
+                        <h2>Hall Ticket Management</h2>
+                        <p>Examination entry documents for eligible students</p>
+                    </div>
+                </div>
+
+                <div class="hall-ticket-fields">
+                    <span><i class="fa-solid fa-check-circle"></i> Student name and ID</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Exam registration number</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Diploma and subject</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Exam date and time</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Venue and student photo</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Examination instructions</span>
+                </div>
+
+                <div class="section-note" id="hall-ticket-download">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    Hall tickets should support PDF generation and download
+                    after the required eligibility and payment checks pass.
+                </div>
+            </section>
+
+            <!-- EXAM MARK MANAGEMENT -->
+            <section class="panel data-panel" id="exam-mark-management">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Exam Mark Management</h2>
+                        <p>Marks entry and evaluation information</p>
+                    </div>
+
+                    <i class="fa-solid fa-pen-to-square heading-icon"></i>
+                </div>
+
+                <div class="marks-grid">
+                    <div class="marks-field">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <strong>Student</strong>
+                        <span>Select the examination candidate</span>
+                    </div>
+
+                    <div class="marks-field">
+                        <i class="fa-solid fa-book"></i>
+                        <strong>Subject</strong>
+                        <span>Select the subject being evaluated</span>
+                    </div>
+
+                    <div class="marks-field">
+                        <i class="fa-solid fa-calculator"></i>
+                        <strong>Maximum Marks</strong>
+                        <span>Configured subject maximum</span>
+                    </div>
+
+                    <div class="marks-field">
+                        <i class="fa-solid fa-marker"></i>
+                        <strong>Marks Obtained</strong>
+                        <span>Enter the student's marks</span>
+                    </div>
+
+                    <div class="marks-field">
+                        <i class="fa-solid fa-award"></i>
+                        <strong>Grade &amp; Result</strong>
+                        <span>Calculate grade and pass/fail status</span>
+                    </div>
+
+                    <div class="marks-field">
+                        <i class="fa-solid fa-comment"></i>
+                        <strong>Remarks</strong>
+                        <span>Record examiner remarks</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EXAM RESULTS -->
+            <section class="panel data-panel" id="exam-results">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Examination Results</h2>
+                        <p>Result calculation and publication information</p>
+                    </div>
+
+                    <i class="fa-solid fa-square-poll-vertical heading-icon"></i>
+                </div>
+
+                <div class="result-summary-grid">
+                    <div class="result-summary">
+                        <span>Total Marks</span>
+                        <strong>335 / 400</strong>
+                    </div>
+
+                    <div class="result-summary">
+                        <span>Percentage</span>
+                        <strong>83.75%</strong>
+                    </div>
+
+                    <div class="result-summary">
+                        <span>Result Status</span>
+                        <strong class="pass-text">PASS</strong>
+                    </div>
+                </div>
+
+                <div class="section-note">
+                    <i class="fa-solid fa-circle-info"></i>
+                    The figures above illustrate the result layout only.
+                    Replace them with marks and calculated results from your
+                    database. Actual totals, percentages, grades and pass/fail
+                    status must be calculated by the backend.
+                </div>
+            </section>
+
+            <!-- PUBLIC RESULT VERIFICATION -->
+            <section class="panel verification-panel" id="result-verification">
+
+                <div class="verification-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div class="verification-content">
+                    <h2>Public Result Verification</h2>
+                    <p>
+                        Verify examination results using the exam registration number.
+                    </p>
+                </div>
+
+                <form method="get"
+                      action="{% url 'result_verification' %}"
+                      class="verification-form">
+
+                    <label class="sr-only" for="registration_number">
+                        Examination registration number
+                    </label>
+
+                    <input type="text"
+                           id="registration_number"
+                           name="registration_number"
+                           value="{{ registration_number|default:'' }}"
+                           placeholder="SC-EXAM-2026-000125"
+                           maxlength="50"
+                           required>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Verify Result
+                    </button>
+                </form>
+
+                {% if error_message %}
+                    <p class="verification-message">
+                        {{ error_message }}
+                    </p>
+                {% endif %}
+
+                {% if verified_result %}
+                    <div class="verified-result">
+                        <h3>
+                            <i class="fa-solid fa-circle-check"></i>
+                            Verified Result
+                        </h3>
+
+                        <p>
+                            <strong>Student:</strong>
+                            {{ verified_result.student_name }}
+                        </p>
+
+                        <p>
+                            <strong>Registration Number:</strong>
+                            {{ verified_result.registration_number }}
+                        </p>
+
+                        <p>
+                            <strong>Diploma:</strong>
+                            {{ verified_result.diploma_name }}
+                        </p>
+
+                        <p>
+                            <strong>Total Marks:</strong>
+                            {{ verified_result.total_marks }}
+                        </p>
+
+                        <p>
+                            <strong>Percentage:</strong>
+                            {{ verified_result.percentage }}%
+                        </p>
+
+                        <p>
+                            <strong>Result:</strong>
+                            {{ verified_result.result_status }}
+                        </p>
+                    </div>
+                {% endif %}
+
+                <p class="privacy-note">
+                    <i class="fa-solid fa-lock"></i>
+                    Display only result information authorized for public verification.
+                </p>
+            </section>
+
+            <!-- CERTIFICATE MANAGEMENT -->
+            <section class="panel certificate-panel" id="certificate-management">
+
+                <div class="certificate-heading">
+                    <div class="feature-icon stat-green">
+                        <i class="fa-solid fa-certificate"></i>
+                    </div>
+
+                    <div>
+                        <h2>Certificate Management</h2>
+                        <p>
+                            Manage course, internship, diploma, project,
+                            training, workshop and participation certificates.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="certificate-types">
+                    <span><i class="fa-solid fa-check-circle"></i> Course Completion</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Internship</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Diploma</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Project</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Training</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Workshop</span>
+                    <span><i class="fa-solid fa-check-circle"></i> Participation</span>
+                </div>
+
+                <div class="certificate-requirements">
+                    <h3>Certificate Information</h3>
+
+                    <div class="configuration-grid">
+                        <div>
+                            <span>Certificate ID</span>
+                            <strong>Unique certificate number</strong>
+                        </div>
+
+                        <div>
+                            <span>Issue Date</span>
+                            <strong>Date of certificate issue</strong>
+                        </div>
+
+                        <div>
+                            <span>Student &amp; Program</span>
+                            <strong>Student name and program</strong>
+                        </div>
+
+                        <div>
+                            <span>Duration</span>
+                            <strong>Program duration</strong>
+                        </div>
+
+                        <div>
+                            <span>QR Code</span>
+                            <strong>Certificate verification</strong>
+                        </div>
+
+                        <div>
+                            <span>Authorization</span>
+                            <strong>Authorized signature</strong>
+                        </div>
+                    </div>
+
+                    <p class="section-note">
+                        Certificate generation, PDF download, QR-code creation
+                        and signature handling must be connected to your
+                        certificate model and backend views.
+                    </p>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="dashboard-footer">
+                <span>&copy; {% now "Y" %} SciPy Technologies Pvt. Ltd.</span>
+                <span>EduMate Education Management System</span>
+            </footer>
+
+        </section>
+    </main>
+</div>
+
+<!-- RESPONSIVE SIDEBAR -->
+<script>
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener("click", function () {
+            const isOpen = sidebar.classList.toggle("sidebar-open");
+
+            menuToggle.setAttribute("aria-expanded", String(isOpen));
+
+            menuToggle.innerHTML = isOpen
+                ? '<i class="fa-solid fa-xmark"></i>'
+                : '<i class="fa-solid fa-bars"></i>';
+        });
+
+        document.querySelectorAll(".sidebar-nav .nav-link").forEach(function (link) {
+            link.addEventListener("click", function () {
+                if (window.innerWidth <= 900) {
+                    sidebar.classList.remove("sidebar-open");
+                    menuToggle.setAttribute("aria-expanded", "false");
+                    menuToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+                }
+            });
+        });
+    }
+</script>
+
+</body>
+</html>

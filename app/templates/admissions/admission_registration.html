@@ -1,0 +1,473 @@
+
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Admission Registration | EduMate{% endblock %}
+{% block breadcrumb %}Admission Registration{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="registration-page">
+
+    <!-- Page heading -->
+   
+<!-- Page Heading -->
+<div class="registration-heading">
+
+    <div class="registration-title">
+        <span class="eyebrow">STUDENT MANAGEMENT</span>
+        <h1>Admission Registration</h1>
+        <p>Register a student, select a course, and submit admission documents.</p>
+    </div>
+
+    <!-- Heading Actions -->
+    <div class="registration-heading-actions">
+
+        <!-- View Admissions Button -->
+        <a href="{% url 'admission_register' %}" class="btn btn-outline">
+            <i class="fa-solid fa-list"></i>
+            <span>View Admissions</span>
+        </a>
+
+        <!-- Back to Dashboard Button -->
+        <a href="{% url 'admission_dashboard' %}" class="registration-back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Back to Dashboard</span>
+        </a>
+
+    </div>
+
+</div>
+
+    <!-- Django messages -->
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>{{ message }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Form-wide errors -->
+    {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <div>
+                <strong>Please correct the following errors:</strong>
+                {{ form.non_field_errors }}
+            </div>
+        </div>
+    {% endif %}
+
+    <form
+        method="post"
+        enctype="multipart/form-data"
+        class="registration-form"
+        id="admissionRegistrationForm">
+
+        {% csrf_token %}
+
+        <!-- Personal details -->
+        <section class="form-section">
+            <div class="section-heading">
+                <span class="section-icon">
+                    <i class="fa-solid fa-user"></i>
+                </span>
+                <div>
+                    <h2>Personal Details</h2>
+                    <p>Enter the student's personal information.</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+
+                {% for field in form %}
+                    {% if field.name == "enquiry_id" %}
+                        <div class="field">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label|default:"Enquiry" }}
+                                {% if field.field.required %}
+                                    <span class="required">*</span>
+                                {% endif %}
+                            </label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <small class="field-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% for field in form %}
+                    {% if field.name == "full_name" or field.name == "email" or field.name == "mobile" or field.name == "dob" or field.name == "gender" or field.name == "location" %}
+                        <div class="field">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label|default:field.name }}
+                                {% if field.field.required %}
+                                    <span class="required">*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="help-text">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <small class="field-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% for field in form %}
+                    {% if field.name == "address" %}
+                        <div class="field field-full">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label|default:"Address" }}
+                                {% if field.field.required %}
+                                    <span class="required">*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="help-text">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <small class="field-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% for field in form %}
+                    {% if field.name == "photo" %}
+                        <div class="field field-full">
+                            <label for="{{ field.id_for_label }}">
+                                Student Photo
+                                {% if field.field.required %}
+                                    <span class="required">*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+                            <small class="help-text">
+                                Choose a clear image of the student.
+                            </small>
+
+                            {% for error in field.errors %}
+                                <small class="field-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+        </section>
+
+        <!-- Academic details -->
+        <section class="form-section">
+            <div class="section-heading">
+                <span class="section-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </span>
+                <div>
+                    <h2>Academic Details</h2>
+                    <p>Enter the student's educational qualifications.</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "highest_qualification" or field.name == "university" or field.name == "college" or field.name == "passing_year" or field.name == "percentage_cgpa" %}
+                        <div class="field">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label|default:field.name }}
+                                {% if field.field.required %}
+                                    <span class="required">*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="help-text">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <small class="field-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Course and admission details -->
+        <section class="form-section">
+            <div class="section-heading">
+                <span class="section-icon">
+                    <i class="fa-solid fa-book-open"></i>
+                </span>
+                <div>
+                    <h2>Course and Admission Details</h2>
+                    <p>Select the course, batch, learning mode, and admission date.</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "course" or field.name == "batch" or field.name == "delivery_mode" or field.name == "admission_date" %}
+                        <div class="field">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label|default:field.name }}
+                                {% if field.field.required %}
+                                    <span class="required">*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="help-text">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <small class="field-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="info-note">
+                <i class="fa-solid fa-circle-info"></i>
+                <p>
+                    Choose a batch that belongs to the selected course.
+                    Your Django form or view should validate this relationship.
+                </p>
+            </div>
+        </section>
+
+        <!-- Fee details -->
+        <section class="form-section">
+            <div class="section-heading">
+                <span class="section-icon">
+                    <i class="fa-solid fa-wallet"></i>
+                </span>
+                <div>
+                    <h2>Fee Details</h2>
+                    <p>Enter the course fee, scholarship discount, and amount paid.</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "course_fee" or field.name == "scholarship_discount" or field.name == "amount_paid" %}
+                        <div class="field">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label|default:field.name }}
+                                {% if field.field.required %}
+                                    <span class="required">*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="help-text">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <small class="field-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="field calculated-field">
+                    <label for="final_payable_display">Final Payable Amount</label>
+                    <input
+                        type="text"
+                        id="final_payable_display"
+                        class="form-control"
+                        value="0.00"
+                        readonly>
+                </div>
+
+                <div class="field calculated-field">
+                    <label for="outstanding_display">Outstanding Balance</label>
+                    <input
+                        type="text"
+                        id="outstanding_display"
+                        class="form-control"
+                        value="0.00"
+                        readonly>
+                </div>
+            </div>
+
+            <div class="info-note">
+                <i class="fa-solid fa-shield-halved"></i>
+                <p>
+                    Totals are estimates for display only. Always calculate and validate
+                    the final payable amount and balance on the Django server before saving.
+                </p>
+            </div>
+        </section>
+
+        <!-- Documents -->
+        <section class="form-section">
+            <div class="section-heading">
+                <span class="section-icon">
+                    <i class="fa-solid fa-folder-open"></i>
+                </span>
+                <div>
+                    <h2>Required Documents</h2>
+                    <p>Upload the student's supporting documents.</p>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "doc_id_proof" or field.name == "doc_education" or field.name == "doc_resume" or field.name == "doc_other" %}
+                        <div class="field">
+                            <label for="{{ field.id_for_label }}">
+                                {% if field.name == "doc_id_proof" %}
+                                    Identity Proof
+                                {% elif field.name == "doc_education" %}
+                                    Educational Certificate
+                                {% elif field.name == "doc_resume" %}
+                                    Resume
+                                {% else %}
+                                    Other Documents
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="help-text">{{ field.help_text }}</small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <small class="field-error">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="info-note">
+                <i class="fa-solid fa-file-circle-check"></i>
+                <p>
+                    The admission team can verify the uploaded documents
+                    before confirming the student's admission.
+                </p>
+            </div>
+        </section>
+
+        <!-- Remarks -->
+        {% for field in form %}
+            {% if field.name == "remarks" %}
+                <section class="form-section">
+                    <div class="section-heading">
+                        <span class="section-icon">
+                            <i class="fa-solid fa-comment-dots"></i>
+                        </span>
+                        <div>
+                            <h2>Additional Remarks</h2>
+                            <p>Add any useful notes about this admission.</p>
+                        </div>
+                    </div>
+
+                    <div class="field field-full">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label|default:"Remarks" }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small class="help-text">{{ field.help_text }}</small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <small class="field-error">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Form actions -->
+        <div class="form-actions">
+            <a href="{% url 'admission_register' %}" class="btn btn-outline">
+                <i class="fa-solid fa-arrow-left"></i>
+                Cancel
+            </a>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-floppy-disk"></i>
+                Register Student
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+(function () {
+    "use strict";
+
+    const feeInput = document.getElementById("id_course_fee");
+    const discountInput = document.getElementById("id_scholarship_discount");
+    const paidInput = document.getElementById("id_amount_paid");
+
+    const payableDisplay = document.getElementById("final_payable_display");
+    const balanceDisplay = document.getElementById("outstanding_display");
+
+    function getAmount(input) {
+        if (!input) return 0;
+
+        const amount = Number.parseFloat(input.value);
+        return Number.isFinite(amount) ? Math.max(0, amount) : 0;
+    }
+
+    function calculateFees() {
+        const courseFee = getAmount(feeInput);
+        const discount = getAmount(discountInput);
+        const paid = getAmount(paidInput);
+
+        const payable = Math.max(0, courseFee - discount);
+        const balance = Math.max(0, payable - paid);
+
+        if (payableDisplay) {
+            payableDisplay.value = payable.toFixed(2);
+        }
+
+        if (balanceDisplay) {
+            balanceDisplay.value = balance.toFixed(2);
+        }
+    }
+
+    [feeInput, discountInput, paidInput].forEach(function (input) {
+        if (input) {
+            input.addEventListener("input", calculateFees);
+            input.addEventListener("change", calculateFees);
+        }
+    });
+
+    calculateFees();
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,873 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Frequently Asked Questions | SciPy Technologies</title>
+
+    <meta name="description"
+          content="Find answers about SciPy Technologies courses, admissions, fees, internships, projects, examinations and certificates.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- FAQ CSS -->
+    <link rel="stylesheet" href="{% static 'css/faq.css' %}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+
+
+
+<!-- ================= HERO SECTION ================= -->
+
+<section class="faq-hero">
+    <a href="{% url 'home' %}" class="back-home-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
+    <div class="hero-decoration hero-decoration-one"></div>
+    <div class="hero-decoration hero-decoration-two"></div>
+
+    <div class="hero-content">
+
+        <div class="hero-badge">
+            <i class="fa-regular fa-circle-question"></i>
+            Help & Support
+        </div>
+
+        <h1>
+            Frequently Asked <span>Questions</span>
+        </h1>
+
+        <p>
+            Everything you need to know about our courses, admissions,
+            payments, internships, examinations and learning platform.
+        </p>
+
+        <div class="hero-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input type="search"
+                   id="faqSearch"
+                   placeholder="Search your question..."
+                   aria-label="Search frequently asked questions">
+
+            <button type="button" id="clearSearch"
+                    aria-label="Clear search">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="hero-note">
+            <i class="fa-solid fa-circle-check"></i>
+            Find answers quickly and easily
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ================= FAQ SECTION ================= -->
+
+<main class="faq-main">
+
+    <section class="faq-section">
+
+        <div class="section-heading">
+            <span class="section-label">HELP CENTER</span>
+            <h2>How can we help you?</h2>
+            <p>
+                Browse the topics below or search for a specific question.
+            </p>
+        </div>
+
+        <!-- Category Filters -->
+
+        <div class="faq-categories" role="group"
+             aria-label="Filter questions by category">
+
+            <button class="category-btn active"
+                    type="button" data-category="all">
+                <i class="fa-solid fa-layer-group"></i>
+                All Questions
+            </button>
+
+            <button class="category-btn"
+                    type="button" data-category="admission">
+                <i class="fa-solid fa-user-plus"></i>
+                Admissions
+            </button>
+
+            <button class="category-btn"
+                    type="button" data-category="courses">
+                <i class="fa-solid fa-book-open"></i>
+                Courses & LMS
+            </button>
+
+            <button class="category-btn"
+                    type="button" data-category="fees">
+                <i class="fa-solid fa-wallet"></i>
+                Fees & Payments
+            </button>
+
+            <button class="category-btn"
+                    type="button" data-category="academic">
+                <i class="fa-solid fa-graduation-cap"></i>
+                Projects & Exams
+            </button>
+
+            <button class="category-btn"
+                    type="button" data-category="career">
+                <i class="fa-solid fa-briefcase"></i>
+                Internship & Career
+            </button>
+
+        </div>
+
+
+        <!-- Questions -->
+
+        <div class="faq-layout">
+
+            <div class="faq-list" id="faqList">
+
+                <!-- ADMISSIONS -->
+
+                <div class="faq-group" data-group="admission">
+                    <div class="group-heading">
+                        <span class="group-icon">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </span>
+                        <div>
+                            <h3>Admissions & Registration</h3>
+                            <p>Enquiries, admission and student accounts</p>
+                        </div>
+                    </div>
+
+                    <article class="faq-item"
+                             data-category="admission">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>How can I apply for a course?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                Browse the available courses on the SciPy
+                                Technologies website, choose a suitable
+                                course and submit your enquiry or registration
+                                form. The admission team can guide you through
+                                counselling, course selection and admission
+                                confirmation.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item"
+                             data-category="admission">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>What information is required for admission?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                You may need to provide your name, date of birth,
+                                mobile number, email, address, educational
+                                qualification, college details and selected
+                                course. A photograph, identity proof and
+                                educational documents may also be required.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item"
+                             data-category="admission">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Will I receive a student ID after admission?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                Yes. The system is designed to generate a
+                                unique student ID and admission number after
+                                the required registration and admission steps
+                                are completed.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item"
+                             data-category="admission">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>How can I check my admission status?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                Once your student account and admission
+                                records are available, sign in to the student
+                                portal to view your admission details.
+                                You can also contact the admission team
+                                for assistance.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+
+
+                <!-- COURSES AND LMS -->
+
+                <div class="faq-group" data-group="courses">
+                    <div class="group-heading">
+                        <span class="group-icon">
+                            <i class="fa-solid fa-book-open"></i>
+                        </span>
+                        <div>
+                            <h3>Courses & Learning Management</h3>
+                            <p>Course types, batches and online learning</p>
+                        </div>
+                    </div>
+
+                    <article class="faq-item" data-category="courses">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>What types of courses are available?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                The platform supports technical and
+                                non-technical courses, short-term and
+                                long-term training, diploma programmes
+                                and internship-related learning.
+                            </p>
+                            <p>
+                                Examples include Python, Django, Full Stack
+                                Development, Data Science, Artificial
+                                Intelligence, Digital Marketing and
+                                Business Management.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="courses">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Which learning modes are supported?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                Courses can be configured for online,
+                                offline, hybrid, live, recorded or
+                                self-paced learning, depending on the
+                                programme offered.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="courses">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Can I access study materials online?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                The LMS is designed to provide authorised
+                                students with learning materials such as
+                                videos, PDFs, notes, assignments, quizzes
+                                and other course resources through the
+                                student portal.
+                            </p>
+                            <p>
+                                Access depends on your enrolment and the
+                                permissions configured for your course.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="courses">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Can I track my learning progress and attendance?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                Yes. The planned student dashboard includes
+                                course progress and academic information.
+                                Attendance records can be maintained for
+                                courses, batches, internships and other
+                                academic activities.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="courses">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>How are batches and trainers assigned?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                The academic team can manage course batches,
+                                start and end dates, timetables, trainers
+                                and student allocations through the
+                                academic management module.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+
+
+                <!-- FEES AND PAYMENTS -->
+
+                <div class="faq-group" data-group="fees">
+                    <div class="group-heading">
+                        <span class="group-icon">
+                            <i class="fa-solid fa-wallet"></i>
+                        </span>
+                        <div>
+                            <h3>Fees & Payments</h3>
+                            <p>Fee structure, instalments and receipts</p>
+                        </div>
+                    </div>
+
+                    <article class="faq-item" data-category="fees">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Can I pay my course fee in instalments?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                The fee management module supports
+                                instalment-based payments. The configured
+                                fee plan can track the instalment amount,
+                                due date, amount paid, pending balance
+                                and payment status.
+                            </p>
+                            <p>
+                                Available instalment options depend on
+                                the fee plan approved for your course.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="fees">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Which payment methods are supported?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                The system supports recording payments
+                                made through cash, bank transfer, UPI,
+                                card, cheque and payment gateways.
+                                Online gateway availability depends on
+                                the integrations enabled by SciPy
+                                Technologies.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="fees">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>How can I download my payment receipt?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                After a payment is verified and recorded,
+                                the system is designed to generate a
+                                payment receipt. Sign in to your student
+                                portal and open the payments section to
+                                access available receipts.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="fees">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>How can I check my outstanding fee balance?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                Your student dashboard is designed to show
+                                the total fee, amount paid and remaining
+                                balance. Contact the accounts team if
+                                your payment or balance information
+                                appears incorrect.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="fees">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Will I receive reminders for fee due dates?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                The system specification includes
+                                fee-due and overdue notifications.
+                                Depending on the configured services,
+                                reminders may be sent through the
+                                student portal, email, SMS or WhatsApp.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+
+
+                <!-- PROJECTS AND EXAMS -->
+
+                <div class="faq-group" data-group="academic">
+                    <div class="group-heading">
+                        <span class="group-icon">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </span>
+                        <div>
+                            <h3>Projects, Examinations & Certificates</h3>
+                            <p>Project tracking, results and verification</p>
+                        </div>
+                    </div>
+
+                    <article class="faq-item" data-category="academic">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Can I register and track my academic project?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                Yes. The project management module is
+                                designed to support project registration,
+                                guide allocation, document uploads,
+                                progress tracking, project reviews,
+                                evaluation and completion status.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="academic">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>How can I register for an examination?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                Eligible students can follow the configured
+                                examination registration process. This may
+                                include eligibility verification, exam
+                                registration, payment of the examination
+                                fee and hall ticket generation.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="academic">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Where can I view my examination results?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                Once results have been published and made
+                                available, you can view your marks,
+                                percentage, grade and result status through
+                                the student portal, according to the
+                                configured result access rules.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="academic">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Can I download my hall ticket and marksheet?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                The system specification includes
+                                downloadable PDF hall tickets, marksheets
+                                and results. These documents will be
+                                available when they have been generated
+                                and published for your examination.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="academic">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Will my certificate have a QR code?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                The certificate management module is
+                                designed to support unique certificate
+                                IDs and QR-based verification for
+                                configured certificates. Verification
+                                availability depends on the certificate
+                                service being implemented.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+
+
+                <!-- INTERNSHIP AND CAREER -->
+
+                <div class="faq-group" data-group="career">
+                    <div class="group-heading">
+                        <span class="group-icon">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </span>
+                        <div>
+                            <h3>Internship & Career Support</h3>
+                            <p>Internship progress and placement services</p>
+                        </div>
+                    </div>
+
+                    <article class="faq-item" data-category="career">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>What internship durations are supported?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                The platform supports short-term and
+                                long-term internships. Example durations
+                                in the specification range from 7 days
+                                to 60 days for short-term internships
+                                and 3 to 12 months for long-term
+                                internships.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="career">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Can I track my internship progress?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                The internship module is designed to track
+                                attendance, tasks, projects, reviews,
+                                mentor feedback, performance and
+                                completion status.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="career">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Does the platform support placement activities?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                Yes. The planned placement module supports
+                                job opportunities, student applications,
+                                interview tracking and placement status.
+                                Available services depend on the placement
+                                features enabled by the organisation.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="faq-item" data-category="career">
+                        <button class="faq-question" type="button"
+                                aria-expanded="false">
+                            <span>Whom should I contact if I need more help?</span>
+                            <i class="fa-solid fa-plus faq-toggle"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>
+                                For admission enquiries, contact the
+                                admission team. For fees, contact the
+                                accounts team. For course access,
+                                projects or examinations, contact the
+                                appropriate academic team.
+                            </p>
+                            <p>
+                                You can also use the contact details
+                                provided on the official SciPy
+                                Technologies website.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- No Results Message -->
+
+                <div class="no-results" id="noResults" hidden>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <h3>No questions found</h3>
+                    <p>
+                        Try another search term or choose a different category.
+                    </p>
+                    <button type="button" id="resetFaq">
+                        View All Questions
+                    </button>
+                </div>
+
+            </div>
+
+
+            <!-- HELP CARD -->
+
+            <aside class="faq-sidebar">
+
+                <div class="help-card">
+                    <div class="help-icon">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+
+                    <span class="help-label">NEED MORE HELP?</span>
+
+                    <h3>Still have questions?</h3>
+
+                    <p>
+                        Our team can help you understand the admission
+                        process, courses, payments and learning services.
+                    </p>
+
+                    <a href="{% url 'home' %}#contact" class="help-btn">
+                        Contact Us
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <div class="help-divider"></div>
+
+                    <div class="help-feature">
+                        <i class="fa-solid fa-check-circle"></i>
+                        Admission guidance
+                    </div>
+
+                    <div class="help-feature">
+                        <i class="fa-solid fa-check-circle"></i>
+                        Course information
+                    </div>
+
+                    <div class="help-feature">
+                        <i class="fa-solid fa-check-circle"></i>
+                        Student support
+                    </div>
+                </div>
+
+                
+              
+
+            </aside>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= BOTTOM CTA ================= -->
+
+<section class="faq-cta">
+    <div class="cta-content">
+        <div>
+            <span class="cta-label">START YOUR JOURNEY</span>
+            <h2>Ready to take the next step?</h2>
+            <p>
+                Explore learning opportunities with SciPy Technologies.
+            </p>
+        </div>
+
+        <a href="{% url 'register' %}" class="cta-button">
+            Get Started
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+</section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput = document.getElementById("faqSearch");
+    const clearSearch = document.getElementById("clearSearch");
+    const categoryButtons = document.querySelectorAll(".category-btn");
+    const faqItems = document.querySelectorAll(".faq-item");
+    const faqGroups = document.querySelectorAll(".faq-group");
+    const noResults = document.getElementById("noResults");
+    const resetFaq = document.getElementById("resetFaq");
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    let activeCategory = "all";
+
+    // Accordion
+    faqItems.forEach(function (item) {
+        const question = item.querySelector(".faq-question");
+
+        question.addEventListener("click", function () {
+            const isOpen = item.classList.contains("open");
+
+            // Close other questions
+            faqItems.forEach(function (otherItem) {
+                otherItem.classList.remove("open");
+
+                const otherButton =
+                    otherItem.querySelector(".faq-question");
+
+                otherButton.setAttribute("aria-expanded", "false");
+            });
+
+            // Open selected question
+            if (!isOpen) {
+                item.classList.add("open");
+                question.setAttribute("aria-expanded", "true");
+            }
+        });
+    });
+
+    // Search and category filtering
+    function filterFaq() {
+        const searchTerm = searchInput.value
+            .trim()
+            .toLowerCase();
+
+        let visibleCount = 0;
+
+        faqItems.forEach(function (item) {
+            const category = item.dataset.category;
+            const text = item.textContent.toLowerCase();
+
+            const matchesCategory =
+                activeCategory === "all" ||
+                category === activeCategory;
+
+            const matchesSearch =
+                text.includes(searchTerm);
+
+            const isVisible =
+                matchesCategory && matchesSearch;
+
+            item.hidden = !isVisible;
+
+            if (isVisible) {
+                visibleCount++;
+            } else {
+                item.classList.remove("open");
+                item.querySelector(".faq-question")
+                    .setAttribute("aria-expanded", "false");
+            }
+        });
+
+        faqGroups.forEach(function (group) {
+            const visibleItems = group.querySelectorAll(
+                ".faq-item:not([hidden])"
+            );
+
+            group.hidden = visibleItems.length === 0;
+        });
+
+        noResults.hidden = visibleCount !== 0;
+        clearSearch.style.visibility =
+            searchTerm ? "visible" : "hidden";
+    }
+
+    searchInput.addEventListener("input", filterFaq);
+
+    // Category buttons
+    categoryButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            activeCategory = button.dataset.category;
+
+            categoryButtons.forEach(function (btn) {
+                btn.classList.remove("active");
+            });
+
+            button.classList.add("active");
+            filterFaq();
+        });
+    });
+
+    // Clear search
+    clearSearch.addEventListener("click", function () {
+        searchInput.value = "";
+        filterFaq();
+        searchInput.focus();
+    });
+
+    // Reset filters
+    resetFaq.addEventListener("click", function () {
+        searchInput.value = "";
+        activeCategory = "all";
+
+        categoryButtons.forEach(function (button) {
+            button.classList.toggle(
+                "active",
+                button.dataset.category === "all"
+            );
+        });
+
+        filterFaq();
+    });
+
+   // Mobile navigation - run only when navbar elements exist
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", function () {
+        const isOpen = navLinks.classList.toggle("show");
+
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+
+        menuToggle.innerHTML = isOpen
+            ? '<i class="fa-solid fa-xmark"></i>'
+            : '<i class="fa-solid fa-bars"></i>';
+    });
+
+    navLinks.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+            navLinks.classList.remove("show");
+            menuToggle.setAttribute("aria-expanded", "false");
+            menuToggle.innerHTML =
+                '<i class="fa-solid fa-bars"></i>';
+        });
+    });
+}
+});
+</script>
+
+</body>
+</html>

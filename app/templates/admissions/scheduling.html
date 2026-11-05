@@ -1,0 +1,616 @@
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Course & Batch Scheduling | EduMate{% endblock %}
+{% block breadcrumb %}Course & Batch Scheduling{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/scheduling.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="scheduling-page">
+
+    <!-- PAGE HEADER -->
+    <section class="scheduling-header">
+        <div class="scheduling-header-content">
+            <span class="scheduling-eyebrow">
+                <i class="fa-solid fa-calendar-check"></i>
+                ACADEMIC ORGANIZATION
+            </span>
+
+            <h1>Course &amp; Batch Scheduling</h1>
+
+            <p>
+                Manage courses, categories, course durations, delivery modes,
+                batches, trainers and academic timetables from one centralized
+                dashboard.
+            </p>
+
+            <div class="scheduling-header-actions">
+                <a href="{% url 'home' %}"
+                   class="schedule-btn schedule-btn-back">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+
+              <a href="{% url 'course_list' %}"
+   class="schedule-btn schedule-btn-primary">
+    <i class="fa-solid fa-book-open"></i>
+    Explore Courses
+</a>
+
+                <a href="{% url 'batch_list' %}"
+   class="schedule-btn schedule-btn-outline">
+    <i class="fa-solid fa-users"></i>
+    Manage Batches
+</a>
+            </div>
+        </div>
+
+        <div class="scheduling-visual">
+            <div class="planner-card">
+                <div class="planner-top">
+                    <div class="planner-icon">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <div>
+                        <span>ACADEMIC PLANNER</span>
+                        <strong>Learning Schedule</strong>
+                    </div>
+                </div>
+
+                <div class="planner-divider"></div>
+
+                <div class="planner-week">
+                    <span>MON</span>
+                    <span>TUE</span>
+                    <span>WED</span>
+                    <span>THU</span>
+                    <span>FRI</span>
+                </div>
+
+                <div class="planner-days">
+                    <span>01</span>
+                    <span>02</span>
+                    <span class="planner-day-active">03</span>
+                    <span>04</span>
+                    <span>05</span>
+                </div>
+
+                <div class="planner-event">
+                    <span class="planner-event-dot"></span>
+                    <div>
+                        <strong>Academic Planning</strong>
+                        <small>Courses, batches and classes</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DJANGO MESSAGES -->
+    {% if messages %}
+    <section class="scheduling-messages">
+        {% for message in messages %}
+        <div class="scheduling-message {{ message.tags }}">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <!-- STATISTICS -->
+    <section class="scheduling-stats">
+
+        <article class="schedule-stat-card">
+            <div class="schedule-stat-top">
+                <div class="schedule-stat-icon stat-blue">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <span>Total Courses</span>
+            </div>
+            <h2>{{ total_courses|default:0 }}</h2>
+            <p>Technical and non-technical courses</p>
+            <a href="#courses">
+                View courses <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </article>
+
+        <article class="schedule-stat-card">
+            <div class="schedule-stat-top">
+                <div class="schedule-stat-icon stat-green">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <span>Active Batches</span>
+            </div>
+            <h2>{{ active_batches|default:0 }}</h2>
+            <p>Currently running batches</p>
+            <a href="#batches">
+                View batches <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </article>
+
+        <article class="schedule-stat-card">
+            <div class="schedule-stat-top">
+                <div class="schedule-stat-icon stat-purple">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+                <span>Total Trainers</span>
+            </div>
+            <h2>{{ total_trainers|default:0 }}</h2>
+            <p>Teaching staff and instructors</p>
+            <a href="#timetable">
+                View scheduling <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </article>
+
+        <article class="schedule-stat-card">
+            <div class="schedule-stat-top">
+                <div class="schedule-stat-icon stat-orange">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <span>Upcoming Sessions</span>
+            </div>
+            <h2>{{ upcoming_sessions|default:0 }}</h2>
+            <p>Scheduled academic sessions</p>
+            <a href="#timetable">
+                View timetable <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </article>
+
+    </section>
+
+    <!-- QUICK ACCESS -->
+    <section class="schedule-section">
+
+        <div class="schedule-section-heading">
+            <div>
+                <span class="scheduling-eyebrow">QUICK ACCESS</span>
+                <h2>Scheduling Management</h2>
+                <p>Choose a section to organize your academic activities.</p>
+            </div>
+        </div>
+
+        <div class="schedule-quick-grid">
+
+            <a href="#courses" class="schedule-quick-card">
+                <div class="schedule-quick-icon stat-blue">
+                    <i class="fa-solid fa-book"></i>
+                </div>
+                <div class="schedule-quick-content">
+                    <h3>Course Management</h3>
+                    <p>Create courses and configure course information.</p>
+                    <span>Explore Courses <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <a href="#categories" class="schedule-quick-card">
+                <div class="schedule-quick-icon stat-green">
+                    <i class="fa-solid fa-folder-tree"></i>
+                </div>
+                <div class="schedule-quick-content">
+                    <h3>Course Categories</h3>
+                    <p>Organize technical and non-technical programs.</p>
+                    <span>View Categories <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <a href="#batches" class="schedule-quick-card">
+                <div class="schedule-quick-icon stat-purple">
+                    <i class="fa-solid fa-users-rectangle"></i>
+                </div>
+                <div class="schedule-quick-content">
+                    <h3>Batch Management</h3>
+                    <p>Organize batch dates, trainers and students.</p>
+                    <span>Explore Batches <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <a href="#timetable" class="schedule-quick-card">
+                <div class="schedule-quick-icon stat-orange">
+                    <i class="fa-solid fa-calendar-week"></i>
+                </div>
+                <div class="schedule-quick-content">
+                    <h3>Class Timetable</h3>
+                    <p>Coordinate class timings and academic sessions.</p>
+                    <span>View Timetable <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- COURSE CATEGORIES -->
+    <section class="schedule-section" id="categories">
+
+        <div class="schedule-section-heading">
+            <div>
+                <span class="scheduling-eyebrow">COURSE CLASSIFICATION</span>
+                <h2>Course Categories</h2>
+                <p>Organize programs by subject and professional focus.</p>
+            </div>
+        </div>
+
+        <div class="schedule-category-grid">
+
+            <!-- TECHNICAL -->
+            <article class="schedule-category-card">
+
+                <div class="schedule-category-top">
+                    <div class="schedule-category-icon stat-blue">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <span class="schedule-category-label technical-label">
+                        TECHNICAL
+                    </span>
+                </div>
+
+                <h3>Technical Courses</h3>
+                <p>
+                    Software development, artificial intelligence, data
+                    science and modern technology.
+                </p>
+
+                <div class="schedule-tags">
+                    <span>Python</span>
+                    <span>Data Science</span>
+                    <span>Artificial Intelligence</span>
+                    <span>Machine Learning</span>
+                    <span>Generative AI</span>
+                    <span>Data Analytics</span>
+                    <span>Full Stack Development</span>
+                    <span>Django</span>
+                    <span>React</span>
+                    <span>Power BI</span>
+                    <span>SQL</span>
+                    <span>Computer Vision</span>
+                    <span>NLP</span>
+                    <span>Cybersecurity</span>
+                    <span>IoT</span>
+                    <span>Robotics</span>
+                </div>
+
+                <a href="#courses" class="schedule-category-link">
+                    Explore Technical Courses
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+            <!-- NON-TECHNICAL -->
+            <article class="schedule-category-card">
+
+                <div class="schedule-category-top">
+                    <div class="schedule-category-icon stat-green">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                    <span class="schedule-category-label nontechnical-label">
+                        NON-TECHNICAL
+                    </span>
+                </div>
+
+                <h3>Non-Technical Courses</h3>
+                <p>
+                    Business, management, communication and career
+                    development programs.
+                </p>
+
+                <div class="schedule-tags">
+                    <span>Digital Marketing</span>
+                    <span>HR Management</span>
+                    <span>Business Management</span>
+                    <span>Office Administration</span>
+                    <span>Sales</span>
+                    <span>Marketing</span>
+                    <span>Business Analytics</span>
+                    <span>Communication Skills</span>
+                    <span>Career Development</span>
+                    <span>Soft Skills</span>
+                </div>
+
+                <a href="#courses" class="schedule-category-link">
+                    Explore Non-Technical Courses
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </article>
+
+        </div>
+
+        <div class="schedule-info-note">
+            <i class="fa-solid fa-circle-info"></i>
+            <p>
+                Administrators can add new categories as the institution
+                introduces additional courses and training programs.
+            </p>
+        </div>
+
+    </section>
+
+    <!-- COURSE MANAGEMENT -->
+    <section class="schedule-section" id="courses">
+
+        <div class="schedule-section-heading schedule-heading-row">
+            <div>
+                <span class="scheduling-eyebrow">ACADEMIC PROGRAMS</span>
+                <h2>Course Management</h2>
+                <p>Configure course classification, duration and delivery mode.</p>
+            </div>
+
+           
+        </div>
+
+        <div class="schedule-configuration-grid" id="course-configuration">
+
+            <!-- DURATION -->
+            <article class="schedule-panel">
+
+                <div class="schedule-panel-heading">
+                    <div class="schedule-panel-icon stat-blue">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                    </div>
+                    <div>
+                        <h3>Course Duration</h3>
+                        <p>Organize programs by their duration.</p>
+                    </div>
+                </div>
+
+                <div class="schedule-configuration-list">
+
+                    <div class="schedule-configuration-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>
+                            <strong>Short-Term</strong>
+                            <span>2, 7, 15, 30 or 45 days; 2 or 3 months</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-configuration-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>
+                            <strong>Long-Term</strong>
+                            <span>6 months, 9 months or 1 year</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-configuration-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>
+                            <strong>Diploma</strong>
+                            <span>Structured diploma programs</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-configuration-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>
+                            <strong>Advanced Diploma</strong>
+                            <span>Advanced professional programs</span>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+
+            <!-- DELIVERY MODES -->
+            <article class="schedule-panel">
+
+                <div class="schedule-panel-heading">
+                    <div class="schedule-panel-icon stat-green">
+                        <i class="fa-solid fa-display"></i>
+                    </div>
+                    <div>
+                        <h3>Course Delivery Modes</h3>
+                        <p>Choose how students attend their courses.</p>
+                    </div>
+                </div>
+
+                <div class="schedule-delivery-grid">
+                    <div>
+                        <i class="fa-solid fa-globe"></i>
+                        <span>Online</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-building"></i>
+                        <span>Offline</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-shuffle"></i>
+                        <span>Hybrid</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-video"></i>
+                        <span>Recorded</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-tower-broadcast"></i>
+                        <span>Live</span>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-user-clock"></i>
+                        <span>Self-paced</span>
+                    </div>
+                </div>
+
+            </article>
+
+        </div>
+    </section>
+
+    <!-- BATCH MANAGEMENT -->
+    <section class="schedule-section" id="batches">
+
+        <div class="schedule-section-heading schedule-heading-row">
+            <div>
+                <span class="scheduling-eyebrow">STUDENT GROUPS</span>
+                <h2>Batch Management</h2>
+                <p>Manage batch schedules, enrollment periods and trainers.</p>
+            </div>
+
+            
+        </div>
+
+        <article class="schedule-batch-card" id="batch-example">
+
+            <div class="schedule-batch-header">
+
+                <div class="schedule-batch-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div class="schedule-batch-title">
+                    <span>SAMPLE BATCH</span>
+                    <h3>Artificial Intelligence &amp; Machine Learning</h3>
+                    <p>AIML-SEP-2026</p>
+                </div>
+
+                <span class="schedule-sample-badge">Example</span>
+
+            </div>
+
+            <div class="schedule-batch-details">
+
+                <div class="schedule-batch-detail">
+                    <span>
+                        <i class="fa-regular fa-calendar"></i>
+                        Start Date
+                    </span>
+                    <strong>01 Sep 2026</strong>
+                </div>
+
+                <div class="schedule-batch-detail">
+                    <span>
+                        <i class="fa-regular fa-calendar-check"></i>
+                        End Date
+                    </span>
+                    <strong>28 Feb 2027</strong>
+                </div>
+
+                <div class="schedule-batch-detail">
+                    <span>
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                        Trainer
+                    </span>
+                    <strong>Trainer Name</strong>
+                </div>
+
+                <div class="schedule-batch-detail">
+                    <span>
+                        <i class="fa-solid fa-user-graduate"></i>
+                        Students
+                    </span>
+                    <strong>35 Students</strong>
+                </div>
+
+            </div>
+
+            <div class="schedule-batch-progress">
+                <div>
+                    <span>Batch planning overview</span>
+                    <span>Sample information</span>
+                </div>
+                <div class="schedule-progress-track">
+                    <div class="schedule-progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="schedule-info-note schedule-batch-note">
+                <i class="fa-solid fa-circle-info"></i>
+                <p>
+                    This is demonstration data. Replace it with course, batch,
+                    trainer and student records retrieved from your database.
+                </p>
+            </div>
+
+        </article>
+
+    </section>
+
+    <!-- TIMETABLE -->
+    <section class="schedule-section" id="timetable">
+
+        <div class="schedule-section-heading">
+            <div>
+                <span class="scheduling-eyebrow">CLASS PLANNING</span>
+                <h2>Timetable &amp; Academic Sessions</h2>
+                <p>Coordinate classes, trainer availability and learning activities.</p>
+            </div>
+        </div>
+
+        <div class="schedule-timetable-grid">
+
+            <article class="schedule-timetable-card">
+                <div class="schedule-timetable-icon stat-blue">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <h3>Class Timetables</h3>
+                <p>
+                    Organize class dates, start times, end times and
+                    classroom or online meeting details.
+                </p>
+                <span class="schedule-feature-status">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Timetable Planning
+                </span>
+            </article>
+
+            <article class="schedule-timetable-card">
+                <div class="schedule-timetable-icon stat-green">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <h3>Trainer Scheduling</h3>
+                <p>
+                    Assign trainers to courses and coordinate their
+                    teaching schedules and availability.
+                </p>
+                <span class="schedule-feature-status">
+                    <i class="fa-solid fa-user-check"></i>
+                    Trainer Allocation
+                </span>
+            </article>
+
+            <article class="schedule-timetable-card">
+                <div class="schedule-timetable-icon stat-purple">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h3>Academic Planning</h3>
+                <p>
+                    Plan learning sessions, academic activities and
+                    course delivery schedules.
+                </p>
+                <span class="schedule-feature-status">
+                    <i class="fa-solid fa-book-open"></i>
+                    Session Planning
+                </span>
+            </article>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER NOTE -->
+    <section class="schedule-footer-note">
+        <div class="schedule-footer-icon">
+            <i class="fa-solid fa-lightbulb"></i>
+        </div>
+
+        <div>
+            <h3>Keep every course organized</h3>
+            <p>
+                Manage course categories, duration types, delivery modes,
+                batches and trainer schedules in one academic management area.
+            </p>
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}

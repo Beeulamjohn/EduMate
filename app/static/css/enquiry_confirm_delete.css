@@ -1,0 +1,324 @@
+
+/* =========================================
+   EduMate - Delete Enquiry Confirmation
+   File: enquiry_confirm_delete.css
+========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --danger: #dc2626;
+    --danger-dark: #b91c1c;
+    --danger-light: #fef2f2;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --page-bg: #f4f7fb;
+    --white: #ffffff;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text-primary);
+    background:
+        radial-gradient(
+            circle at top left,
+            #e8efff 0,
+            transparent 35%
+        ),
+        var(--page-bg);
+}
+
+/* Page layout */
+
+.delete-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+/* Confirmation card */
+
+.delete-card {
+    width: 100%;
+    max-width: 490px;
+    padding: 36px 32px;
+    text-align: center;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+    animation: card-appear 0.35s ease-out;
+}
+
+@keyframes card-appear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Warning icon */
+
+.icon-wrapper {
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--danger);
+    background: var(--danger-light);
+    border: 1px solid #fecaca;
+    border-radius: 50%;
+}
+
+.icon-wrapper i {
+    font-size: 34px;
+}
+
+/* Heading */
+
+.warning-label {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: var(--danger);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+h1 {
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    font-size: 27px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.description {
+    margin-bottom: 18px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.description strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.enquiry-id {
+    color: #475569;
+    font-size: 13px;
+}
+
+/* Warning message */
+
+.warning-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 24px;
+    padding: 13px 14px;
+    color: #991b1b;
+    background: #fff7f7;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.warning-message i {
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+/* Buttons */
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 26px;
+}
+
+.actions form {
+    margin: 0;
+}
+
+.btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 18px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+/* Cancel button */
+
+.btn-cancel {
+    color: #334155;
+    background: #eef2f7;
+    border-color: #e2e8f0;
+}
+
+.btn-cancel:hover {
+    color: #1e293b;
+    background: #e2e8f0;
+}
+
+/* Delete button */
+
+.btn-delete {
+    color: var(--white);
+    background: var(--danger);
+    border-color: var(--danger);
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.15);
+}
+
+.btn-delete:hover {
+    background: var(--danger-dark);
+    border-color: var(--danger-dark);
+    box-shadow: 0 6px 14px rgba(220, 38, 38, 0.22);
+}
+
+/* Django messages */
+
+.messages {
+    margin-bottom: 18px;
+}
+
+.message {
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: left;
+    line-height: 1.5;
+}
+
+.message.success {
+    color: #166534;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.message.error {
+    color: #991b1b;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+
+/* Security note */
+
+.security-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 27px;
+    padding-top: 18px;
+    border-top: 1px solid #edf0f5;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.security-note i {
+    color: #64748b;
+}
+
+/* Responsive design */
+
+@media (max-width: 520px) {
+    .delete-page {
+        padding: 16px;
+    }
+
+    .delete-card {
+        padding: 28px 20px;
+        border-radius: 14px;
+    }
+
+    .icon-wrapper {
+        width: 68px;
+        height: 68px;
+    }
+
+    .icon-wrapper i {
+        font-size: 29px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .actions form {
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .security-note {
+        font-size: 11px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

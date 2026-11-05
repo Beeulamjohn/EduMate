@@ -1,0 +1,415 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Fee Structure | EduMate</title>
+
+    <link rel="stylesheet" href="{% static 'css/fee_structure_form.css' %}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+<div class="form-page">
+    
+
+    
+
+    <!-- Main Content -->
+    <main class="form-container">
+
+        <!-- Breadcrumb -->
+       <!-- BREADCRUMB -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+
+    <div class="breadcrumb-left">
+        <a href="{% url 'fee_dashboard' %}">Fee Management</a>
+
+        <i class="fa-solid fa-chevron-right"></i>
+
+        <span>Create Fee Structure</span>
+    </div>
+
+    <!-- BACK BUTTON -->
+    <div class="back-navigation">
+        <button type="button" class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+        </button>
+    </div>
+
+</nav>
+        <!-- Page Heading -->
+        <section class="page-heading">
+
+            <div class="heading-content">
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    FINANCE &amp; ACCOUNTING
+                </div>
+
+                <h1>Create Fee Structure</h1>
+
+                <p>
+                    Set up course fees, additional charges, discounts and tax
+                    in one place.
+                </p>
+            </div>
+
+            <div class="heading-illustration" aria-hidden="true">
+                <div class="illustration-circle">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+                <span class="illustration-badge">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+            </div>
+
+        </section>
+
+        <!-- Information Cards -->
+        <section class="info-grid" aria-label="Fee structure information">
+
+            <article class="info-card">
+                <div class="info-icon icon-blue">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <div>
+                    <strong>Course Fees</strong>
+                    <span>Configure course charges</span>
+                </div>
+            </article>
+
+            <article class="info-card">
+                <div class="info-icon icon-purple">
+                    <i class="fa-solid fa-percent"></i>
+                </div>
+                <div>
+                    <strong>Discounts</strong>
+                    <span>Apply eligible reductions</span>
+                </div>
+            </article>
+
+            <article class="info-card">
+                <div class="info-icon icon-green">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <strong>Live Calculation</strong>
+                    <span>Preview the estimated total</span>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- Django Messages -->
+        {% if messages %}
+            <div class="messages-container" aria-live="polite">
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }}">
+                        {% if message.tags == 'success' %}
+                            <i class="fa-solid fa-circle-check"></i>
+                        {% elif message.tags == 'error' %}
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                        {% else %}
+                            <i class="fa-solid fa-circle-info"></i>
+                        {% endif %}
+
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Main Form Card -->
+        <section class="form-card">
+
+            <div class="card-heading">
+
+                <div class="card-heading-icon">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+
+                <div class="card-heading-text">
+                    <h2>Course Fee Details</h2>
+                    <p>
+                        Enter the required information to create a fee structure.
+                    </p>
+                </div>
+
+                <span class="required-note">
+                    <span>*</span> Required fields
+                </span>
+
+            </div>
+
+            <div class="card-divider"></div>
+
+            <form method="post"
+                  id="feeStructureForm"
+                  novalidate>
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors" role="alert">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <div>
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Dynamic Django Form Fields -->
+                <div class="field-grid">
+
+                    {% for field in form %}
+
+                        <div class="form-field
+                            {% if field.name == 'course' %}full-width{% endif %}
+                            {% if field.errors %}has-error{% endif %}">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+
+                                {% if field.field.required %}
+                                    <span class="required-star">*</span>
+                                {% endif %}
+                            </label>
+
+                            {% if field.help_text %}
+                                <div class="field-help">
+                                    {{ field.help_text|safe }}
+                                </div>
+                            {% endif %}
+
+                            {{ field }}
+
+                            {% for error in field.errors %}
+                                <small class="field-error">
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    {{ error }}
+                                </small>
+                            {% endfor %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <!-- Fee Calculation Preview -->
+                <section class="total-preview">
+
+                    <div class="total-preview-header">
+                        <div class="total-icon">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+
+                        <div class="total-description">
+                            <h3>Estimated Fee Summary</h3>
+                            <p>
+                                The amount updates automatically as you enter
+                                the fee details.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="total-breakdown">
+
+                        <div class="breakdown-item">
+                            <span>Subtotal</span>
+                            <strong id="subtotalAmount">₹0.00</strong>
+                        </div>
+
+                        <div class="breakdown-item discount-row">
+                            <span>Discount</span>
+                            <strong id="discountAmount">− ₹0.00</strong>
+                        </div>
+
+                        <div class="breakdown-item">
+                            <span>Tax amount</span>
+                            <strong id="taxAmount">₹0.00</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="total-final">
+                        <div>
+                            <span>Estimated Final Amount</span>
+                            <small>Discount applied before tax</small>
+                        </div>
+
+                        <strong id="finalAmount">₹0.00</strong>
+                    </div>
+
+                    <p class="calculation-note">
+                        <i class="fa-solid fa-circle-info"></i>
+                        This is a preview. The final saved amount depends on
+                        your backend calculation and validation.
+                    </p>
+
+                </section>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+
+                    <a href="{% url 'fee_dashboard' %}"
+                       class="btn btn-secondary">
+                        <i class="fa-solid fa-xmark"></i>
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save Fee Structure
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- Footer Note -->
+        <footer class="page-footer">
+            <span>
+                <i class="fa-solid fa-shield-halved"></i>
+                Manage fee records carefully and verify all amounts before saving.
+            </span>
+
+            <span>EduMate &copy; {% now "Y" %}</span>
+        </footer>
+
+    </main>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const feeNames = [
+            "course_fee",
+            "registration_fee",
+            "admission_fee",
+            "material_fee",
+            "exam_fee",
+            "project_fee",
+            "certification_fee",
+            "other_fee"
+        ];
+
+        const currencyFormatter = new Intl.NumberFormat("en-IN", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        function getAmount(name) {
+            const field = document.getElementById("id_" + name);
+
+            if (!field) {
+                return 0;
+            }
+
+            const value = Number(field.value);
+
+            if (!Number.isFinite(value)) {
+                return 0;
+            }
+
+            return Math.max(0, value);
+        }
+
+        function formatCurrency(amount) {
+            return "₹" + currencyFormatter.format(amount);
+        }
+
+        function updateTotal() {
+
+            const subtotal = feeNames.reduce(function (sum, name) {
+                return sum + getAmount(name);
+            }, 0);
+
+            const discount = getAmount("discount");
+
+            // A discount cannot reduce the taxable amount below zero.
+            const taxableAmount = Math.max(0, subtotal - discount);
+
+            const taxPercentage = getAmount("tax_percentage");
+
+            const tax = taxableAmount * taxPercentage / 100;
+
+            const total = taxableAmount + tax;
+
+            document.getElementById("subtotalAmount").textContent =
+                formatCurrency(subtotal);
+
+            document.getElementById("discountAmount").textContent =
+                "− " + formatCurrency(discount);
+
+            document.getElementById("taxAmount").textContent =
+                formatCurrency(tax);
+
+            document.getElementById("finalAmount").textContent =
+                formatCurrency(total);
+        }
+
+        const trackedFields = [
+            ...feeNames,
+            "discount",
+            "tax_percentage"
+        ];
+
+        trackedFields.forEach(function (name) {
+
+            const field = document.getElementById("id_" + name);
+
+            if (field) {
+                field.addEventListener("input", updateTotal);
+                field.addEventListener("change", updateTotal);
+            }
+
+        });
+
+        // Style Django-generated controls without changing form behavior.
+        document.querySelectorAll(
+            ".form-field input, .form-field select, .form-field textarea"
+        ).forEach(function (field) {
+
+            if (
+                field.type !== "checkbox" &&
+                field.type !== "radio" &&
+                field.type !== "hidden" &&
+                field.type !== "file"
+            ) {
+                field.classList.add("form-control");
+            }
+
+        });
+
+        updateTotal();
+
+    });
+    function goBack() {
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = "{% url 'fee_dashboard' %}";
+    }
+}
+</script>
+
+</body>
+</html>

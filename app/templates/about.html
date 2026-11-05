@@ -1,0 +1,245 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Us | SciPy Technologies</title>
+
+  
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+   
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+</head>
+<body>
+
+<main>
+
+
+
+
+    <!-- ABOUT THE PROJECT -->
+    <section class="project-section" id="our-system">
+
+        <div class="section-container">
+
+            <div class="section-heading">
+                <span class="small-label">ABOUT US</span>
+
+                <h2>
+                    One Platform for the
+                    <span>Complete Student Journey</span>
+                </h2>
+
+                <p>
+                    An integrated Education ERP and Learning Management
+                    System designed to bring essential education and
+                    training operations together.
+                </p>
+            </div>
+
+            <div class="project-grid">
+
+                <article class="project-card">
+                    <div class="project-icon purple-bg">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <h3>Centralized Management</h3>
+
+                    <p>
+                        Manage student information, admissions, courses,
+                        batches, trainers and academic activities
+                        from one connected platform.
+                    </p>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-icon blue-bg">
+                        <i class="fa-solid fa-money-check-dollar"></i>
+                    </div>
+
+                    <h3>Integrated Finance</h3>
+
+                    <p>
+                        Organize fee structures, installments, payment
+                        records, receipts, invoices and outstanding
+                        balances with improved financial visibility.
+                    </p>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-icon green-bg">
+                        <i class="fa-solid fa-laptop-file"></i>
+                    </div>
+
+                    <h3>Learning & Academics</h3>
+
+                    <p>
+                        Support learning materials, assignments,
+                        attendance, academic projects, internships
+                        and student progress tracking.
+                    </p>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-icon orange-bg">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+
+                    <h3>Exams & Certification</h3>
+
+                    <p>
+                        Coordinate examination applications, schedules,
+                        hall tickets, marks, results and certificate
+                        management.
+                    </p>
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MISSION AND VISION -->
+    <section class="mission-section" id="our-mission">
+
+        <div class="section-container">
+
+            <div class="mission-grid">
+
+                <article class="mission-card mission">
+                    <div class="mission-icon">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+
+                    <span class="small-label">OUR MISSION</span>
+
+                    <h2>Make Education Management Simpler</h2>
+
+                    <p>
+                        Our mission is to streamline education and training
+                        administration through a unified platform that
+                        supports efficient workflows, accurate records,
+                        accessible information and better coordination.
+                    </p>
+                </article>
+
+                <article class="mission-card vision">
+                    <div class="mission-icon">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+
+                    <span class="small-label">OUR VISION</span>
+
+                    <h2>Build a Connected Learning Experience</h2>
+
+                    <p>
+                        Our vision is to support a connected education
+                        environment where students, trainers, counsellors,
+                        accounts teams and management can work together
+                        throughout the student lifecycle.
+                    </p>
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STUDENT LIFECYCLE -->
+    <section class="lifecycle-section">
+
+        <div class="section-container">
+
+            <div class="section-heading">
+                <span class="small-label">HOW THE SYSTEM WORKS</span>
+
+                <h2>
+                    From Admission to
+                    <span>Career Support</span>
+                </h2>
+
+                <p>
+                    Follow the student's progress through the connected
+                    modules of the SciPy education platform.
+                </p>
+            </div>
+
+            <div class="lifecycle-grid">
+
+                <div class="lifecycle-item">
+                   
+                    <i class="fa-solid fa-user-plus"></i>
+                    <h3>Admission</h3>
+                </div>
+
+                <div class="lifecycle-item">
+                   
+                    <i class="fa-solid fa-credit-card"></i>
+                    <h3>Fee Collection</h3>
+                </div>
+
+                <div class="lifecycle-item">
+                    
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>Learning</h3>
+                </div>
+
+                <div class="lifecycle-item">
+                   
+                    <i class="fa-solid fa-laptop-code"></i>
+                    <h3>Projects & Internship</h3>
+                </div>
+
+                <div class="lifecycle-item">
+                   
+                    <i class="fa-solid fa-file-circle-check"></i>
+                    <h3>Examination</h3>
+                </div>
+
+                <div class="lifecycle-item">
+                    
+                    <i class="fa-solid fa-award"></i>
+                    <h3>Results & Certificates</h3>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FINAL CTA -->
+    <section class="about-cta">
+
+        <div class="cta-content">
+            <span class="small-label">SCIPY TECHNOLOGIES</span>
+
+            <h2>Bringing Education Operations Together</h2>
+
+            <p>
+                A connected platform for managing admissions, learning,
+                payments, projects, examinations and student progress.
+            </p>
+
+           <a href="{% url 'home' %}" class="primary-btn">
+    Back to Home <i class="fa-solid fa-arrow-up"></i>
+</a>
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

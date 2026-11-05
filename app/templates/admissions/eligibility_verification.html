@@ -1,0 +1,270 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Eligibility Verification | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/eligibility_verification.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+<main class="page">
+
+    <!-- Header -->
+    <header class="hero">
+        <div class="hero-top">
+            <a href="{% url 'exam_application_dashboard' %}" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+
+            <span class="access-label">
+                <i class="fa-solid fa-shield-halved"></i>
+                Authorized Staff
+            </span>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-icon">
+                <i class="fa-solid fa-user-check"></i>
+            </div>
+
+            <div>
+                <p class="eyebrow">EXAMINATION MANAGEMENT</p>
+                <h1>Eligibility Verification</h1>
+                <p class="hero-description">
+                    Verify student eligibility before examination registration
+                    and maintain accurate verification records.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Notifications -->
+    {% if messages %}
+        <div class="messages-container" aria-live="polite">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>{{ message }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Information Cards -->
+    <section class="overview-grid">
+        <article class="overview-card">
+            <div class="overview-icon blue">
+                <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <div>
+                <h3>Student Verification</h3>
+                <p>Review student details and examination eligibility.</p>
+            </div>
+        </article>
+
+        <article class="overview-card">
+            <div class="overview-icon green">
+                <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+            <div>
+                <h3>Eligibility Decision</h3>
+                <p>Record whether a student meets the exam requirements.</p>
+            </div>
+        </article>
+
+        <article class="overview-card">
+            <div class="overview-icon purple">
+                <i class="fa-solid fa-file-shield"></i>
+            </div>
+            <div>
+                <h3>Verification History</h3>
+                <p>Review previously saved verification decisions.</p>
+            </div>
+        </article>
+    </section>
+
+    <!-- Verification Form -->
+    <section class="panel" id="eligibility-check">
+        <div class="section-heading">
+            <div class="section-icon">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+
+            <div>
+                <h2>Verify Student Eligibility</h2>
+                <p>Enter the required information and save the decision.</p>
+            </div>
+        </div>
+
+        <form method="post" class="verification-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-error-box">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+                {% for field in form %}
+                    <div class="form-group
+                        {% if field.name == 'remarks' %}full-width{% endif %}">
+
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            {% if field.field.required %}
+                                <span class="required">*</span>
+                            {% endif %}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small class="help-text">
+                                {{ field.help_text }}
+                            </small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <small class="error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                {{ error }}
+                            </small>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-notice">
+                <i class="fa-solid fa-circle-info"></i>
+                <p>
+                    Check the student's details and supporting requirements
+                    before saving the eligibility decision.
+                </p>
+            </div>
+
+            <div class="form-actions">
+                <button type="reset" class="btn btn-outline">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Reset
+                </button>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Verification
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Verification Records -->
+    <section class="panel" id="eligibility-check">
+        <div class="section-heading">
+            <div class="section-icon">
+                <i class="fa-solid fa-list-check"></i>
+            </div>
+
+            <div>
+                <h2>Verification Records</h2>
+                <p>View student eligibility decisions and verification details.</p>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Examination</th>
+                        <th>Eligibility</th>
+                        <th>Verified By</th>
+                        <th>Verified At</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for row in records %}
+                        <tr>
+                            <td>
+                                <div class="student-name">
+                                    <span class="student-avatar">
+                                        <i class="fa-solid fa-user"></i>
+                                    </span>
+                                    <span>{{ row.student }}</span>
+                                </div>
+                            </td>
+
+                            <td>{{ row.exam }}</td>
+
+                            <td>
+                                {% if row.is_eligible %}
+                                    <span class="status eligible">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        Eligible
+                                    </span>
+                                {% else %}
+                                    <span class="status not-eligible">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                        Not Eligible
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td>{{ row.verified_by|default:"—" }}</td>
+
+                            <td>
+                                {% if row.verified_at %}
+                                    {{ row.verified_at|date:"d M Y, H:i" }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+
+                            <td class="remarks">
+                                {{ row.remarks|default:"—" }}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="empty-state">
+                                <i class="fa-solid fa-folder-open"></i>
+                                <h3>No Verification Records</h3>
+                                <p>
+                                    Saved eligibility decisions will appear here.
+                                </p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <span>EduMate | Education Management System</span>
+        <span>SciPy Technologies Pvt. Ltd.</span>
+    </footer>
+
+</main>
+</body>
+</html>

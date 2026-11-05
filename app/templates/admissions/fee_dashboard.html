@@ -1,0 +1,814 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fee Management Dashboard | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/fee_dashboard.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="fee-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <a href="{% url 'home' %}" class="brand">
+            <img src="{% static 'images/company logo.png' %}"
+                 alt="SciPy Technologies"
+                 class="brand-logo">
+
+            <div class="brand-text">
+                <h2>EduMate</h2>
+                <span>Education Management</span>
+            </div>
+        </a>
+
+        <div class="sidebar-label">FINANCE MODULE</div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'fee_dashboard' %}"
+               class="nav-link active">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+
+           <a href="{% url 'fee_structure_create' %}" class="nav-link">
+    <i class="fa-solid fa-file-invoice-dollar"></i>
+    <span>Fee Structure</span>
+</a>
+
+            <a href="{% url 'fee_installment_create' %}" class="nav-link">
+    <i class="fa-solid fa-calendar-days"></i>
+    <span>Installment Management</span>
+</a>
+             <a href="{% url 'fee_payment_create' %}" class="nav-link">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                <span>Fee Collection</span>
+            </a>
+
+           <a href="{% url 'fee_invoice_create' %}" class="nav-link">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Invoices & Receipts</span>
+            </a>
+
+            <a href="{% url 'outstanding_fees' %}" class="nav-link">
+    <i class="fa-solid fa-clock"></i>
+    <span>Outstanding Fees</span>
+</a>
+
+           
+<a href="{% url 'fee_reminders' %}" class="nav-link">
+    <i class="fa-solid fa-bell"></i>
+    <span>Fee Reminders</span>
+</a>
+
+            
+
+        </nav>
+
+        
+
+    </aside>
+
+    <!-- MAIN AREA -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <button type="button"
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle sidebar"
+                    aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="breadcrumb">
+                
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="today-date">
+                    <i class="fa-regular fa-calendar"></i>
+                    {{ today|date:"d M Y" }}
+                </div>
+
+                <div class="profile">
+                    <div class="avatar">
+                        {{ request.user.username|first|upper }}
+                    </div>
+
+                    <div class="profile-details">
+                        <strong>{{ request.user.username }}</strong>
+                        <span>Accounts Dashboard</span>
+                    </div>
+                </div>
+
+                <form method="post"
+                      action="{% url 'logout' %}"
+                      class="logout-form">
+                    {% csrf_token %}
+
+                    <button type="submit" class="logout-button">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+
+            </div>
+        </header>
+
+        <section class="dashboard-content">
+
+            <!-- PAGE HEADING -->
+            <div class="page-heading">
+                <div>
+                    <span class="eyebrow">EDUCATION MANAGEMENT SYSTEM</span>
+
+                    <h1>Fee Management Dashboard</h1>
+
+                    <p>
+                        Manage course fees, installments, payments,
+                        invoices, receipts and outstanding balances
+                        in one place.
+                    </p>
+                </div>
+
+                
+            </div>
+
+            <!-- MESSAGES -->
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">
+                            <i class="fa-solid fa-circle-info"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- FINANCIAL STATISTICS -->
+            <section class="stats-grid">
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon purple">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <span>Total Fee Receivable</span>
+                    </div>
+
+                    <h2>₹{{ total_receivable|floatformat:2 }}</h2>
+                    <p>Total fees billed to students</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon green">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <span>Total Collected</span>
+                    </div>
+
+                    <h2>₹{{ total_collected|floatformat:2 }}</h2>
+                    <p>Payments recorded successfully</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon orange">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <span>Outstanding Fees</span>
+                    </div>
+
+                    <h2>₹{{ outstanding_amount|floatformat:2 }}</h2>
+                    <p>Remaining student balances</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-heading">
+                        <div class="stat-icon red">
+                            <i class="fa-solid fa-calendar-xmark"></i>
+                        </div>
+                        <span>Overdue Fees</span>
+                    </div>
+
+                    <h2>₹{{ overdue_amount|floatformat:2 }}</h2>
+                    <p>Unpaid installments past due date</p>
+                </article>
+
+            </section>
+
+            <!-- QUICK ACTIONS -->
+            <section class="panel quick-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Quick Actions</h2>
+                        <p>Frequently used finance operations</p>
+                    </div>
+
+                    <i class="fa-solid fa-bolt heading-icon"></i>
+                </div>
+
+                <div class="quick-actions">
+
+                    <a href="#fee-structure" class="quick-action">
+                        <div class="quick-icon purple">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                        </div>
+                        <div>
+                            <strong>Fee Structure</strong>
+                            <span>Review course fees and discounts</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="#installments" class="quick-action">
+                        <div class="quick-icon blue">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <div>
+                            <strong>Installments</strong>
+                            <span>Track due dates and balances</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="#payments" class="quick-action">
+                        <div class="quick-icon green">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                        </div>
+                        <div>
+                            <strong>Fee Collection</strong>
+                            <span>Review recorded payments</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="#invoices" class="quick-action">
+                        <div class="quick-icon orange">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                        <div>
+                            <strong>Invoices & Receipts</strong>
+                            <span>Review billing records</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+            </section>
+
+            <!-- FEE STRUCTURE -->
+            <section class="panel" id="fee-structure">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Course Fee Structure</h2>
+                        <p>Course charges, discounts, tax and final fees</p>
+                    </div>
+
+                    <i class="fa-solid fa-file-invoice-dollar heading-icon"></i>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>COURSE</th>
+                                <th>COURSE FEE</th>
+                                <th>REGISTRATION</th>
+                                <th>ADMISSION</th>
+                                <th>EXAM</th>
+                                <th>PROJECT</th>
+                                <th>DISCOUNT</th>
+                                <th>FINAL AMOUNT</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for fee in fee_structures %}
+                            <tr>
+                                <td class="student-name">
+                                    {{ fee.course }}
+                                </td>
+                                <td>₹{{ fee.course_fee|floatformat:2 }}</td>
+                                <td>₹{{ fee.registration_fee|floatformat:2 }}</td>
+                                <td>₹{{ fee.admission_fee|floatformat:2 }}</td>
+                                <td>₹{{ fee.exam_fee|floatformat:2 }}</td>
+                                <td>₹{{ fee.project_fee|floatformat:2 }}</td>
+                                <td>₹{{ fee.discount|floatformat:2 }}</td>
+                                <td class="amount-cell">
+                                    ₹{{ fee.final_amount|floatformat:2 }}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    No fee structures are available yet.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section-note">
+                    Material, certification, other fees and applicable
+                    taxes should also be included in your fee structure.
+                </div>
+            </section>
+
+            <!-- INSTALLMENTS -->
+            <section class="panel" id="installments">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Installment Management</h2>
+                        <p>Monitor student installments, payments and due dates</p>
+                    </div>
+
+                    <i class="fa-solid fa-calendar-days heading-icon"></i>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>STUDENT</th>
+                                <th>INSTALLMENT</th>
+                                <th>AMOUNT</th>
+                                <th>PAID</th>
+                                <th>PENDING</th>
+                                <th>DUE DATE</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for installment in recent_installments %}
+                            <tr>
+                                <td class="student-name">
+                                    {{ installment.student }}
+                                </td>
+                                <td>{{ installment.installment_number }}</td>
+                                <td>₹{{ installment.amount|floatformat:2 }}</td>
+                                <td>₹{{ installment.amount_paid|floatformat:2 }}</td>
+                                <td class="amount-cell">
+                                    ₹{{ installment.pending_amount|floatformat:2 }}
+                                </td>
+                                <td>
+                                    {{ installment.due_date|date:"d M Y"|default:"—" }}
+                                </td>
+                                <td>
+                                    <span class="status-badge
+                                        {% if installment.due_date and installment.due_date < today and installment.pending_amount > 0 %}status-overdue
+                                        {% elif installment.pending_amount <= 0 %}status-paid
+                                        {% else %}status-pending{% endif %}">
+                                        {% if installment.pending_amount <= 0 %}
+                                            Paid
+                                        {% elif installment.due_date and installment.due_date < today %}
+                                            Overdue
+                                        {% else %}
+                                            Pending
+                                        {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="empty-state">
+                                    No installment records found.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+            <!-- PAYMENTS -->
+            <section class="panel" id="payments">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Recent Fee Collections</h2>
+                        <p>Payment transactions recorded by the accounts team</p>
+                    </div>
+
+                    <i class="fa-solid fa-money-bill-transfer heading-icon"></i>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>RECEIPT NO.</th>
+                                <th>STUDENT</th>
+                                <th>COURSE</th>
+                                <th>AMOUNT</th>
+                                <th>PAYMENT DATE</th>
+                                <th>PAYMENT MODE</th>
+                                <th>COLLECTED BY</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for payment in recent_payments %}
+                            <tr>
+                                <td>{{ payment.receipt_number|default:"—" }}</td>
+                                <td class="student-name">{{ payment.student }}</td>
+                                <td>{{ payment.course|default:"—" }}</td>
+                                <td class="amount-cell">
+                                    ₹{{ payment.amount|floatformat:2 }}
+                                </td>
+                                <td>
+                                    {{ payment.payment_date|date:"d M Y"|default:"—" }}
+                                </td>
+                                <td>{{ payment.payment_mode|default:"—" }}</td>
+                                <td>{{ payment.collected_by|default:"—" }}</td>
+                                <td>
+                                    <span class="status-badge status-paid">
+                                        {{ payment.status|default:"Recorded" }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    No payment records found.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+            <!-- INVOICES -->
+            <section class="panel" id="invoices">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Recent Invoices</h2>
+                        <p>Review billed amounts and outstanding balances</p>
+                    </div>
+
+                    <i class="fa-solid fa-receipt heading-icon"></i>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>INVOICE NO.</th>
+                                <th>STUDENT</th>
+                                <th>INVOICE DATE</th>
+                                <th>TOTAL AMOUNT</th>
+                                <th>PAID AMOUNT</th>
+                                <th>BALANCE</th>
+                                <th>DOCUMENT</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for invoice in recent_invoices %}
+                            <tr>
+                                <td>{{ invoice.invoice_number }}</td>
+                                <td class="student-name">{{ invoice.student }}</td>
+                                <td>
+                                    {{ invoice.invoice_date|date:"d M Y"|default:"—" }}
+                                </td>
+                                <td>₹{{ invoice.total_amount|floatformat:2 }}</td>
+                                <td>₹{{ invoice.paid_amount|floatformat:2 }}</td>
+                                <td class="amount-cell">
+                                    ₹{{ invoice.balance_amount|floatformat:2 }}
+                                </td>
+                                <td>
+                                    {% if invoice.pdf_file %}
+                                        <a href="{{ invoice.pdf_file.url }}"
+                                           class="document-link"
+                                           target="_blank"
+                                           rel="noopener">
+                                            <i class="fa-solid fa-download"></i>
+                                            Download PDF
+                                        </a>
+                                    {% else %}
+                                        <span class="muted-text">
+                                            Not generated
+                                        </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="empty-state">
+                                    No invoices are available yet.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+            <!-- OUTSTANDING FEES -->
+            <section class="panel" id="outstanding">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Outstanding Fee Management</h2>
+                        <p>Filter students with pending or overdue installments</p>
+                    </div>
+
+                    <i class="fa-solid fa-filter heading-icon"></i>
+                </div>
+
+                <form method="get"
+                      action="{% url 'fee_dashboard' %}"
+                      class="filter-form">
+
+                    <div class="filter-field">
+                        <label for="student">Student</label>
+                        <input type="text"
+                               id="student"
+                               name="student"
+                               value="{{ filters.student }}"
+                               placeholder="Search student">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="course">Course</label>
+                        <input type="text"
+                               id="course"
+                               name="course"
+                               value="{{ filters.course }}"
+                               placeholder="Course name">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="batch">Batch</label>
+                        <input type="text"
+                               id="batch"
+                               name="batch"
+                               value="{{ filters.batch }}"
+                               placeholder="Batch name">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="counsellor">Counsellor</label>
+                        <input type="text"
+                               id="counsellor"
+                               name="counsellor"
+                               value="{{ filters.counsellor }}"
+                               placeholder="Counsellor name">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="due_date">Due on or before</label>
+                        <input type="date"
+                               id="due_date"
+                               name="due_date"
+                               value="{{ filters.due_date }}">
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="payment_status">Payment Status</label>
+                        <select id="payment_status" name="payment_status">
+                            <option value="">All outstanding</option>
+                            <option value="pending"
+                                {% if filters.payment_status == "pending" %}selected{% endif %}>
+                                Pending
+                            </option>
+                            <option value="overdue"
+                                {% if filters.payment_status == "overdue" %}selected{% endif %}>
+                                Overdue
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button type="submit" class="primary-button">
+                            <i class="fa-solid fa-filter"></i>
+                            Apply Filters
+                        </button>
+
+                        <a href="{% url 'fee_dashboard' %}"
+                           class="secondary-button">
+                            Reset
+                        </a>
+                    </div>
+
+                </form>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>STUDENT</th>
+                                <th>COURSE</th>
+                                <th>BATCH</th>
+                                <th>COUNSELLOR</th>
+                                <th>INSTALLMENT</th>
+                                <th>DUE DATE</th>
+                                <th>PENDING AMOUNT</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for installment in outstanding_installments %}
+                            <tr>
+                                <td class="student-name">
+                                    {{ installment.student }}
+                                </td>
+                                <td>{{ installment.course|default:"—" }}</td>
+                                <td>{{ installment.batch|default:"—" }}</td>
+                                <td>{{ installment.counsellor|default:"—" }}</td>
+                                <td>{{ installment.installment_number }}</td>
+                                <td>
+                                    {{ installment.due_date|date:"d M Y"|default:"—" }}
+                                </td>
+                                <td class="amount-cell">
+                                    ₹{{ installment.pending_amount|floatformat:2 }}
+                                </td>
+                                <td>
+                                    {% if installment.due_date and installment.due_date < today %}
+                                        <span class="status-badge status-overdue">
+                                            Overdue
+                                        </span>
+                                    {% else %}
+                                        <span class="status-badge status-pending">
+                                            Pending
+                                        </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="empty-state">
+                                    No outstanding installments match your filters.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+            <!-- PAYMENT GATEWAYS -->
+            <section class="panel gateway-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Online Payment Gateway</h2>
+                        <p>Gateway integration options for student fee payments</p>
+                    </div>
+
+                    <i class="fa-solid fa-shield-halved heading-icon"></i>
+                </div>
+
+                <div class="gateway-grid">
+
+                    <article class="gateway-card">
+                        <div class="gateway-icon razorpay">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <div>
+                            <h3>Razorpay</h3>
+                            <p>Online fee payment integration</p>
+                        </div>
+                        <span class="gateway-label">Integration required</span>
+                    </article>
+
+                    <article class="gateway-card">
+                        <div class="gateway-icon cashfree">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                        <div>
+                            <h3>Cashfree</h3>
+                            <p>Digital payment processing</p>
+                        </div>
+                        <span class="gateway-label">Integration required</span>
+                    </article>
+
+                    <article class="gateway-card">
+                        <div class="gateway-icon stripe">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </div>
+                        <div>
+                            <h3>Stripe</h3>
+                            <p>Card and online payment processing</p>
+                        </div>
+                        <span class="gateway-label">Integration required</span>
+                    </article>
+
+                </div>
+
+                <p class="section-note">
+                    A gateway must be configured with verified server-side
+                    payment callbacks before online payments can update student
+                    balances or generate official receipts.
+                </p>
+
+            </section>
+
+            <!-- REMINDERS -->
+            <section class="panel reminder-panel" id="reminders">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Fee Reminder Management</h2>
+                        <p>Monitor unpaid installments and prepare student reminders</p>
+                    </div>
+
+                    <i class="fa-solid fa-bell heading-icon"></i>
+                </div>
+
+                <div class="reminder-content">
+                    <div class="reminder-icon">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                    </div>
+
+                    <div>
+                        <h3>Automated Fee Reminders</h3>
+                        <p>
+                            Reminders can be sent before due dates and when
+                            payments become overdue through email, SMS,
+                            WhatsApp or LMS notifications.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="section-note">
+                    Reminder delivery requires a configured email, SMS,
+                    WhatsApp or LMS notification service.
+                </div>
+
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="dashboard-footer">
+                <span>&copy; {% now "Y" %} SciPy Technologies</span>
+                <span>EduMate Education Management System</span>
+            </footer>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+
+    menuToggle.addEventListener("click", function () {
+        const isOpen = sidebar.classList.toggle("sidebar-open");
+
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+
+        menuToggle.innerHTML = isOpen
+            ? '<i class="fa-solid fa-xmark"></i>'
+            : '<i class="fa-solid fa-bars"></i>';
+    });
+
+    document.querySelectorAll(".sidebar-nav a[href^='#']").forEach(link => {
+        link.addEventListener("click", function () {
+            sidebar.classList.remove("sidebar-open");
+            menuToggle.setAttribute("aria-expanded", "false");
+            menuToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+        });
+    });
+</script>
+
+</body>
+</html>

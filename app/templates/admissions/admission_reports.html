@@ -1,0 +1,186 @@
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Admission Reports | EduMate{% endblock %}
+{% block breadcrumb %}Admission Reports{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admission_reports.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="admission-reports">
+
+    <div class="report-heading">
+        <div>
+            <span class="report-eyebrow">EDUCATION MANAGEMENT</span>
+            <h1>Admission Reports</h1>
+            <p>Review admission statistics, student registrations and course-wise totals.</p>
+        </div>
+
+        <div class="report-heading-actions">
+
+            <a href="{% url 'admission_dashboard' %}" class="report-back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+
+            <a href="{% url 'admission_registration' %}" class="report-primary-btn">
+                <i class="fa-solid fa-user-plus"></i>
+                Register Admission
+            </a>
+
+        </div>
+    </div>
+
+
+    <section class="report-stats">
+        <article class="report-stat">
+            <div class="report-stat-icon purple">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <div>
+                <span>Total Students</span>
+                <h2>{{ total_students|default:0 }}</h2>
+            </div>
+        </article>
+
+        <article class="report-stat">
+            <div class="report-stat-icon blue">
+                <i class="fa-solid fa-file-circle-check"></i>
+            </div>
+            <div>
+                <span>Total Admissions</span>
+                <h2>{{ total_admissions|default:0 }}</h2>
+            </div>
+        </article>
+
+        <article class="report-stat">
+            <div class="report-stat-icon green">
+                <i class="fa-solid fa-user-check"></i>
+            </div>
+            <div>
+                <span>Confirmed Admissions</span>
+                <h2>{{ confirmed_admissions|default:0 }}</h2>
+            </div>
+        </article>
+
+        <article class="report-stat">
+            <div class="report-stat-icon orange">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+            <div>
+                <span>Pending Admissions</span>
+                <h2>{{ pending_admissions|default:0 }}</h2>
+            </div>
+        </article>
+    </section>
+
+    <section class="report-panel">
+        <div class="report-panel-heading">
+            <div>
+                <h2>Filter Admission Records</h2>
+                <p>Search by student name, admission number or status.</p>
+            </div>
+        </div>
+
+        <form method="get" class="report-filter-form">
+            <div class="report-field">
+                <label for="{{ filter_form.search.id_for_label }}">Student Search</label>
+                {{ filter_form.search }}
+            </div>
+
+            <div class="report-field">
+                <label for="{{ filter_form.status.id_for_label }}">Admission Status</label>
+                {{ filter_form.status }}
+            </div>
+
+            <button type="submit" class="report-primary-btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Apply Filters
+            </button>
+
+            <a href="{% url 'admission_reports' %}" class="report-reset-btn">
+                Reset
+            </a>
+        </form>
+    </section>
+
+    <section class="report-panel">
+        <div class="report-panel-heading">
+            <div>
+                <h2>Course-wise Admissions</h2>
+                <p>Number of admission records for each course in the current filter.</p>
+            </div>
+        </div>
+
+        <div class="course-report-list">
+            {% for course in course_report %}
+                <div class="course-report-row">
+                    <span>{{ course.course__name|default:"Unassigned course" }}</span>
+                    <strong>{{ course.total }}</strong>
+                </div>
+            {% empty %}
+                <div class="report-empty">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <p>No course admission records match your filters.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="report-panel">
+        <div class="report-panel-heading">
+            <div>
+                <h2>Recent Admissions</h2>
+                <p>The latest matching admission records.</p>
+            </div>
+
+           
+        </div>
+
+        <div class="report-table-wrapper">
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Admission Number</th>
+                        <th>Student</th>
+                        <th>Course</th>
+                        <th>Batch</th>
+                        <th>Admission Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for admission in recent_admissions %}
+                    <tr>
+                        <td>{{ admission.admission_number|default:"—" }}</td>
+                        <td>{{ admission.student.full_name|default:"—" }}</td>
+                        <td>{{ admission.course|default:"—" }}</td>
+                        <td>{{ admission.batch|default:"—" }}</td>
+                        <td>{{ admission.admission_date|date:"d M Y"|default:"—" }}</td>
+                        <td>
+                            <span class="report-status">
+                                {{ admission.admission_status|default:"Unknown" }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="report-empty">
+                            No admission records found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer class="report-footer">
+        <span>&copy; {% now "Y" %} SciPy Technologies</span>
+        <span>EduMate Education Management System</span>
+    </footer>
+
+</div>
+{% endblock %}

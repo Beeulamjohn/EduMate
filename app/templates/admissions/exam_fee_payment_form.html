@@ -1,0 +1,182 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ page_title }} | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/exam_fee_payment.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+<div class="form-page">
+
+    <header class="form-header">
+        <a href="{% url 'exam_fee_payment_list' %}" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Exam Fee &amp; Payment
+        </a>
+
+        <div class="form-title">
+            <div class="stat-icon blue">
+                <i class="fa-solid fa-money-bill-wave"></i>
+            </div>
+
+            <div>
+                <h1>{{ page_title }}</h1>
+                <p>
+                    Record the examination fee and payment transaction details.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <section class="form-card">
+
+        <div class="form-card-heading">
+            <h2>Payment Information</h2>
+            <p>Enter the correct details before saving the record.</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+
+                <div class="field full-width">
+                    <label for="{{ form.application.id_for_label }}">
+                        Examination Application *
+                    </label>
+
+                    {{ form.application }}
+
+                    {% for error in form.application.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label for="{{ form.fee_amount.id_for_label }}">
+                        Examination Fee (₹) *
+                    </label>
+
+                    {{ form.fee_amount }}
+
+                    {% for error in form.fee_amount.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label for="{{ form.amount_paid.id_for_label }}">
+                        Amount Paid (₹) *
+                    </label>
+
+                    {{ form.amount_paid }}
+
+                    {% for error in form.amount_paid.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label for="{{ form.payment_method.id_for_label }}">
+                        Payment Method *
+                    </label>
+
+                    {{ form.payment_method }}
+
+                    {% for error in form.payment_method.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label for="{{ form.payment_date.id_for_label }}">
+                        Payment Date *
+                    </label>
+
+                    {{ form.payment_date }}
+
+                    {% for error in form.payment_date.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field full-width">
+                    <label for="{{ form.transaction_id.id_for_label }}">
+                        Transaction / Reference ID
+                    </label>
+
+                    {{ form.transaction_id }}
+
+                    {% for error in form.transaction_id.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field full-width">
+                    <label for="{{ form.remarks.id_for_label }}">
+                        Remarks
+                    </label>
+
+                    {{ form.remarks }}
+
+                    {% for error in form.remarks.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <div class="form-notice">
+                <i class="fa-solid fa-circle-info"></i>
+                Saving this form creates a Pending payment record. An authorized
+                staff member must verify the payment separately.
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'exam_fee_payment_list' %}"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Payment
+                </button>
+            </div>
+        </form>
+    </section>
+
+</div>
+
+</body>
+</html>

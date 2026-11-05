@@ -1,0 +1,160 @@
+
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} | EduMate{% endblock %}
+{% block breadcrumb %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/counselling.css' %}">
+
+<div class="counselling-page">
+
+    <div class="counselling-heading">
+        <div>
+            <span class="eyebrow">ADMISSION DEPARTMENT</span>
+            <h1>{{ page_title }}</h1>
+            <p>Enter the student's counselling and course recommendation details.</p>
+        </div>
+
+        <a href="{% url 'counselling_management' %}"
+           class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Counselling
+        </a>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="counselling-alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card counselling-panel">
+        <div class="card-header">
+            <div>
+                <h2>Counselling Information</h2>
+                <p>Fields marked with * are required.</p>
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="form-section">
+                    <h3><i class="fa-solid fa-user-graduate"></i> Student Details</h3>
+
+                    <div class="form-grid">
+                        {% for field in form %}
+                            {% if field.name == "enquiry" or field.name == "counsellor" %}
+                                <div class="form-group">
+                                    <label for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                        {% if field.field.required %}<span class="required">*</span>{% endif %}
+                                    </label>
+
+                                    {{ field }}
+
+                                    {% if field.help_text %}
+                                        <small class="help-text">{{ field.help_text }}</small>
+                                    {% endif %}
+
+                                    {% for error in field.errors %}
+                                        <small class="field-error">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fa-solid fa-bullseye"></i> Requirements and Course</h3>
+
+                    <div class="form-grid">
+                        {% for field in form %}
+                            {% if field.name == "student_requirements" or field.name == "career_objective" or field.name == "recommended_course" %}
+                                <div class="form-group {% if field.field.widget.input_type == 'textarea' %}full-width{% endif %}">
+                                    <label for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                        {% if field.field.required %}<span class="required">*</span>{% endif %}
+                                    </label>
+
+                                    {{ field }}
+
+                                    {% for error in field.errors %}
+                                        <small class="field-error">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fa-solid fa-indian-rupee-sign"></i> Fees and Follow-up</h3>
+
+                    <div class="form-grid">
+                        {% for field in form %}
+                            {% if field.name == "fee_discussion" or field.name == "scholarship_details" or field.name == "counselling_status" or field.name == "next_followup_date" %}
+                                <div class="form-group {% if field.name == 'fee_discussion' %}full-width{% endif %}">
+                                    <label for="{{ field.id_for_label }}">
+                                        {{ field.label }}
+                                        {% if field.field.required %}<span class="required">*</span>{% endif %}
+                                    </label>
+
+                                    {{ field }}
+
+                                    {% for error in field.errors %}
+                                        <small class="field-error">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fa-solid fa-note-sticky"></i> Additional Remarks</h3>
+
+                    {% for field in form %}
+                        {% if field.name == "remarks" %}
+                            <div class="form-group">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+
+                                {% for error in field.errors %}
+                                    <small class="field-error">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div class="form-actions">
+                    <a href="{% url 'counselling_management' %}"
+                       class="btn btn-secondary">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        {{ button_text }}
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

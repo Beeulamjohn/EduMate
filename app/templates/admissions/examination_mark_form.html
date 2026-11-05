@@ -1,0 +1,166 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ page_title }} | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/examination_mark_management.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+<div class="form-page">
+
+    <header class="form-header">
+        <a href="{% url 'examination_mark_management' %}"
+           class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Mark Management
+        </a>
+
+        <div class="form-title">
+            <div class="stat-icon blue">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <div>
+                <h1>{{ page_title }}</h1>
+                <p>Enter accurate marks for the selected examination application.</p>
+            </div>
+        </div>
+    </header>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <section class="form-card">
+
+        <div class="form-card-heading">
+            <h2>Marks Information</h2>
+            <p>Fields marked with * are required.</p>
+        </div>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+
+                <div class="field full-width">
+                    <label for="{{ form.application.id_for_label }}">
+                        Exam Application *
+                    </label>
+                    {{ form.application }}
+                    {% for error in form.application.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field full-width">
+                    <label for="{{ form.subject.id_for_label }}">
+                        Examination Subject *
+                    </label>
+                    {{ form.subject }}
+                    {% for error in form.subject.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label for="{{ form.marks_obtained.id_for_label }}">
+                        Exam Marks *
+                    </label>
+                    {{ form.marks_obtained }}
+                    {% for error in form.marks_obtained.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label for="{{ form.internal_marks.id_for_label }}">
+                        Internal Marks
+                    </label>
+                    {{ form.internal_marks }}
+                    {% for error in form.internal_marks.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field">
+                    <label for="{{ form.practical_marks.id_for_label }}">
+                        Practical Marks
+                    </label>
+                    {{ form.practical_marks }}
+                    {% for error in form.practical_marks.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field full-width">
+                    <label class="checkbox-label"
+                           for="{{ form.is_absent.id_for_label }}">
+                        {{ form.is_absent }}
+                        Student was absent
+                    </label>
+                    {% for error in form.is_absent.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="field full-width">
+                    <label for="{{ form.examiner_remarks.id_for_label }}">
+                        Examiner Remarks
+                    </label>
+                    {{ form.examiner_remarks }}
+                    {% for error in form.examiner_remarks.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <div class="form-notice">
+                <i class="fa-solid fa-circle-info"></i>
+                Marks are saved as Draft. Submit them for approval from the
+                mark management list.
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'examination_mark_management' %}"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    {{ button_text }}
+                </button>
+            </div>
+
+        </form>
+    </section>
+
+</div>
+
+</body>
+</html>

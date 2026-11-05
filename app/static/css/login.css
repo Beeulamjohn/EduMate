@@ -1,0 +1,560 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ==============================
+   Global Styles
+============================== */
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
+
+    --text: #1e293b;
+    --text-light: #64748b;
+
+    --border: #e2e8f0;
+    --background: #f5f7fb;
+    --white: #ffffff;
+
+    --success-bg: #f0fdf4;
+    --success-text: #166534;
+
+    --error-bg: #fef2f2;
+    --error-text: #b91c1c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+/* ==============================
+   Main Login Page
+============================== */
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 24px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 560px;
+    padding: 44px 48px 35px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.06);
+}
+
+/* ==============================
+   Brand
+============================== */
+
+.brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 38px;
+}
+
+.brand-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 10px;
+    font-size: 23px;
+}
+
+.brand-name {
+    color: var(--text);
+    font-size: 23px;
+    font-weight: 600;
+    letter-spacing: -0.6px;
+}
+
+.brand-name strong {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* ==============================
+   Login Heading
+============================== */
+
+.form-heading {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.form-heading h1 {
+    margin-bottom: 9px;
+    color: var(--text);
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+}
+
+.form-heading p {
+    color: var(--text-light);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* ==============================
+   Django Messages
+============================== */
+
+.message {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 13px 15px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.message i {
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.message.success {
+    color: var(--success-text);
+    background: var(--success-bg);
+    border-color: #bbf7d0;
+}
+
+.message.error {
+    color: var(--error-text);
+    background: var(--error-bg);
+    border-color: #fecaca;
+}
+
+.message.warning {
+    color: #92400e;
+    background: #fffbeb;
+    border-color: #fde68a;
+}
+
+.message.info {
+    color: #1d4ed8;
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+/* ==============================
+   Login Form
+============================== */
+
+.login-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 9px;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ==============================
+   Input Fields
+============================== */
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    color: #94a3b8;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.input-wrapper input {
+    width: 100%;
+    height: 52px;
+    padding: 0 48px 0 46px;
+    background: var(--white);
+    color: var(--text);
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.input-wrapper input::placeholder {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.input-wrapper input:hover {
+    border-color: #94a3b8;
+}
+
+.input-wrapper input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+/* ==============================
+   Show / Hide Password
+============================== */
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    color: #64748b;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease,
+                color 0.2s ease;
+}
+
+.toggle-password:hover {
+    color: var(--primary);
+    background: var(--primary-light);
+}
+
+.toggle-password:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* ==============================
+   Remember Me / Forgot Password
+============================== */
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 3px 0 27px;
+}
+
+.remember-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #475569;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.remember-option input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+.forgot-link {
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.forgot-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* ==============================
+   Sign In Button
+============================== */
+
+.login-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 52px;
+    padding: 13px 20px;
+    background: var(--primary);
+    color: var(--white);
+    border: 1px solid var(--primary);
+    border-radius: 7px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.login-button i {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+}
+
+.login-button:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.login-button:hover i {
+    transform: translateX(3px);
+}
+
+.login-button:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.25);
+    outline-offset: 3px;
+}
+
+/* ==============================
+   Register Link
+============================== */
+
+.signup-prompt {
+    margin-top: 24px;
+    color: var(--text-light);
+    text-align: center;
+    font-size: 13px;
+}
+
+.signup-prompt a {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.signup-prompt a:hover {
+    text-decoration: underline;
+}
+
+/* ==============================
+   Back to Home Button
+============================== */
+
+.back-home-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.back-home-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    min-height: 43px;
+    padding: 10px 22px;
+    background: var(--white);
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.back-home-button i {
+    font-size: 13px;
+    transition: transform 0.2s ease;
+}
+
+.back-home-button:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.back-home-button:hover i {
+    transform: translateX(-3px);
+}
+
+.back-home-button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+/* ==============================
+   Security Note
+============================== */
+
+.security-note {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    color: #64748b;
+    text-align: center;
+    font-size: 12px;
+}
+
+.security-note i {
+    color: #16a34a;
+    font-size: 13px;
+}
+
+/* ==============================
+   Footer
+============================== */
+
+.form-footer {
+    margin-top: 30px;
+    padding-top: 22px;
+    border-top: 1px solid #f1f5f9;
+    text-align: center;
+}
+
+.form-footer p {
+    color: var(--text-light);
+    font-size: 12px;
+}
+
+.form-footer strong {
+    color: #475569;
+    font-weight: 600;
+}
+
+.form-footer .copyright {
+    margin-top: 5px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+/* ==============================
+   Responsive Design
+============================== */
+
+@media (max-width: 600px) {
+    .login-page {
+        padding: 25px 15px;
+        align-items: center;
+    }
+
+    .login-container {
+        max-width: 100%;
+        padding: 32px 24px 27px;
+        border-radius: 11px;
+    }
+
+    .brand {
+        margin-bottom: 30px;
+    }
+
+    .brand-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 21px;
+    }
+
+    .brand-name {
+        font-size: 20px;
+    }
+
+    .form-heading h1 {
+        font-size: 26px;
+    }
+
+    .form-heading p {
+        font-size: 13px;
+    }
+
+    .form-group {
+        margin-bottom: 21px;
+    }
+
+    .input-wrapper input {
+        height: 49px;
+    }
+
+    .form-options {
+        gap: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    .login-container {
+        padding: 27px 17px 23px;
+    }
+
+    .brand-name {
+        font-size: 18px;
+    }
+
+    .form-heading h1 {
+        font-size: 23px;
+    }
+
+    .form-options {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+/* ==============================
+   Reduced Motion Accessibility
+============================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}

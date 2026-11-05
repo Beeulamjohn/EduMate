@@ -1,0 +1,163 @@
+
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Confirm Admission | EduMate{% endblock %}
+{% block breadcrumb %}Admission Confirmation{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admission_confirmation.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="confirmation-page">
+
+    <div class="confirmation-heading">
+        <div>
+            <span class="eyebrow">FINAL ADMISSION REVIEW</span>
+            <h1>Confirm Admission</h1>
+            <p>Review the student's admission details before confirming.</p>
+        </div>
+
+        <a href="{% url 'admission_detail' admission.pk %}"
+           class="confirmation-btn btn-outline">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Details
+        </a>
+    </div>
+
+    {% if messages %}
+        <div class="confirmation-messages">
+            {% for message in messages %}
+                <div class="confirmation-alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <section class="confirmation-card">
+
+        <div class="card-heading">
+            <span class="card-icon">
+                <i class="fa-solid fa-clipboard-check"></i>
+            </span>
+            <div>
+                <h2>Admission Summary</h2>
+                <p>Check the information below before taking action.</p>
+            </div>
+        </div>
+
+        <dl class="confirmation-details">
+
+            <div class="detail-row">
+                <dt>Admission Number</dt>
+                <dd>{{ admission.admission_number }}</dd>
+            </div>
+
+            <div class="detail-row">
+                <dt>Student ID</dt>
+                <dd>{{ admission.student.student_id }}</dd>
+            </div>
+
+            <div class="detail-row">
+                <dt>Student Name</dt>
+                <dd>{{ admission.student.full_name }}</dd>
+            </div>
+
+            <div class="detail-row">
+                <dt>Course</dt>
+                <dd>{{ admission.course.name }}</dd>
+            </div>
+
+            <div class="detail-row">
+                <dt>Admission Date</dt>
+                <dd>{{ admission.admission_date|date:"d M Y" }}</dd>
+            </div>
+
+            <div class="detail-row">
+                <dt>Document Verification</dt>
+                <dd>
+                    {% if admission.all_mandatory_documents_verified %}
+                        <span class="confirmation-status status-verified">
+                            <i class="fa-solid fa-circle-check"></i>
+                            All mandatory documents verified
+                        </span>
+                    {% else %}
+                        <span class="confirmation-status status-warning">
+                            <i class="fa-solid fa-clock"></i>
+                            Documents pending
+                        </span>
+                    {% endif %}
+                </dd>
+            </div>
+
+            <div class="detail-row">
+                <dt>Payment Status</dt>
+                <dd>{{ admission.get_payment_status_display }}</dd>
+            </div>
+
+            <div class="detail-row">
+                <dt>Outstanding Balance</dt>
+                <dd class="balance-amount">
+                    ₹{{ admission.outstanding_balance|floatformat:2 }}
+                </dd>
+            </div>
+
+        </dl>
+
+        <div class="confirmation-action">
+
+            {% if admission.admission_status == "Confirmed" %}
+
+                <div class="confirmation-alert success">
+                    <i class="fa-solid fa-circle-check"></i>
+                    This admission is already confirmed.
+                </div>
+
+            {% elif admission.admission_status == "Cancelled" %}
+
+                <div class="confirmation-alert error">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    Cancelled admissions cannot be confirmed.
+                </div>
+
+            {% elif not admission.all_mandatory_documents_verified %}
+
+                <div class="confirmation-alert error">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    All mandatory documents must be uploaded and verified
+                    before admission confirmation.
+                </div>
+
+                <a href="{% url 'document_verification' admission.pk %}"
+                   class="confirmation-btn btn-outline">
+                    <i class="fa-solid fa-folder-open"></i>
+                    Review Documents
+                </a>
+
+            {% else %}
+
+                <p class="confirmation-note">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Confirm that you have reviewed the student's details
+                    and documents. This action updates the admission status
+                    to Confirmed.
+                </p>
+
+                <form method="post" class="confirmation-form">
+                    {% csrf_token %}
+
+                    <button type="submit" class="confirmation-btn btn-primary">
+                        <i class="fa-solid fa-check-circle"></i>
+                        Confirm Admission
+                    </button>
+                </form>
+
+            {% endif %}
+
+        </div>
+    </section>
+
+</div>
+{% endblock %}

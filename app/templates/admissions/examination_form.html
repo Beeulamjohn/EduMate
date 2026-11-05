@@ -1,0 +1,103 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/examination_management.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+<div class="form-page">
+
+    <header class="form-header">
+        <a href="{% url 'examination_management' %}" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Examination Management
+        </a>
+
+        <div class="form-title">
+            <div class="stat-icon blue">
+                <i class="fa-solid fa-clipboard-list"></i>
+            </div>
+            <div>
+                <h1>{{ page_title }}</h1>
+                <p>Enter the examination schedule, venue and assessment details.</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="form-card">
+
+        <div class="form-card-heading">
+            <h2>Examination Information</h2>
+            <p>Complete the required fields below.</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+
+                {% for field in form %}
+                    <div class="field {% if field.name == 'instructions' %}full-width{% endif %}">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            {% if field.field.required %}*{% endif %}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small class="help-text">
+                                {{ field.help_text }}
+                            </small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <small class="field-error">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="form-notice">
+                <i class="fa-solid fa-circle-info"></i>
+                Ensure the exam date, start time, end time and duration match.
+                Passing marks cannot exceed maximum marks.
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'examination_management' %}"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    {{ button_text }}
+                </button>
+            </div>
+        </form>
+    </section>
+
+</div>
+
+</body>
+</html>

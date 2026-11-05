@@ -1,0 +1,358 @@
+ 
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Outstanding Fees | EduMate{% endblock %}
+
+{% block breadcrumb %}
+Fee Management / Outstanding Fees
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/outstanding_fees.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<main class="outstanding-page">
+    <nav class="breadcrumb outstanding-back-navigation"
+     aria-label="Breadcrumb">
+
+    <div class="breadcrumb-left">
+        <a href="{% url 'fee_dashboard' %}">Fee Management</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>Outstanding Fees</span>
+    </div>
+
+    <div class="back-navigation">
+        <button type="button" class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+        </button>
+    </div>
+
+</nav>
+
+    <!-- Page Header -->
+    <section class="outstanding-hero">
+        <div class="outstanding-hero-content">
+            <div class="outstanding-breadcrumb-label">
+                <i class="fa-solid fa-wallet"></i>
+                <span>FEE MANAGEMENT</span>
+            </div>
+
+            <h1>Outstanding Fees</h1>
+
+            <p>
+                Monitor pending student fees, review payment balances,
+                and track outstanding amounts from your existing records.
+            </p>
+
+            <div class="outstanding-hero-meta">
+                <span>
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Secure fee records
+                </span>
+                <span>
+                    <i class="fa-solid fa-chart-line"></i>
+                    Balance overview
+                </span>
+            </div>
+        </div>
+
+        <div class="outstanding-hero-visual">
+            <div class="hero-icon-circle">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <div class="hero-floating-card">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <div>
+                    <strong>Fee Tracking</strong>
+                    <span>Outstanding balance overview</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Cards -->
+    <section class="outstanding-summary-grid">
+
+        <article class="outstanding-summary-card">
+            <div class="summary-card-top">
+                <div class="summary-icon summary-icon-blue">
+                    <i class="fa-solid fa-user-clock"></i>
+                </div>
+                <span class="summary-label">STUDENT RECORDS</span>
+            </div>
+
+            <div class="summary-card-body">
+                <p>Students With Dues</p>
+                <h2>{{ total_students|default:0 }}</h2>
+                <span class="summary-description">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Records matching your filters
+                </span>
+            </div>
+        </article>
+
+        <article class="outstanding-summary-card">
+            <div class="summary-card-top">
+                <div class="summary-icon summary-icon-orange">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+                <span class="summary-label">PENDING COLLECTION</span>
+            </div>
+
+            <div class="summary-card-body">
+                <p>Total Outstanding Amount</p>
+                <h2>₹{{ total_outstanding|default:0|floatformat:2 }}</h2>
+                <span class="summary-description">
+                    <i class="fa-solid fa-clock"></i>
+                    Amount remaining to be collected
+                </span>
+            </div>
+        </article>
+
+    </section>
+
+    <!-- Search and Filter -->
+    <section class="outstanding-panel outstanding-filter-panel">
+
+        <div class="outstanding-panel-heading">
+            <div class="panel-heading-left">
+                <div class="panel-heading-icon">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+                </div>
+                <div>
+                    <h2>Search Outstanding Fees</h2>
+                    <p>Find students and review their pending balances.</p>
+                </div>
+            </div>
+        </div>
+
+        <form method="get"
+              action="{% url 'outstanding_fees' %}"
+              class="outstanding-filter-form">
+
+            <div class="outstanding-field outstanding-search-field">
+                <label for="{{ form.search.id_for_label }}">
+                    Search Student
+                </label>
+
+                <div class="outstanding-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    {{ form.search }}
+                </div>
+
+                {% if form.search.errors %}
+                    <div class="outstanding-form-error">
+                        {{ form.search.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="outstanding-field">
+                <label for="{{ form.minimum_balance.id_for_label }}">
+                    Minimum Outstanding (₹)
+                </label>
+
+                <div class="outstanding-input-wrapper">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                    {{ form.minimum_balance }}
+                </div>
+
+                {% if form.minimum_balance.errors %}
+                    <div class="outstanding-form-error">
+                        {{ form.minimum_balance.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="outstanding-filter-actions">
+                <button type="submit" class="outstanding-primary-btn">
+                    <i class="fa-solid fa-filter"></i>
+                    Apply Filters
+                </button>
+
+                <a href="{% url 'outstanding_fees' %}"
+                   class="outstanding-secondary-btn">
+                    <i class="fa-solid fa-arrow-rotate-left"></i>
+                    Reset
+                </a>
+            </div>
+
+        </form>
+
+    </section>
+
+    <!-- Outstanding Fee Register -->
+    <section class="outstanding-panel outstanding-register-panel"
+             id="outstanding">
+
+        <div class="outstanding-register-header">
+            <div class="panel-heading-left">
+                <div class="panel-heading-icon register-heading-icon">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                </div>
+
+                <div>
+                    <h2>Outstanding Fee Register</h2>
+                    <p>Student-wise fee details and remaining balances.</p>
+                </div>
+            </div>
+
+            <div class="outstanding-record-counter">
+                <span class="counter-dot"></span>
+                {{ total_students|default:0 }}
+                Record{{ total_students|pluralize }}
+            </div>
+        </div>
+
+        <div class="outstanding-table-scroll">
+            <table class="outstanding-table">
+
+                <thead>
+                    <tr>
+                        <th>Admission Details</th>
+                        <th>Student Information</th>
+                        <th>Course</th>
+                        <th>Total Fee</th>
+                        <th>Amount Paid</th>
+                        <th>Balance Due</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for admission in outstanding_admissions %}
+
+                    <tr>
+                        <td>
+                            <div class="outstanding-admission-cell">
+                                <span class="admission-number">
+                                    {{ admission.admission_number }}
+                                </span>
+                                <small>Admission Number</small>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="outstanding-student-cell">
+                                <div class="outstanding-student-avatar">
+                                    {{ admission.student.full_name|default:"S"|first|upper }}
+                                </div>
+
+                                <div class="outstanding-student-details">
+                                    <strong>
+                                        {{ admission.student.full_name }}
+                                    </strong>
+                                    <span>
+                                        ID: {{ admission.student.student_id }}
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="outstanding-course-name">
+                                {{ admission.course.name }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="outstanding-money">
+                                ₹{{ admission.course_fee|floatformat:2 }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="outstanding-money paid-money">
+                                ₹{{ admission.amount_paid|floatformat:2 }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="outstanding-balance-badge">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                                ₹{{ admission.outstanding_balance|floatformat:2 }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <a href="{% url 'admission_detail' admission.pk %}"
+                               class="outstanding-view-btn"
+                               aria-label="View admission {{ admission.admission_number }}">
+                                <i class="fa-regular fa-eye"></i>
+                                <span>View</span>
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="7">
+                            <div class="outstanding-empty-state">
+                                <div class="outstanding-empty-icon">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+
+                                <h3>No Outstanding Fees Found</h3>
+
+                                <p>
+                                    There are no matching records with
+                                    a positive outstanding balance.
+                                    Try changing your search filters.
+                                </p>
+
+                                <a href="{% url 'outstanding_fees' %}"
+                                   class="outstanding-primary-btn">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                    View All Records
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+        <footer class="outstanding-register-footer">
+            <span>
+                <i class="fa-solid fa-database"></i>
+                Outstanding fee records
+            </span>
+
+            <span>
+                EduMate
+                <span class="footer-separator">|</span>
+                Fee Management
+            </span>
+        </footer>
+
+    </section>
+
+    <!-- Informational Note -->
+    <div class="outstanding-information">
+        <i class="fa-solid fa-circle-info"></i>
+        <p>
+            Outstanding balances are displayed from existing admission
+            records. Recording or changing payments is handled by your
+            existing payment module.
+        </p>
+    </div>
+<script>
+    function goBack() {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = "{% url 'fee_dashboard' %}";
+        }
+    }
+</script>
+</main>
+
+{% endblock %}

@@ -1,0 +1,152 @@
+
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Student Profile | EduMate{% endblock %}
+{% block breadcrumb %}Student Profile{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/student_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="student-profile-page">
+
+    <div class="profile-heading">
+        <div>
+            <span class="eyebrow">STUDENT MANAGEMENT</span>
+            <h1>Student Profile</h1>
+            <p>View student details and admission history.</p>
+        </div>
+
+        <a href="{% url 'student_list' %}" class="btn btn-outline">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Directory
+        </a>
+    </div>
+
+    <section class="profile-card">
+        <div class="profile-banner"></div>
+
+        <div class="profile-main">
+            {% if student.photo %}
+                <img
+                    src="{{ student.photo.url }}"
+                    alt="{{ student.full_name }}"
+                    class="profile-photo"
+                >
+            {% else %}
+                <div class="profile-photo profile-photo-placeholder">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            {% endif %}
+
+            <div class="profile-identity">
+                <h2>{{ student.full_name }}</h2>
+                <p>{{ student.student_id }}</p>
+
+                {% if student.is_active %}
+                    <span class="status-active">Active Student</span>
+                {% else %}
+                    <span class="status-inactive">Inactive Student</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="profile-details">
+            <div class="detail-item">
+                <span>Email Address</span>
+                <strong>{{ student.email|default:"—" }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Mobile Number</span>
+                <strong>{{ student.mobile|default:"—" }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Date of Birth</span>
+                <strong>{{ student.dob|date:"d M Y"|default:"—" }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Gender</span>
+                <strong>{{ student.get_gender_display|default:student.gender|default:"—" }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Location</span>
+                <strong>{{ student.location|default:"—" }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Highest Qualification</span>
+                <strong>{{ student.highest_qualification|default:"—" }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>University</span>
+                <strong>{{ student.university|default:"—" }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>College</span>
+                <strong>{{ student.college|default:"—" }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Passing Year</span>
+                <strong>{{ student.passing_year|default:"—" }}</strong>
+            </div>
+
+            <div class="detail-item full-width">
+                <span>Address</span>
+                <strong>{{ student.address|default:"—" }}</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="admissions-panel">
+        <div class="section-heading">
+            <div>
+                <h2>Admission History</h2>
+                <p>Courses associated with this student.</p>
+            </div>
+        </div>
+
+        <div class="admission-list">
+            {% for admission in admissions %}
+                <article class="admission-history-item">
+                    <div>
+                        <h3>{{ admission.admission_number }}</h3>
+                        <p>{{ admission.course }}</p>
+                        <small>
+                            Admission date:
+                            {{ admission.admission_date|date:"d M Y"|default:"—" }}
+                        </small>
+                    </div>
+
+                    <div class="admission-history-action">
+                        <span class="admission-status">
+                            {{ admission.get_admission_status_display|default:admission.admission_status }}
+                        </span>
+
+                        <a
+                            href="{% url 'admission_detail' admission.pk %}"
+                            class="view-button"
+                        >
+                            View Admission
+                        </a>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty-profile">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <p>No admission records were found for this student.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
+{% endblock %}

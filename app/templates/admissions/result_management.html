@@ -1,0 +1,361 @@
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Result Management | EduMate</title>
+
+    <link rel="stylesheet" href="{% static 'css/result_management.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div class="brand-text">
+                <h2>EduMate</h2>
+                <p>Examination Management</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <span class="nav-heading">MAIN MENU</span>
+
+            <a href="{% url 'exam_application_dashboard' %}" class="nav-link">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Exam Dashboard</span>
+            </a>
+
+            <a href="{% url 'diploma_exam_management' %}" class="nav-link">
+                <i class="fa-solid fa-file-circle-check"></i>
+                <span>Diploma Examinations</span>
+            </a>
+
+            <a href="{% url 'result_verification' %}" class="nav-link">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Result Verification</span>
+            </a>
+
+            <a href="{% url 'examination_management' %}" class="nav-link">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Examination Management</span>
+            </a>
+
+            <a href="{% url 'exam_application_dashboard' %}" class="nav-link active">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Result Management</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="footer-icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+            <div>
+                <strong>SciPy Technologies</strong>
+                <span>Education Management System</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div class="breadcrumb">
+                <span>EduMate</span>
+                <i class="fa-solid fa-chevron-right"></i>
+                <span>Examinations</span>
+                <i class="fa-solid fa-chevron-right"></i>
+                <strong>Result Management</strong>
+            </div>
+
+            <div class="topbar-label">
+                <i class="fa-solid fa-user-shield"></i>
+                <span>Staff Workspace</span>
+            </div>
+        </header>
+
+        <div class="page-content">
+
+            <!-- Page Heading -->
+            <section class="page-heading">
+                <div class="heading-content">
+                    <span class="eyebrow">
+                        <i class="fa-solid fa-award"></i>
+                        ACADEMIC RESULTS
+                    </span>
+
+                    <h1>Result Management</h1>
+
+                    <p>
+                        Review examination results, recalculate results using approved
+                        marks, and publish verified results for students.
+                    </p>
+                </div>
+
+                <a href="{% url 'exam_application_dashboard' %}" class="back-button">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+            </section>
+
+            <!-- Messages -->
+            {% if messages %}
+                <section class="messages-container" aria-label="Notifications">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}" role="status">
+                            {% if message.tags == "success" %}
+                                <i class="fa-solid fa-circle-check"></i>
+                            {% elif message.tags == "error" %}
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            {% else %}
+                                <i class="fa-solid fa-circle-info"></i>
+                            {% endif %}
+
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+
+            <!-- Summary Cards -->
+            <section class="summary-grid">
+                <article class="summary-card">
+                    <div class="summary-icon blue">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <div class="summary-info">
+                        <span>Total Results</span>
+                        <h2>{{ results|length }}</h2>
+                        <p>Results available in this list</p>
+                    </div>
+                </article>
+
+                <article class="summary-card">
+                    <div class="summary-icon purple">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div class="summary-info">
+                        <span>Result Calculation</span>
+                        <h2><i class="fa-solid fa-arrows-rotate"></i></h2>
+                        <p>Recalculate from approved marks</p>
+                    </div>
+                </article>
+
+                <article class="summary-card">
+                    <div class="summary-icon green">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <div class="summary-info">
+                        <span>Publication</span>
+                        <h2><i class="fa-solid fa-shield-check"></i></h2>
+                        <p>Publish verified results</p>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Results Table -->
+            <section class="results-panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h2>
+                            <i class="fa-solid fa-table-list"></i>
+                            Examination Results
+                        </h2>
+                        <p>
+                            Review marks, percentages, result status, and publication status.
+                        </p>
+                    </div>
+
+                    <div class="record-count">
+                        <i class="fa-solid fa-database"></i>
+                        {{ results|length }} record{{ results|length|pluralize }}
+                    </div>
+                </div>
+
+                <div class="table-toolbar">
+                    <div class="toolbar-description">
+                        <i class="fa-solid fa-circle-info"></i>
+                        Only recalculate after marks have been approved.
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Registration</th>
+                                <th>Student</th>
+                                <th>Examination</th>
+                                <th>Marks Obtained</th>
+                                <th>Percentage</th>
+                                <th>Result Status</th>
+                                <th>Publication</th>
+                                <th class="actions-heading">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for result in results %}
+                                <tr>
+                                    <td>
+                                        <span class="registration-number">
+                                            {{ result.application.registration_number }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="student-cell">
+                                            <div class="student-avatar">
+                                                <i class="fa-solid fa-user-graduate"></i>
+                                            </div>
+                                            <div class="student-details">
+                                                <strong>
+                                                    {{ result.application.student.full_name }}
+                                                </strong>
+                                                <span>Student</span>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="exam-name">
+                                            {{ result.application.examination.exam_name }}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="marks-value">
+                                            {{ result.total_marks_obtained }}
+                                        </span>
+                                        <span class="marks-total">
+                                            / {{ result.total_max_marks }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="percentage-value">
+                                            {{ result.percentage|floatformat:2 }}%
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="status-badge result-status">
+                                            {{ result.get_result_status_display }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        {% if result.get_publication_status_display|lower == "published" %}
+                                            <span class="status-badge published">
+                                                <i class="fa-solid fa-circle-check"></i>
+                                                {{ result.get_publication_status_display }}
+                                            </span>
+                                        {% else %}
+                                            <span class="status-badge unpublished">
+                                                <i class="fa-solid fa-clock"></i>
+                                                {{ result.get_publication_status_display }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        <form method="post" class="action-form">
+                                            {% csrf_token %}
+                                            <input type="hidden"
+                                                   name="result_id"
+                                                   value="{{ result.pk }}">
+
+                                            <button type="submit"
+                                                    name="action"
+                                                    value="calculate"
+                                                    class="action-button recalculate-button"
+                                                    title="Recalculate this result">
+                                                <i class="fa-solid fa-arrows-rotate"></i>
+                                                <span>Recalculate</span>
+                                            </button>
+
+                                            <button type="submit"
+                                                    name="action"
+                                                    value="publish"
+                                                    class="action-button publish-button"
+                                                    title="Publish this result">
+                                                <i class="fa-solid fa-bullhorn"></i>
+                                                <span>Publish</span>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+
+                            {% empty %}
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="empty-state">
+                                            <div class="empty-icon">
+                                                <i class="fa-solid fa-folder-open"></i>
+                                            </div>
+                                            <h3>No examination results found</h3>
+                                            <p>
+                                                Results will appear here after the examination
+                                                marks are approved and result records are created.
+                                            </p>
+                                            <a href="{% url 'exam_application_dashboard' %}"
+                                               class="empty-action">
+                                                <i class="fa-solid fa-arrow-left"></i>
+                                                Return to Dashboard
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="panel-footer">
+                    <span>
+                        <i class="fa-solid fa-lock"></i>
+                        Result actions should be restricted to authorized staff.
+                    </span>
+                    <span>EduMate · SciPy Technologies</span>
+                </div>
+
+            </section>
+
+            <!-- Workflow Information -->
+            <section class="workflow-card">
+                <div class="workflow-icon">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <div class="workflow-content">
+                    <h3>Recommended result workflow</h3>
+                    <p>
+                        Approve marks first, recalculate the result, verify the result
+                        status, and publish only after the result has been checked.
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,239 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register | SciPy Technologies</title>
+
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+</head>
+<body>
+
+<main class="register-page">
+    <section class="register-card">
+
+        <div class="brand">
+            <h1>SciPy <span>Technologies</span></h1>
+            <p>EduMate Student Portal</p>
+        </div>
+
+        <div class="form-heading">
+            <h2>Create Account</h2>
+            <p>Enter your details to register.</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if form.errors %}
+            <div class="message error">
+                Please correct the errors and try again.
+            </div>
+        {% endif %}
+
+        <form method="post"
+              action="{% url 'register' %}"
+              id="registerForm">
+
+            {% csrf_token %}
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name *</label>
+                    <input type="text"
+                           id="firstName"
+                           name="first_name"
+                           placeholder="Enter first name"
+                           autocomplete="given-name"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name *</label>
+                    <input type="text"
+                           id="lastName"
+                           name="last_name"
+                           placeholder="Enter last name"
+                           autocomplete="family-name"
+                           required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email"
+                       id="email"
+                       name="email"
+                       placeholder="Enter email address"
+                       autocomplete="email"
+                       required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel"
+                           id="phone"
+                           name="phone"
+                           placeholder="Enter phone number"
+                           autocomplete="tel"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Register As *</label>
+                    <select id="role" name="role" required>
+                        <option value="student" selected>Student / Learner</option>
+                        <option value="teacher">Teacher / Trainer</option>
+                        <option value="coordinator">Project Coordinator</option>
+                        <option value="counsellor">Counsellor / Staff</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           placeholder="Create password"
+                           autocomplete="new-password"
+                           minlength="8"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password *</label>
+                    <input type="password"
+                           id="confirmPassword"
+                           name="confirm_password"
+                           placeholder="Confirm password"
+                           autocomplete="new-password"
+                           minlength="8"
+                           required>
+                </div>
+            </div>
+
+            <div class="password-feedback">
+                <div class="strength-bar-track">
+                    <div class="strength-bar" id="strengthBar"></div>
+                </div>
+                <div class="feedback-labels">
+                    <span id="strengthText">Password strength: None</span>
+                    <span id="matchText"></span>
+                </div>
+            </div>
+
+            <div class="terms-group">
+    <label class="terms-label" for="termsCheck">
+        <input
+            type="checkbox"
+            id="termsCheck"
+            name="terms"
+            value="accepted"
+            required
+        >
+        <span>
+            I agree to the
+            <a href="{% url 'about' %}">Terms of Service</a>
+            and
+            <a href="{% url 'about' %}">Privacy Policy</a>.
+        </span>
+    </label>
+</div>
+
+            <button type="submit" class="register-button">
+                Create Account
+            </button>
+
+            <p class="signin-prompt">
+                Already have an account?
+                <a href="{% url 'login' %}">Sign In</a>
+            </p>
+
+            <p class="back-home">
+                <a href="{% url 'home' %}">Back to Home</a>
+            </p>
+
+        </form>
+
+        <footer class="form-footer">
+            © 2026 SciPy Technologies. All rights reserved.
+        </footer>
+
+    </section>
+</main>
+
+<script>
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const strengthBar = document.getElementById("strengthBar");
+    const strengthText = document.getElementById("strengthText");
+    const matchText = document.getElementById("matchText");
+    const form = document.getElementById("registerForm");
+
+    function updatePasswordFeedback() {
+        const value = password.value;
+        let score = 0;
+
+        if (value.length >= 8) score++;
+        if (/[A-Z]/.test(value)) score++;
+        if (/[0-9]/.test(value)) score++;
+        if (/[^A-Za-z0-9]/.test(value)) score++;
+
+        const levels = [
+            { width: "0%", text: "Password strength: None", cls: "" },
+            { width: "25%", text: "Password strength: Weak", cls: "weak" },
+            { width: "50%", text: "Password strength: Medium", cls: "medium" },
+            { width: "75%", text: "Password strength: Good", cls: "good" },
+            { width: "100%", text: "Password strength: Strong", cls: "strong" }
+        ];
+
+        const level = value ? levels[score] : levels[0];
+        strengthBar.style.width = level.width;
+        strengthBar.className = "strength-bar " + level.cls;
+        strengthText.textContent = level.text;
+
+        checkPasswordMatch();
+    }
+
+    function checkPasswordMatch() {
+        if (!confirmPassword.value) {
+            matchText.textContent = "";
+            matchText.className = "";
+            return;
+        }
+
+        if (password.value === confirmPassword.value) {
+            matchText.textContent = "Passwords match";
+            matchText.className = "match-success";
+        } else {
+            matchText.textContent = "Passwords do not match";
+            matchText.className = "match-error";
+        }
+    }
+
+    password.addEventListener("input", updatePasswordFeedback);
+    confirmPassword.addEventListener("input", checkPasswordMatch);
+
+    form.addEventListener("submit", function(event) {
+        if (password.value !== confirmPassword.value) {
+            event.preventDefault();
+            matchText.textContent = "Passwords do not match";
+            matchText.className = "match-error";
+            confirmPassword.focus();
+        }
+    });
+</script>
+
+</body>
+</html>

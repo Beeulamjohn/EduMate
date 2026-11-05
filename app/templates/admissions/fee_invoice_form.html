@@ -1,0 +1,223 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Invoice | EduMate</title>
+
+    <link rel="stylesheet" href="{% static 'css/create_invoice.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="form-page">
+
+    <!-- Top Navigation -->
+   
+    <!-- Main Content -->
+    <main class="form-container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+
+    <div class="breadcrumb-left">
+        <a href="{% url 'fee_dashboard' %}">Fee Management</a>
+        <i class="fa-solid fa-chevron-right"></i>
+        <span>Create Invoice</span>
+    </div>
+
+    <div class="back-navigation">
+        <button type="button" class="back-btn" onclick="goBack()">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+        </button>
+    </div>
+
+</nav>
+
+        <!-- Page Heading -->
+        <section class="page-heading">
+
+            <div class="heading-content">
+                <span class="eyebrow">
+                    <i class="fa-solid fa-wallet"></i>
+                    FINANCE MODULE
+                </span>
+
+                <h1>Create Invoice</h1>
+
+                <p>
+                    Create a billing record and attach an invoice PDF if available.
+                </p>
+            </div>
+
+            <div class="page-heading-icon">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+            </div>
+
+        </section>
+
+        <!-- Django Messages -->
+        {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }}">
+                        <i class="fa-solid
+                            {% if message.tags == 'success' %}
+                                fa-circle-check
+                            {% elif message.tags == 'error' %}
+                                fa-circle-exclamation
+                            {% else %}
+                                fa-circle-info
+                            {% endif %}
+                        "></i>
+
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Invoice Form Card -->
+        <section class="form-card">
+
+            <div class="card-heading">
+
+                <div class="heading-icon">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+
+                <div class="card-heading-text">
+                    <h2>Invoice Details</h2>
+                    <p>Enter the billed amount and any amount already paid.</p>
+                </div>
+
+            </div>
+
+            <div class="card-divider"></div>
+
+            <form method="post" enctype="multipart/form-data" class="invoice-form">
+
+                {% csrf_token %}
+
+                <!-- Non-field Errors -->
+                {% if form.non_field_errors %}
+                    <div class="form-errors">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <div>
+                            {{ form.non_field_errors }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Dynamic Django Fields -->
+                <div class="field-grid">
+
+                    {% for field in form %}
+
+                        <div class="form-field {% if field.name == 'student' or field.name == 'pdf_file' %}full-width{% endif %}">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+
+                                {% if field.field.required %}
+                                    <span class="required-mark">*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.name == "pdf_file" %}
+                                <small class="field-help">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                    Optional: select a PDF invoice file.
+                                </small>
+                            {% endif %}
+
+                            {% if field.help_text %}
+                                <small class="field-help">
+                                    {{ field.help_text }}
+                                </small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <small class="field-error">
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    {{ error }}
+                                </small>
+                            {% endfor %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <!-- Form Footer -->
+                <div class="form-footer">
+
+                    <p class="required-note">
+                        <span class="required-mark">*</span>
+                        Required fields
+                    </p>
+
+                    <div class="form-actions">
+
+                        <a href="{% url 'fee_dashboard' %}" class="btn btn-secondary">
+                            <i class="fa-solid fa-xmark"></i>
+                            Cancel
+                        </a>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            Save Invoice
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- Security / Information Note -->
+        <div class="form-note">
+            <div class="note-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <p>
+                <strong>Before saving:</strong>
+                Verify the student details, billed amount, and payment information.
+                Attach the invoice PDF only if a valid file is available.
+            </p>
+        </div>
+
+        <footer class="page-footer">
+            <span>
+                <i class="fa-regular fa-copyright"></i>
+                {% now "Y" %} SciPy Technologies Pvt. Ltd.
+            </span>
+
+            <span>EduMate Education Management System</span>
+        </footer>
+
+    </main>
+
+</div>
+<script>
+    function goBack() {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = "{% url 'fee_dashboard' %}";
+        }
+    }
+</script>
+</body>
+</html>

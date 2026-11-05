@@ -1,0 +1,244 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Enquiry Management | EduMate</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{% static 'css/enquiry_management.css' %}">
+</head>
+
+<body>
+<main class="page">
+
+    <header class="page-header">
+        <div class="page-heading">
+            <h1>
+                <i class="fa-solid fa-user-group"></i>
+                Enquiry Management
+            </h1>
+            <p>Capture prospective student information and manage follow-ups.</p>
+        </div>
+
+         <div class="header-actions">
+
+            <!-- Back to Dashboard Button -->
+            <a href="{% url 'admission_dashboard' %}"
+               class="btn btn-light back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+
+            <!-- Add New Enquiry Button -->
+            <a href="{% url 'enquiry_create' %}" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i>
+                Add New Enquiry
+            </a>
+
+        </div>
+    </header>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {% if message.tags == 'error' %}error{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <section class="stats">
+        <article class="stat-card">
+            <div class="stat-icon">
+                <i class="fa-solid fa-address-book"></i>
+            </div>
+            <div>
+                <span>Total Enquiries</span>
+                <strong>{{ total_enquiries }}</strong>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon">
+                <i class="fa-solid fa-list-check"></i>
+            </div>
+            <div>
+                <span>Records Displayed</span>
+                <strong>{{ enquiries|length }}</strong>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div>
+                <span>Follow-up Tracking</span>
+                <strong><i class="fa-solid fa-check"></i></strong>
+            </div>
+        </article>
+    </section>
+
+    <section class="panel">
+        <div class="panel-header">
+            <h2>Enquiry Records</h2>
+
+            <form method="get"
+                  action="{% url 'enquiry_management' %}"
+                  class="search-form">
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search name, phone, email, college..."
+                    aria-label="Search enquiries"
+                >
+
+                <button class="btn btn-primary" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Search
+                </button>
+
+                {% if search_query %}
+                    <a href="{% url 'enquiry_management' %}"
+                       class="btn btn-light">
+                        Clear
+                    </a>
+                {% endif %}
+            </form>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Enquiry ID</th>
+                        <th>Student</th>
+                        <th>Mobile / Email</th>
+                        <th>Course Interested</th>
+                        <th>Lead Source</th>
+                        <th>Counsellor</th>
+                        <th>Enquiry Date</th>
+                        <th>Follow-up Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for enquiry in enquiries %}
+                        <tr>
+                            <td>
+                                {{ enquiry.enquiry_id|default:"—" }}
+                            </td>
+
+                            <td>
+                                <div class="student-name">
+                                    {{ enquiry.student_name }}
+                                </div>
+                                <div class="muted">
+                                    {{ enquiry.qualification|default:"Qualification not added" }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div>{{ enquiry.mobile }}</div>
+                                <div class="muted">
+                                    {{ enquiry.email|default:"—" }}
+                                </div>
+                            </td>
+
+                            <td>
+                                {{ enquiry.course_interested|default:"—" }}
+                            </td>
+
+                            <td>
+                                {{ enquiry.lead_source|default:"—" }}
+                            </td>
+
+                            <td>
+                                {{ enquiry.assigned_counsellor|default:"Unassigned" }}
+                            </td>
+
+                            <td>
+                                {{ enquiry.enquiry_date|date:"d M Y"|default:"—" }}
+                            </td>
+
+                            <td>
+                                {{ enquiry.followup_date|date:"d M Y"|default:"—" }}
+                            </td>
+
+                            <td>
+                                <span class="status">
+                                    {{ enquiry.status }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="actions">
+                                    <a
+                                        class="action-link"
+                                        href="{% url 'enquiry_edit' enquiry.pk %}"
+                                        title="Edit enquiry"
+                                        aria-label="Edit enquiry">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+
+                                    <a
+                                        class="action-link delete"
+                                        href="{% url 'enquiry_delete' enquiry.pk %}"
+                                        title="Delete enquiry"
+                                        aria-label="Delete enquiry">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="10">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-folder-open"></i>
+
+                                    <strong>No enquiries found</strong>
+
+                                    <p>
+                                        {% if search_query %}
+                                            Try a different search term.
+                                        {% else %}
+                                            Add your first student enquiry to get started.
+                                        {% endif %}
+                                    </p>
+
+                                    {% if not search_query %}
+                                        <a href="{% url 'enquiry_create' %}"
+                                           class="btn btn-primary">
+                                            <i class="fa-solid fa-plus"></i>
+                                            Add Enquiry
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer class="footer-note">
+        EduMate · Enquiry Management · Student enquiry records
+    </footer>
+
+</main>
+</body>
+</html>

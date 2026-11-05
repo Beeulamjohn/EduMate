@@ -1,0 +1,226 @@
+
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Admission Register | EduMate{% endblock %}
+{% block breadcrumb %}Admission Register{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admission_register.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="admission-page">
+
+    <!-- Page Heading -->
+    <div class="admission-heading">
+        <div>
+            <span class="eyebrow">STUDENT MANAGEMENT</span>
+            <h1>Admission Register</h1>
+            <p>Search and manage student admissions.</p>
+        </div>
+
+        <a href="{% url 'admission_registration' %}" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i>
+            New Admission
+        </a>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <i class="fa-solid fa-circle-info"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Search and Filter -->
+    <section class="filter-card">
+        <form method="get"
+              action="{% url 'admission_register' %}"
+              class="filter-bar">
+
+            <div class="filter-field search-field">
+                <label for="search">Search admissions</label>
+                <div class="search-input">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="search"
+                        id="search"
+                        name="q"
+                        value="{{ search|default:'' }}"
+                        class="form-control"
+                        placeholder="Student name, admission number or course">
+                </div>
+            </div>
+
+            <div class="filter-field">
+                <label for="status">Admission status</label>
+                <select id="status" name="status" class="form-control">
+                    <option value="">All admission statuses</option>
+                    {% for value, label in status_choices %}
+                        <option value="{{ value }}"
+                            {% if selected_status == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Search
+                </button>
+
+                <a href="{% url 'admission_register' %}" class="btn btn-outline">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Reset
+                </a>
+            </div>
+        </form>
+    </section>
+
+    <!-- Admission List -->
+    <section class="table-card">
+
+        <div class="table-header">
+            <div>
+                <h2>Admission Records</h2>
+                <p>View student, course, payment, and admission details.</p>
+            </div>
+
+            <span class="record-count">
+                <i class="fa-solid fa-users"></i>
+                {% if admissions %}
+                    {{ admissions|length }} record{{ admissions|length|pluralize }}
+                {% else %}
+                    0 records
+                {% endif %}
+            </span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="admission-table">
+                <thead>
+                    <tr>
+                        <th>Admission Number</th>
+                        <th>Student</th>
+                        <th>Course / Batch</th>
+                        <th>Admission Date</th>
+                        <th>Payable Amount</th>
+                        <th>Payment</th>
+                        <th>Admission Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for admission in admissions %}
+                    <tr>
+                        <td>
+                            <strong class="primary-text">
+                                {{ admission.admission_number }}
+                            </strong>
+                            <small class="secondary-text">
+                                {{ admission.student.student_id }}
+                            </small>
+                        </td>
+
+                        <td>
+                            <strong class="primary-text">
+                                {{ admission.student.full_name }}
+                            </strong>
+                            <small class="secondary-text">
+                                {{ admission.student.email|default:"No email provided" }}
+                            </small>
+                        </td>
+
+                        <td>
+                            <strong class="primary-text">
+                                {{ admission.course.name }}
+                            </strong>
+
+                            {% if admission.batch %}
+                                <small class="secondary-text">
+                                    {{ admission.batch }}
+                                </small>
+                            {% endif %}
+                        </td>
+
+                        <td class="date-cell">
+                            {{ admission.admission_date|date:"d M Y"|default:"—" }}
+                        </td>
+
+                        <td class="amount-cell">
+                            ₹{{ admission.final_payable_amount|floatformat:2 }}
+                        </td>
+
+                        <td>
+                            <span class="payment-badge">
+                                {{ admission.get_payment_status_display|default:admission.payment_status|default:"Pending" }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="status-badge">
+                                {{ admission.get_admission_status_display }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="action-links">
+                                <a
+                                    href="{% url 'admission_detail' admission.pk %}"
+                                    class="action-btn view-btn"
+                                    title="View details"
+                                    aria-label="View admission details">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+
+                                <a
+                                    href="{% url 'document_verification' admission.pk %}"
+                                    class="action-btn verify-btn"
+                                    title="Verify documents"
+                                    aria-label="Verify admission documents">
+                                    <i class="fa-solid fa-file-circle-check"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fa-solid fa-folder-open"></i>
+                                </div>
+
+                                <h3>No admissions found</h3>
+                                <p>
+                                    There are no admission records matching
+                                    your search. Try another search or reset
+                                    the filters.
+                                </p>
+
+                                <a href="{% url 'admission_registration' %}"
+                                   class="btn btn-primary">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Register a Student
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

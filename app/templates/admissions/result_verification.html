@@ -1,0 +1,241 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Result Verification | EduMate</title>
+
+    <link rel="stylesheet" href="{% static 'css/result_verification.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="verification-page">
+
+    <!-- Header -->
+    
+
+    <main class="main-content">
+
+        <!-- Introduction -->
+        <section class="intro-section">
+            <div class="intro-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <span class="eyebrow">OFFICIAL RESULT PORTAL</span>
+
+            <h1>Public Result Verification</h1>
+
+            <p>
+                Verify an examination result using your examination registration
+                number. Only results officially published by EduMate can be verified.
+            </p>
+        </section>
+
+        <!-- Search Form -->
+        <section class="search-card">
+            <div class="card-heading">
+                <div class="heading-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <div>
+                    <h2>Verify Your Result</h2>
+                    <p>Enter the registration number provided for your examination.</p>
+                </div>
+            </div>
+
+            <form method="get"
+                  action="{% url 'result_verification' %}"
+                  class="verification-form">
+
+                <label for="registration_number">
+                    Examination Registration Number
+                    <span class="required">*</span>
+                </label>
+
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-id-card input-icon"></i>
+
+                    <input
+                        type="text"
+                        id="registration_number"
+                        name="registration_number"
+                        value="{{ registration_number|default:'' }}"
+                        placeholder="e.g. SC-EXAM-2026-000001"
+                        autocomplete="off"
+                        autocapitalize="characters"
+                        spellcheck="false"
+                        maxlength="60"
+                        required
+                    >
+                </div>
+
+                <small class="field-hint">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Enter your registration number exactly as shown on your exam record.
+                </small>
+
+                <button type="submit" class="verify-button">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Verify Result
+                </button>
+            </form>
+
+            {% if error_message %}
+                <div class="alert alert-error" role="alert">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <div>
+                        <strong>Verification unsuccessful</strong>
+                        <p>{{ error_message }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+
+        <!-- Verified Result -->
+        {% if verified_result %}
+            <section class="result-card">
+
+                <div class="result-header">
+                    <div class="result-header-icon">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+
+                    <div>
+                        <span class="result-label">OFFICIAL RESULT</span>
+                        <h2>Verified Examination Result</h2>
+                        <p>Your published result details are displayed below.</p>
+                    </div>
+
+                    <div class="verified-badge">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Published
+                    </div>
+                </div>
+
+                <div class="result-body">
+
+                    <div class="student-banner">
+                        <div class="student-avatar">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+
+                        <div class="student-info">
+                            <span>Student Name</span>
+                            <h3>{{ verified_result.student_name }}</h3>
+                        </div>
+                    </div>
+
+                    <div class="details-grid">
+
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <i class="fa-solid fa-id-card"></i>
+                                Registration Number
+                            </span>
+                            <strong>{{ verified_result.registration_number }}</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <i class="fa-solid fa-book-open"></i>
+                                Course / Diploma
+                            </span>
+                            <strong>{{ verified_result.diploma_name }}</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <i class="fa-solid fa-star"></i>
+                                Total Marks
+                            </span>
+                            <strong>{{ verified_result.total_marks }}</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <i class="fa-solid fa-chart-pie"></i>
+                                Percentage
+                            </span>
+                            <strong class="percentage">
+                                {{ verified_result.percentage }}%
+                            </strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <i class="fa-solid fa-medal"></i>
+                                Grade
+                            </span>
+                            <strong>{{ verified_result.grade|default:"—" }}</strong>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                                Result Status
+                            </span>
+                            <strong>{{ verified_result.result_status }}</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="verification-notice">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div>
+                            <strong>Result verification notice</strong>
+                            <p>
+                                This information represents the published result returned
+                                by the EduMate verification system. For official
+                                documentation, contact the examination department.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        {% endif %}
+
+        <!-- Help Section -->
+        <section class="help-card">
+            <div class="help-icon">
+                <i class="fa-solid fa-circle-question"></i>
+            </div>
+
+            <div>
+                <h3>Need help verifying your result?</h3>
+                <p>
+                    Check your registration number for typing errors. If your result
+                    has not been published or cannot be found, contact the examination
+                    department for assistance.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="page-footer">
+        <p>
+            &copy; {% now "Y" %} SciPy Technologies Pvt. Ltd.
+            <span>·</span>
+            EduMate Education Management System
+        </p>
+        <p>Public Result Verification Portal</p>
+    </footer>
+
+</div>
+
+</body>
+</html>

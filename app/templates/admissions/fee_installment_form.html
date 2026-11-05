@@ -1,0 +1,326 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Installment | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/fee_installment_form.css' %}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+<div class="installment-page">
+
+    <!-- Top Navigation -->
+    
+    <!-- Main Content -->
+    <main class="installment-container">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+
+    <div class="breadcrumb-left">
+
+        <a href="{% url 'fee_dashboard' %}">
+            Fee Management
+        </a>
+
+        <i class="fa-solid fa-chevron-right"></i>
+
+        <span>Create Fee Installment</span>
+
+    </div>
+
+    <!-- BACK BUTTON -->
+    <div class="back-navigation">
+
+        <button type="button"
+                class="back-btn"
+                onclick="goBack()">
+
+            <i class="fa-solid fa-arrow-left"></i>
+            Back
+
+        </button>
+
+    </div>
+
+</nav>
+
+        <!-- Page Heading -->
+        <section class="page-heading">
+
+            <div class="heading-content">
+
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    FINANCE &amp; ACCOUNTING
+                </div>
+
+                <h1>Create Fee Installment</h1>
+
+                <p>
+                    Set a student's installment amount, payment progress,
+                    and due date. Keep installment records organized
+                    and up to date.
+                </p>
+
+            </div>
+
+            <div class="heading-illustration" aria-hidden="true">
+
+                <div class="illustration-circle">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+
+                <span class="illustration-badge">
+                    <i class="fa-solid fa-check"></i>
+                </span>
+
+            </div>
+
+        </section>
+
+        <!-- Information Cards -->
+        <section class="info-grid"
+                 aria-label="Installment information">
+
+            <article class="info-card">
+
+                <div class="info-icon icon-blue">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+
+                <div>
+                    <strong>Student Details</strong>
+                    <span>Select the student for this installment</span>
+                </div>
+
+            </article>
+
+            <article class="info-card">
+
+                <div class="info-icon icon-purple">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+
+                <div>
+                    <strong>Payment Schedule</strong>
+                    <span>Configure installment dates and amounts</span>
+                </div>
+
+            </article>
+
+            <article class="info-card">
+
+                <div class="info-icon icon-green">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+                    <strong>Fee Records</strong>
+                    <span>Maintain accurate installment information</span>
+                </div>
+
+            </article>
+
+        </section>
+
+        <!-- Django Messages -->
+        {% if messages %}
+
+            <div class="messages-container" aria-live="polite">
+
+                {% for message in messages %}
+
+                    <div class="alert {{ message.tags }}">
+
+                        {% if message.tags == 'success' %}
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                        {% elif message.tags == 'error' %}
+
+                            <i class="fa-solid fa-circle-exclamation"></i>
+
+                        {% else %}
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                        {% endif %}
+
+                        <span>{{ message }}</span>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+        <!-- Main Form Card -->
+        <section class="form-card">
+
+            <!-- Form Card Heading -->
+            <div class="card-heading">
+
+                <div class="card-heading-icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+
+                <div class="card-heading-text">
+
+                    <h2>Installment Details</h2>
+
+                    <p>
+                        Enter the student and installment information
+                        in the fields below.
+                    </p>
+
+                </div>
+
+                <span class="required-note">
+                    <span>*</span>
+                    Required fields
+                </span>
+
+            </div>
+
+            <div class="card-divider"></div>
+
+            <!-- Installment Form -->
+            <form method="post"
+                  id="feeInstallmentForm">
+
+                {% csrf_token %}
+
+                <!-- Non-field Errors -->
+                {% if form.non_field_errors %}
+
+                    <div class="form-errors" role="alert">
+
+                        <i class="fa-solid fa-circle-exclamation"></i>
+
+                        <div>
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+                <!-- Django Form Fields -->
+                <div class="field-grid">
+
+                    {% for field in form %}
+
+                        <div class="form-field
+                            {% if field.name == 'student' %}full-width{% endif %}
+                            {% if field.errors %}has-error{% endif %}">
+
+                            <label for="{{ field.id_for_label }}">
+
+                                {{ field.label }}
+
+                                {% if field.field.required %}
+                                    <span class="required-star">*</span>
+                                {% endif %}
+
+                            </label>
+
+                            {% if field.help_text %}
+
+                                <div class="field-help">
+                                    {{ field.help_text|safe }}
+                                </div>
+
+                            {% endif %}
+
+                            {{ field }}
+
+                            {% for error in field.errors %}
+
+                                <small class="field-error">
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    {{ error }}
+                                </small>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+
+                    <a href="{% url 'fee_dashboard' %}"
+                       class="btn btn-secondary">
+
+                        <i class="fa-solid fa-xmark"></i>
+                        Cancel
+
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save Installment
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <!-- Footer -->
+        <footer class="page-footer">
+
+            <span>
+                <i class="fa-solid fa-shield-halved"></i>
+                Verify installment amounts and due dates before saving.
+            </span>
+
+            <span>
+                EduMate &copy; {% now "Y" %}
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+<script>
+    function goBack() {
+
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = "{% url 'fee_dashboard' %}";
+        }
+
+    }
+</script>
+
+</body>
+</html>

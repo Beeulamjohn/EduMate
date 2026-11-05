@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} | EduMate</title>
+
+    <link rel="stylesheet" href="{% static 'css/exam_centres.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+<main class="main-content">
+
+    <header class="page-header">
+        <div>
+            <div class="breadcrumb">
+                <a href="/">EduMate</a>
+                <span>/</span>
+                <a href="{% url 'exam_centres_list' %}">Exam Centres &amp; Modes</a>
+                <span>/</span>
+                <span>{{ page_title }}</span>
+            </div>
+
+            <h1><i class="fa-solid fa-location-dot"></i> {{ page_title }}</h1>
+            <p>Enter the examination centre details below.</p>
+        </div>
+
+        <a href="{% url 'exam_centres_list' %}" class="btn btn-light">
+            <i class="fa-solid fa-arrow-left"></i> Back to Centres
+        </a>
+    </header>
+
+    <section class="form-card">
+        <div class="form-card-heading">
+            <div class="form-heading-icon">
+                <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div>
+                <h2>Centre Information</h2>
+                <p>Fields marked with * are required.</p>
+            </div>
+        </div>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-error">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-section-title">
+                <i class="fa-solid fa-building"></i>
+                Basic Details
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "centre_code" or field.name == "centre_name" %}
+                        <div class="form-field">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}{% if field.field.required %} *{% endif %}
+                            </label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <span class="field-error">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="form-section-title">
+                <i class="fa-solid fa-map-location-dot"></i>
+                Address Details
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "address" %}
+                        <div class="form-field full-width">
+                            <label for="{{ field.id_for_label }}">Full Address *</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <span class="field-error">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if field.name == "city" or field.name == "state" or field.name == "pincode" %}
+                        <div class="form-field">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}{% if field.field.required %} *{% endif %}
+                            </label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <span class="field-error">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="form-section-title">
+                <i class="fa-solid fa-address-card"></i>
+                Contact Information
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "contact_person" or field.name == "phone" or field.name == "email" %}
+                        <div class="form-field">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}{% if field.field.required %} *{% endif %}
+                            </label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <span class="field-error">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="form-section-title">
+                <i class="fa-solid fa-sliders"></i>
+                Capacity &amp; Exam Mode
+            </div>
+
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "capacity" or field.name == "exam_mode" or field.name == "status" %}
+                        <div class="form-field">
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}{% if field.field.required %} *{% endif %}
+                            </label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <span class="field-error">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                {% for field in form %}
+                    {% if field.name == "instructions" %}
+                        <div class="form-field full-width">
+                            <label for="{{ field.id_for_label }}">Instructions</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <span class="field-error">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'exam_centres_list' %}" class="btn btn-light">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i> {{ button_text }}
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <footer class="page-footer">
+        <span>&copy; {% now "Y" %} SciPy Technologies Pvt. Ltd.</span>
+        <span>EduMate | Education Management System</span>
+    </footer>
+
+</main>
+</body>
+</html>

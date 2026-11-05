@@ -1,0 +1,182 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SciPy Technologies | Features</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/features.css' %}">
+</head>
+
+<body>
+
+<section class="features-section" id="features">
+    <div class="features-container">
+
+        <div class="section-heading">
+            <span class="eyebrow">
+                <i class="fa-solid fa-graduation-cap"></i>
+                INTEGRATED EDUCATION ERP + LMS
+            </span>
+
+            <h1>
+                Everything You Need to
+                <span>Manage Education</span>
+            </h1>
+
+            <p>
+                Manage the complete student journey with one connected
+                platform for admissions, academics, finance and examinations.
+            </p>
+        </div>
+
+        <div class="features-grid">
+
+            <article class="feature-card admission-card">
+                <div class="card-topline">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    
+                </div>
+
+                <span class="feature-label">STUDENT ONBOARDING</span>
+
+                <h2>Admission / Registration</h2>
+
+                <p>
+                    Manage enquiries, counselling, admission forms,
+                    document verification and student registration.
+                </p>
+
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Enquiry and follow-up tracking</li>
+                    <li><i class="fa-solid fa-check"></i> Student details and documents</li>
+                    <li><i class="fa-solid fa-check"></i> Unique admission number generation</li>
+                </ul>
+
+                <a href="{% url 'admission_dashboard' %}" class="feature-link">
+                    Learn More <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </article>
+
+            
+<article class="feature-card scheduling-card">
+    <div class="card-topline">
+        <div class="feature-icon">
+            <i class="fa-solid fa-calendar-days"></i>
+        </div>
+      
+    </div>
+
+    <span class="feature-label">ACADEMIC ORGANIZATION</span>
+
+    <h2>Scheduling</h2>
+
+    <p>
+        Plan courses, allocate batches and trainers, manage class
+        timetables, and organize academic sessions from one place.
+    </p>
+
+    <ul>
+        <li><i class="fa-solid fa-check"></i> Course and batch scheduling</li>
+        <li><i class="fa-solid fa-check"></i> Trainer availability and timetables</li>
+        <li><i class="fa-solid fa-check"></i> Class dates, times and session planning</li>
+    </ul>
+
+    <a href="{% url 'scheduling_dashboard' %}" class="feature-link">
+                    Learn More <i class="fa-solid fa-arrow-right"></i>
+                </a>
+</article>
+
+            <article class="feature-card billing-card">
+                <div class="card-topline">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </div>
+                  
+                </div>
+
+                <span class="feature-label">FINANCE &amp; PAYMENTS</span>
+
+                <h2>Fee Collections &amp; Billing</h2>
+
+                <p>
+                    Manage student fees, installments, payments,
+                    invoices and receipts with organized financial records.
+                </p>
+
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Installment and payment tracking</li>
+                    <li><i class="fa-solid fa-check"></i> Invoice and receipt generation</li>
+                    <li><i class="fa-solid fa-check"></i> Pending and overdue fee tracking</li>
+                </ul>
+
+                <a href="{% url 'fee_dashboard' %}" class="feature-link">
+                    Learn More <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </article>
+
+            <article class="feature-card exam-card">
+                <div class="card-topline">
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-file-circle-check"></i>
+                    </div>
+                  
+                </div>
+
+                <span class="feature-label">EXAMINATION MANAGEMENT</span>
+
+                <h2>Exam Application</h2>
+
+                <p>
+                    Manage exam registration, eligibility, examination
+                    schedules, hall tickets, marks and results.
+                </p>
+
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> Exam registration and eligibility</li>
+                    <li><i class="fa-solid fa-check"></i> Exam schedules and hall tickets</li>
+                    <li><i class="fa-solid fa-check"></i> Marks and result management</li>
+                </ul>
+
+               <a href="{% url 'exam_application_dashboard' %}" class="feature-link">
+    Learn More <i class="fa-solid fa-arrow-right"></i>
+</a>
+            </article>
+
+        </div>
+        <div class="features-footer">
+            <div class="footer-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <p>
+                <strong>One connected platform.</strong>
+                Simplifying student administration, academics and finance.
+            </p>
+        </div>
+
+        <div class="back-home">
+            <a href="{% url 'home' %}" class="primary-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Home
+            </a>
+        </div>
+
+    </div>
+</section>
+
+</body>
+</html>

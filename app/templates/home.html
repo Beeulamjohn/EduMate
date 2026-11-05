@@ -1,0 +1,492 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SciPy Technologies | Education Management System</title>
+
+  
+
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+   <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+<header class="navbar">
+
+<a href="{% url 'home' %}" class="brand">
+    <img src="{% static 'images/company logo.png' %}"
+         alt="SciPy Technologies Logo"
+         class="brand-logo">
+</a>
+
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"
+            aria-expanded="false">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <nav class="nav-links" id="navLinks">
+        <a href="{% url 'home' %}" class="active">Home</a>
+        <a href="{% url 'features' %}">Features</a>
+        <a href="{% url 'about' %}">About Us</a>
+        <a href="{% url 'benefits' %}">Benefits</a>
+        <a href="{% url 'faq' %}">FAQ</a>
+        <a href="{% url 'contact' %}">Contact</a>
+    </nav>
+
+ 
+<div class="nav-actions">
+    <a href="{% url 'login' %}" class="login-btn">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        Login
+    </a>
+
+    <a href="{% url 'register' %}" class="register-btn">
+        <i class="fa-solid fa-user-plus"></i>
+        Register
+    </a>
+</div>
+
+
+</header>
+
+<main>
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+           
+
+            <h1>Edu<span>Mate</span></h1>
+            
+            <div class="heading-line"></div>
+
+            <p class="hero-description">
+                A comprehensive web-based education management system designed to simplify student admissions, 
+                fee collection, learning activities, academic projects, internships, and examinations. SciPy Technologies 
+                helps students, counsellors, trainers, project coordinators, accounts teams, placement teams, and administrators 
+                manage educational activities efficiently in one platform.
+            </p>
+
+            <div class="feature-list" id="features">
+
+                <div class="feature-item">
+                    <span class="check"><i class="fa-solid fa-check"></i></span>
+                    <span>Student Admission and Management</span>
+                </div>
+
+                <div class="feature-item">
+                    <span class="check"><i class="fa-solid fa-check"></i></span>
+                    <span>Online Fee Payment and Invoicing</span>
+                </div>
+
+                <div class="feature-item">
+                    <span class="check"><i class="fa-solid fa-check"></i></span>
+                    <span>Academic Project and Internship Coordination</span>
+                </div>
+
+                <div class="feature-item">
+                    <span class="check"><i class="fa-solid fa-check"></i></span>
+                    <span>Examination and Automated Result Management</span>
+                </div>
+
+            </div>
+
+            <div class="hero-buttons">
+                <a href="{% url 'features' %}" class="btn-primary">
+                    <i class="fa-regular fa-calendar"></i>
+                   Get Started
+                </a>
+
+                
+            </div>
+
+        </div>
+
+        <div class="hero-visual">
+
+            <div class="decor-circle circle-one"></div>
+            <div class="decor-circle circle-two"></div>
+            <div class="decor-circle circle-three"></div>
+
+            <div class="floating-icon floating-cap">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+
+            <div class="floating-icon floating-users">
+                <i class="fa-solid fa-user-group"></i>
+            </div>
+
+            <div class="dot-pattern"></div>
+
+            <div class="dashboard">
+
+                <aside class="dashboard-sidebar">
+
+                    <div class="dashboard-logo">EduMate</div>
+
+                    <div class="side-link selected">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Dashboard</span>
+                    </div>
+
+                    <div class="side-link">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <span>Students</span>
+                    </div>
+
+                    <div class="side-link">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Teachers</span>
+                    </div>
+
+                    <div class="side-link">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>Attendance</span>
+                    </div>
+
+                    <div class="side-link">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Assignments</span>
+                    </div>
+
+                    <div class="side-link">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Grades</span>
+                    </div>
+
+                    <div class="side-link">
+                        <i class="fa-solid fa-wallet"></i>
+                        <span>Fees</span>
+                    </div>
+
+                    <div class="side-link">
+                        <i class="fa-solid fa-file-circle-check"></i>
+                        <span>Exams</span>
+                    </div>
+
+                    <div class="side-link">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <span>Reports</span>
+                    </div>
+
+                    <div class="side-link">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Settings</span>
+                    </div>
+
+                </aside>
+
+                <div class="dashboard-main">
+
+                    <div class="dashboard-topbar">
+                        <h3>Dashboard</h3>
+
+                        <div class="topbar-right">
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <span>Search here...</span>
+                            </div>
+
+                            <i class="fa-regular fa-bell notification"></i>
+
+                            <div class="avatar">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="summary-cards">
+
+                        <div class="summary-card">
+                            <div>
+                                <p>Total Students</p>
+                                <h3>1,248</h3>
+                                <small><i class="fa-solid fa-arrow-up"></i> 12%</small>
+                                <span>This Month</span>
+                            </div>
+
+                            <div class="summary-icon green">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                        </div>
+
+                        <div class="summary-card">
+                            <div>
+                                <p>Total Teachers</p>
+                                <h3>86</h3>
+                                <small><i class="fa-solid fa-arrow-up"></i> 8%</small>
+                                <span>This Month</span>
+                            </div>
+
+                            <div class="summary-icon purple">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                        </div>
+
+                        <div class="summary-card">
+                            <div>
+                                <p>Total Courses</p>
+                                <h3>24</h3>
+                                <small><i class="fa-solid fa-arrow-up"></i> 5%</small>
+                                <span>This Month</span>
+                            </div>
+
+                            <div class="summary-icon blue">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+                        </div>
+
+                        <div class="summary-card">
+                            <div>
+                                <p>Total Revenue</p>
+                                <h3>₹12,45,000</h3>
+                                <small><i class="fa-solid fa-arrow-up"></i> 15%</small>
+                                <span>This Month</span>
+                            </div>
+
+                            <div class="summary-icon orange">
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="dashboard-middle">
+
+                        <div class="chart-card">
+                            <div class="card-heading">
+                                <h4>Attendance Overview</h4>
+                                <span>This Week <i class="fa-solid fa-chevron-down"></i></span>
+                            </div>
+
+                            <div class="chart-area">
+                                <div class="chart-y-labels">
+                                    <span>70</span>
+                                    <span>50</span>
+                                    <span>40</span>
+                                    <span>20</span>
+                                    <span>0</span>
+                                </div>
+
+                                <svg class="chart-svg"
+                                     viewBox="0 0 360 170"
+                                     preserveAspectRatio="none"
+                                     role="img"
+                                     aria-label="Weekly attendance trend chart">
+
+                                    <defs>
+                                        <linearGradient id="chartFill"
+                                                        x1="0" y1="0"
+                                                        x2="0" y2="1">
+                                            <stop offset="0%"
+                                                  stop-color="#16a34a"
+                                                  stop-opacity=".18"/>
+                                            <stop offset="100%"
+                                                  stop-color="#16a34a"
+                                                  stop-opacity="0"/>
+                                        </linearGradient>
+                                    </defs>
+
+                                    <g class="chart-grid">
+                                        <line x1="0" y1="15" x2="360" y2="15"/>
+                                        <line x1="0" y1="50" x2="360" y2="50"/>
+                                        <line x1="0" y1="85" x2="360" y2="85"/>
+                                        <line x1="0" y1="120" x2="360" y2="120"/>
+                                        <line x1="0" y1="155" x2="360" y2="155"/>
+                                    </g>
+
+                                    <path class="chart-fill"
+                                          d="M10 145 L48 115 L85 85 L125 120 L165 50 L210 100 L255 85 L305 55 L350 25 L350 155 L10 155 Z"/>
+
+                                    <polyline class="chart-line"
+                                              points="10,145 48,115 85,85 125,120 165,50 210,100 255,85 305,55 350,25"/>
+
+                                    <g class="chart-points">
+                                        <circle cx="10" cy="145" r="4"/>
+                                        <circle cx="48" cy="115" r="4"/>
+                                        <circle cx="85" cy="85" r="4"/>
+                                        <circle cx="125" cy="120" r="4"/>
+                                        <circle cx="165" cy="50" r="4"/>
+                                        <circle cx="210" cy="100" r="4"/>
+                                        <circle cx="255" cy="85" r="4"/>
+                                        <circle cx="305" cy="55" r="4"/>
+                                        <circle cx="350" cy="25" r="4"/>
+                                    </g>
+                                </svg>
+                            </div>
+
+                            <div class="chart-days">
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+                                <span>Sun</span>
+                            </div>
+                        </div>
+
+                        <div class="activity-card">
+                            <h4>Recent Activities</h4>
+
+                            <div class="activity-item">
+                                <div class="activity-icon activity-blue">
+                                    <i class="fa-solid fa-file-lines"></i>
+                                </div>
+                                <div class="activity-text">
+                                    <h5>Assignment submitted</h5>
+                                    <p>Mathematics Assignment</p>
+                                </div>
+                                <small>2m ago</small>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon activity-green">
+                                    <i class="fa-solid fa-wallet"></i>
+                                </div>
+                                <div class="activity-text">
+                                    <h5>Fee payment received</h5>
+                                    <p>From Rohan Sharma</p>
+                                </div>
+                                <small>15m ago</small>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon activity-orange">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </div>
+                                <div class="activity-text">
+                                    <h5>New student enrolled</h5>
+                                    <p>Ananya Singh</p>
+                                </div>
+                                <small>1h ago</small>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon activity-red">
+                                    <i class="fa-regular fa-calendar"></i>
+                                </div>
+                                <div class="activity-text">
+                                    <h5>Exam scheduled</h5>
+                                    <p>Mid Term Exam</p>
+                                </div>
+                                <small>2h ago</small>
+                            </div>
+
+                            <a href="{% url 'home' %}" class="view-all">View All</a>
+                        </div>
+
+                    </div>
+
+                    <div class="events-card">
+                        <h4>Upcoming Events</h4>
+
+                        <div class="events-list">
+
+                            <div class="event-item">
+                                <div class="event-icon event-green">
+                                    <i class="fa-regular fa-calendar"></i>
+                                </div>
+                                <div>
+                                    <h5>Mid Term Exam</h5>
+                                    <p>10 May, 2024</p>
+                                </div>
+                            </div>
+
+                            <div class="event-item">
+                                <div class="event-icon event-purple">
+                                    <i class="fa-solid fa-people-group"></i>
+                                </div>
+                                <div>
+                                    <h5>Parent Teacher Meeting</h5>
+                                    <p>15 May, 2024</p>
+                                </div>
+                            </div>
+
+                            <div class="event-item">
+                                <div class="event-icon event-orange">
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                                <div>
+                                    <h5>Annual Day</h5>
+                                    <p>25 May, 2024</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="floating-document">
+                <i class="fa-regular fa-file-lines"></i>
+            </div>
+
+            <div class="floating-rupee">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+            </div>
+
+            <div class="books-illustration" aria-label="Books and graduation cap">
+                <div class="plant">
+                    <span class="leaf leaf-one"></span>
+                    <span class="leaf leaf-two"></span>
+                    <span class="leaf leaf-three"></span>
+                    <span class="plant-stem"></span>
+                    <div class="plant-pot"></div>
+                </div>
+
+                <div class="book book-one"></div>
+                <div class="book book-two"></div>
+                <div class="book book-three"></div>
+                <div class="book book-four"></div>
+
+                <div class="graduation-cap">
+                    <div class="cap-top"></div>
+                    <div class="cap-base"></div>
+                    <div class="cap-tassel"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    
+<script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", function () {
+        const isOpen = navLinks.classList.toggle("show");
+
+        menuToggle.setAttribute("aria-expanded", isOpen);
+        menuToggle.innerHTML = isOpen
+            ? '<i class="fa-solid fa-xmark"></i>'
+            : '<i class="fa-solid fa-bars"></i>';
+    });
+
+    document.querySelectorAll(".nav-links a").forEach(function (link) {
+        link.addEventListener("click", function () {
+            navLinks.classList.remove("show");
+            menuToggle.setAttribute("aria-expanded", "false");
+            menuToggle.innerHTML = '<i class="fa-solid fa-bars"></i>';
+        });
+    });
+</script>
+
+</body>
+</html>

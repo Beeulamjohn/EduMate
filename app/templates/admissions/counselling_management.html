@@ -1,0 +1,241 @@
+
+{% extends "admissions/base.html" %}
+{% load static %}
+
+{% block title %}Counselling Management | EduMate{% endblock %}
+{% block breadcrumb %}Counselling Management{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/counselling.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="counselling-page">
+
+    <!-- Back Button -->
+    
+
+    <!-- Page Heading -->
+    <div class="counselling-heading">
+
+    <div>
+        <span class="eyebrow">ADMISSION DEPARTMENT</span>
+        <h1>Counselling Management</h1>
+        <p>Manage student counselling, course recommendations and follow-ups.</p>
+    </div>
+
+    <div class="counselling-heading-actions">
+
+        <!-- Add Counselling -->
+         <a href="{% url 'admission_dashboard' %}" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Back to Admission Dashboard</span>
+        </a>
+        
+        <a href="{% url 'counselling_create' %}" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i>
+            Add Counselling
+        </a>
+
+        <!-- Back Button -->
+        
+
+    </div>
+
+</div>
+
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="counselling-alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Summary -->
+    <div class="counselling-summary">
+
+        <div class="summary-card">
+            <div class="summary-icon">
+                <i class="fa-solid fa-comments"></i>
+            </div>
+            <div>
+                <span>Total Counselling Records</span>
+                <h2>{{ total_counselling }}</h2>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-icon followup-icon">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div>
+                <span>Records Displayed</span>
+                <h2>{{ counselling_records|length }}</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Counselling Records -->
+    <div class="card counselling-panel">
+
+        <div class="card-header">
+            <div>
+                <h2>Student Counselling Records</h2>
+                <p>Search and manage counselling details.</p>
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Filters -->
+            <form method="get" class="counselling-filters">
+
+                <div class="filter-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ search_query }}"
+                        placeholder="Search student, phone, email or course..."
+                        class="form-control"
+                    >
+                </div>
+
+                <select name="status" class="form-control">
+                    <option value="">All Statuses</option>
+                    {% for value, label in status_choices %}
+                        <option value="{{ value }}"
+                            {% if status_filter == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-filter"></i> Filter
+                </button>
+
+                <a href="{% url 'counselling_management' %}"
+                   class="btn btn-secondary">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Reset
+                </a>
+
+            </form>
+
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table counselling-table">
+
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Contact</th>
+                            <th>Counsellor</th>
+                            <th>Recommended Course</th>
+                            <th>Status</th>
+                            <th>Next Follow-up</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for record in counselling_records %}
+                            <tr>
+
+                                <td>
+                                    <div class="student-name">
+                                        {{ record.enquiry.student_name }}
+                                    </div>
+                                    <small>
+                                        Enquiry #{{ record.enquiry.enquiry_id|default:record.enquiry.pk }}
+                                    </small>
+                                </td>
+
+                                <td>
+                                    <div>{{ record.enquiry.mobile|default:"—" }}</div>
+                                    <small>{{ record.enquiry.email|default:"—" }}</small>
+                                </td>
+
+                                <td>
+                                    {% if record.counsellor %}
+                                        {{ record.counsellor.get_full_name|default:record.counsellor.username }}
+                                    {% else %}
+                                        <span class="muted-text">Not assigned</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if record.recommended_course %}
+                                        {{ record.recommended_course.name }}
+                                    {% else %}
+                                        <span class="muted-text">Not selected</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <span class="status-badge">
+                                        {{ record.get_counselling_status_display }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% if record.next_followup_date %}
+                                        {{ record.next_followup_date|date:"d M Y" }}
+                                    {% else %}
+                                        <span class="muted-text">Not scheduled</span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <div class="action-buttons">
+
+                                        <a href="{% url 'counselling_edit' record.pk %}"
+                                           class="action-btn edit-btn"
+                                           title="Edit counselling">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </a>
+
+                                        <a href="{% url 'counselling_delete' record.pk %}"
+                                           class="action-btn delete-btn"
+                                           title="Delete counselling">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+                                <td colspan="7" class="empty-state">
+                                    <i class="fa-solid fa-folder-open"></i>
+                                    <h3>No counselling records found</h3>
+                                    <p>Add a counselling record or change your search filters.</p>
+
+                                    <a href="{% url 'counselling_create' %}"
+                                       class="btn btn-primary">
+                                        Add First Record
+                                    </a>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

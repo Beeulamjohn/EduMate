@@ -1,0 +1,147 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ page_title }} | EduMate</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{% static 'css/enquiry_form.css' %}">
+</head>
+
+<body>
+<main class="container">
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="header-content">
+            <div class="heading-icon">
+                <i class="fa-solid fa-user-plus"></i>
+            </div>
+
+            <div>
+                <h1>{{ page_title }}</h1>
+                <p class="subtitle">
+                    Enter the prospective student's details and follow-up information.
+                </p>
+            </div>
+        </div>
+
+        <a href="{% url 'enquiry_management' %}" class="btn btn-light">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Enquiries
+        </a>
+    </header>
+
+    <!-- Django Messages -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message
+                    {% if message.tags == 'error' %}message-error{% endif %}">
+                    <i class="fa-solid
+                        {% if message.tags == 'error' %}
+                            fa-circle-exclamation
+                        {% else %}
+                            fa-circle-check
+                        {% endif %}"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Enquiry Form -->
+    <section class="form-card">
+
+        <div class="card-heading">
+            <div>
+                <h2>
+                    <i class="fa-solid fa-user-graduate"></i>
+                    Student Information
+                </h2>
+                <p>Complete the required details below.</p>
+            </div>
+
+            <span class="required-note">
+                <span class="required-star">*</span> Required fields
+            </span>
+        </div>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+
+                {% for field in form %}
+                    <div class="form-field
+                        {% if field.name == 'remarks' %}field-full{% endif %}">
+
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            {% if field.field.required %}
+                                <span class="required-star">*</span>
+                            {% endif %}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small class="help-text">
+                                {{ field.help_text }}
+                            </small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="form-footer">
+                <p class="footer-note">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Please verify the information before saving.
+                </p>
+
+                <div class="form-actions">
+                    <a href="{% url 'enquiry_management' %}"
+                       class="btn btn-light">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        {{ button_text }}
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </section>
+
+    <footer class="page-footer">
+        EduMate &copy; Enquiry Management
+    </footer>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,240 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment Verification | EduMate</title>
+
+    <link rel="stylesheet"
+          href="{% static 'css/exam_payment_verification.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+<main class="page-container">
+
+    <header class="page-header">
+        <a href="{% url 'diploma_exam_management' %}#exam-fee-payment"
+           class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Exam Fees
+        </a>
+
+        <p class="eyebrow">DIPLOMA EXAMINATION MANAGEMENT</p>
+
+        <h1>
+            <i class="fa-solid fa-money-check-dollar"></i>
+            Exam Fee Verification
+        </h1>
+
+        <p class="header-description">
+            Review the payment information and verify the transaction
+            before confirming its status.
+        </p>
+    </header>
+
+    {% if messages %}
+        <div class="messages-container" aria-live="polite">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <section class="panel">
+        <h2>
+            <i class="fa-solid fa-receipt"></i>
+            Payment Details
+        </h2>
+
+        <div class="details-grid">
+
+            <div class="detail-item">
+                <span>Payment ID</span>
+                <strong>#{{ payment.pk }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Student</span>
+                <strong>
+                    {{ payment.registration.student|default:"—" }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Registration Number</span>
+                <strong>
+                    {{ payment.registration.registration_number|default:"—" }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Examination</span>
+                <strong>
+                    {{ payment.registration.exam|default:"—" }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Payment Amount</span>
+                <strong>₹{{ payment.amount|floatformat:2 }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Current Status</span>
+                <strong>{{ payment.get_status_display }}</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Payment Method</span>
+                <strong>
+                    {{ payment.get_payment_method_display }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Transaction Reference</span>
+                <strong>
+                    {{ payment.transaction_reference|default:"Not provided" }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Created</span>
+                <strong>
+                    {{ payment.created_at|date:"d M Y, H:i" }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Verified By</span>
+                <strong>
+                    {{ payment.verified_by|default:"Not verified" }}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Verified At</span>
+                <strong>
+                    {% if payment.verified_at %}
+                        {{ payment.verified_at|date:"d M Y, H:i" }}
+                    {% else %}
+                        Not verified
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Verification Notes</span>
+                <strong>
+                    {{ payment.verification_notes|default:"No notes"|linebreaksbr }}
+                </strong>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>
+            <i class="fa-solid fa-shield-halved"></i>
+            Verify Payment
+        </h2>
+
+        <p>
+            Confirm the transaction using your payment provider or official
+            receipt. Do not mark a payment as paid based only on a screenshot.
+        </p>
+
+        {% if payment.status == "paid" %}
+
+            <div class="message warning">
+                <i class="fa-solid fa-circle-check"></i>
+                This payment is already marked as paid. Use your audited
+                refund or reversal workflow if a correction is required.
+            </div>
+
+        {% else %}
+
+            <form method="post"
+                  action="{% url 'exam_payment_verification' payment.pk %}"
+                  class="verification-form">
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="message error">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="form-group">
+
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            {% if field.field.required %}
+                                <span class="required">*</span>
+                            {% endif %}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <small class="field-error">
+                                {{ error }}
+                            </small>
+                        {% endfor %}
+
+                    </div>
+                {% endfor %}
+
+                <div class="audit-notice">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    The system records the staff member and verification time.
+                </div>
+
+                <div class="form-actions">
+
+                    <a href="{% url 'diploma_exam_management' %}#exam-fee-payment"
+                       class="btn btn-secondary">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-check"></i>
+                        Save Verification
+                    </button>
+
+                </div>
+            </form>
+
+        {% endif %}
+    </section>
+
+    <footer class="page-footer">
+        <span>EduMate | Education Management System</span>
+        <span>SciPy Technologies Pvt. Ltd.</span>
+    </footer>
+
+</main>
+</body>
+</html>
